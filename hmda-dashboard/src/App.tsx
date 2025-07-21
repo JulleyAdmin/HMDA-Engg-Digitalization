@@ -131,6 +131,7 @@ function App() {
   const [allProjects, setAllProjects] = useState<HMDAProject[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [compactMode, setCompactMode] = useState(false);
 
   // Filter state
   const [filterState, setFilterState] = useState<FilterState>({
@@ -297,6 +298,11 @@ function App() {
       presets: [...prev.presets, newPreset]
     }));
   }, [filterState.filters]);
+
+  // Handle compact mode toggle
+  const handleCompactModeToggle = useCallback(() => {
+    setCompactMode(prev => !prev);
+  }, []);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -535,6 +541,8 @@ function App() {
           onSavePreset={handleSavePreset}
           projectCount={allProjects.length}
           filteredCount={filteredProjects.length}
+          compactMode={compactMode}
+          onCompactModeToggle={handleCompactModeToggle}
         />
 
         {/* Floating Action Button for filters */}

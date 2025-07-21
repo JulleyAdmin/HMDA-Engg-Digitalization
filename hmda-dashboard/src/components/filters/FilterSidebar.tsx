@@ -56,6 +56,7 @@ interface FilterSidebarProps {
   projectCount: number;
   filteredCount: number;
   compactMode?: boolean;
+  onCompactModeToggle?: () => void;
 }
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({
@@ -68,7 +69,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   onSavePreset,
   projectCount,
   filteredCount,
-  compactMode = false
+  compactMode = false,
+  onCompactModeToggle
 }) => {
   const theme = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
@@ -345,12 +347,12 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       </Drawer>
 
       {/* Compact Mode Toggle */}
-      {!compactMode && (
+      {onCompactModeToggle && (
         <FormControlLabel
           control={
             <Switch
               checked={compactMode}
-              onChange={(e) => {/* Handle compact mode toggle */}}
+              onChange={onCompactModeToggle}
               size="small"
             />
           }

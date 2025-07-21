@@ -27,7 +27,11 @@ import {
   GetApp,
   Warning,
   TrendingUp,
-  Assignment
+  Assignment,
+  FirstPage,
+  LastPage,
+  NavigateBefore,
+  NavigateNext
 } from '@mui/icons-material';
 import { HMDAProject, ProjectStage } from '../types/Project';
 import dataService from '../services/dataService';
@@ -39,6 +43,10 @@ interface ProjectsTableProps {
 
 export const ProjectsTable: React.FC<ProjectsTableProps> = ({ projects, onProjectSelect }) => {
   const [searchText, setSearchText] = useState('');
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 25,
+  });
 
   // Apply local search filter
   const displayedProjects = useMemo(() => {
@@ -52,6 +60,11 @@ export const ProjectsTable: React.FC<ProjectsTableProps> = ({ projects, onProjec
       project.contractor?.name?.toLowerCase().includes(searchLower)
     );
   }, [projects, searchText]);
+
+  // Reset pagination when search changes
+  React.useEffect(() => {
+    setPaginationModel(prev => ({ ...prev, page: 0 }));
+  }, [searchText]);
 
   // Dynamic columns based on stage
   const getColumnsForStage = (stage?: ProjectStage): GridColDef[] => {
@@ -375,7 +388,46 @@ export const ProjectsTable: React.FC<ProjectsTableProps> = ({ projects, onProjec
                 }}
               />
             </Box>
-            <Box display="flex" gap={1}>
+            <Box display="flex" gap={1} alignItems="center">
+              {/* Quick Pagination Controls */}
+              <Stack direction="row" spacing={0.5} alignItems="center">
+                <IconButton 
+                  size="small" 
+                  onClick={() => setPaginationModel(prev => ({ ...prev, page: 0 }))}
+                  disabled={paginationModel.page === 0}
+                  title="First Page"
+                >
+                  <FirstPage fontSize="small" />
+                </IconButton>
+                <IconButton 
+                  size="small" 
+                  onClick={() => setPaginationModel(prev => ({ ...prev, page: prev.page - 1 }))}
+                  disabled={paginationModel.page === 0}
+                  title="Previous Page"
+                >
+                  <NavigateBefore fontSize="small" />
+                </IconButton>
+                <Typography variant="caption" sx={{ minWidth: 60, textAlign: 'center' }}>
+                  {paginationModel.page + 1} / {Math.max(1, Math.ceil(displayedProjects.length / paginationModel.pageSize))}
+                </Typography>
+                <IconButton 
+                  size="small" 
+                  onClick={() => setPaginationModel(prev => ({ ...prev, page: prev.page + 1 }))}
+                  disabled={paginationModel.page >= Math.ceil(displayedProjects.length / paginationModel.pageSize) - 1}
+                  title="Next Page"
+                >
+                  <NavigateNext fontSize="small" />
+                </IconButton>
+                <IconButton 
+                  size="small" 
+                  onClick={() => setPaginationModel(prev => ({ ...prev, page: Math.ceil(displayedProjects.length / paginationModel.pageSize) - 1 }))}
+                  disabled={paginationModel.page >= Math.ceil(displayedProjects.length / paginationModel.pageSize) - 1}
+                  title="Last Page"
+                >
+                  <LastPage fontSize="small" />
+                </IconButton>
+              </Stack>
+              
               <Button
                 startIcon={<GetApp />}
                 onClick={handleExport}
@@ -428,26 +480,51 @@ export const ProjectsTable: React.FC<ProjectsTableProps> = ({ projects, onProjec
           </Box>
         </Box>
 
+        {/* Pagination Summary */}
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+          <Typography variant="body2" color="text.secondary">
+            Showing {Math.min((paginationModel.page * paginationModel.pageSize) + 1, displayedProjects.length)} - {Math.min((paginationModel.page + 1) * paginationModel.pageSize, displayedProjects.length)} of {displayedProjects.length} projects
+            {searchText && ` (filtered from ${projects.length} total)`}
+          </Typography>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Typography variant="body2" color="text.secondary">
+              Page {paginationModel.page + 1} of {Math.max(1, Math.ceil(displayedProjects.length / paginationModel.pageSize))}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Items per page: {paginationModel.pageSize}
+            </Typography>
+          </Stack>
+        </Box>
+
         {/* Enhanced Data Grid */}
         <Box flex={1} sx={{ height: 'calc(100vh - 400px)', minHeight: '500px' }}>
           <DataGrid
             rows={displayedProjects}
             columns={columns}
             getRowId={(row) => row.projectId}
-            initialState={{
-              pagination: {
-                paginationModel: { pageSize: 25 }
-              }
-            }}
+            paginationModel={paginationModel}
+            onPaginationModelChange={setPaginationModel}
             pageSizeOptions={[10, 25, 50, 100]}
+            paginationMode="client"
+            checkboxSelection={false}
+            disableColumnSelector={false}
+            disableDensitySelector={false}
+            disableColumnFilter={false}
             slots={{
               toolbar: GridToolbar,
             }}
             slotProps={{
               toolbar: {
                 showQuickFilter: true,
-                quickFilterProps: { debounceMs: 500 },
+                quickFilterProps: { 
+                  debounceMs: 500,
+                  placeholder: 'Search all columns...'
+                },
               },
+              pagination: {
+                showFirstButton: true,
+                showLastButton: true,
+              }
             }}
             onRowClick={(params: GridRowParams) => {
               onProjectSelect?.(params.row as HMDAProject);

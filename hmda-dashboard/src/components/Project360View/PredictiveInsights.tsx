@@ -169,10 +169,21 @@ const PredictiveInsights: React.FC<PredictiveInsightsProps> = ({ project }) => {
 
   return (
     <Card 
-      variant="outlined" 
       sx={{ 
         overflow: 'hidden',
-        background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.05)} 0%, ${alpha(theme.palette.secondary.main, 0.05)} 100%)`,
+        boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+        border: '1px solid #e2e8f0',
+        background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+        position: 'relative',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 4,
+          background: 'linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%)'
+        }
       }}
     >
       {/* Header */}

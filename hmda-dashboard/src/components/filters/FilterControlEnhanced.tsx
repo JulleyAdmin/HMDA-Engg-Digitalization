@@ -50,7 +50,11 @@ import {
   Construction as ConstructionIcon,
   Assessment as AssessmentIcon,
   WaterDrop as WaterDropIcon,
-  Gavel as GavelIcon
+  Gavel as GavelIcon,
+  Engineering as EngineeringIcon,
+  Apartment as ApartmentIcon,
+  Nature as NatureIcon,
+  SmartCity as SmartCityIcon
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import {
@@ -130,6 +134,22 @@ const FilterControlEnhanced: React.FC<FilterControlProps> = ({
     return iconMap[iconName] || null;
   };
 
+  // Get category-specific icon
+  const getCategoryIcon = (categoryValue: string) => {
+    switch (categoryValue) {
+      case 'INFRASTRUCTURE':
+        return <EngineeringIcon />;
+      case 'URBAN_DEVELOPMENT':
+        return <ApartmentIcon />;
+      case 'ENVIRONMENTAL':
+        return <NatureIcon />;
+      case 'SMART_CITY':
+        return <SmartCityIcon />;
+      default:
+        return <CategoryIcon />;
+    }
+  };
+
   // Enhanced render based on filter type and ID
   const renderControl = () => {
     // Special cases based on filter ID for better UX
@@ -177,7 +197,7 @@ const FilterControlEnhanced: React.FC<FilterControlProps> = ({
                     >
                       <Stack alignItems="center" spacing={1}>
                         <Avatar sx={{ bgcolor: option.color, width: 40, height: 40 }}>
-                          {getIcon(config.icon)}
+                          {getCategoryIcon(option.value)}
                         </Avatar>
                         <Typography variant="body2" textAlign="center" fontWeight={500}>
                           {option.label}

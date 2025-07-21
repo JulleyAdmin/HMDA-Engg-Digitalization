@@ -1,0 +1,407 @@
+import React from 'react';
+import {
+  Box,
+  Typography,
+  Stack,
+  Chip,
+  useTheme,
+  alpha,
+  Tooltip,
+  LinearProgress
+} from '@mui/material';
+import {
+  CheckCircle,
+  RadioButtonUnchecked,
+  Schedule,
+  Person,
+  ArrowForward,
+  Warning
+} from '@mui/icons-material';
+
+export interface WorkflowStep {
+  id: string;
+  title: string;
+  position: string;
+  status: 'completed' | 'active' | 'pending' | 'returned';
+  completedDate?: string;
+  pendingSince?: string;
+  returnReason?: string;
+  estimatedDays?: number;
+  actualDays?: number;
+  delegationLimit?: string;
+  remarks?: string;
+}
+
+interface ApprovalWorkflowProps {
+  steps: WorkflowStep[];
+  currentStep: string;
+  title?: string;
+  compactMode?: boolean;
+  showTimeline?: boolean;
+}
+
+const ApprovalWorkflow: React.FC<ApprovalWorkflowProps> = ({
+  steps,
+  currentStep,
+  title = "APPROVAL WORKFLOW",
+  compactMode = false,
+  showTimeline = true
+}) => {
+  const theme = useTheme();
+
+  const getStatusIcon = (status: WorkflowStep['status']) => {
+    switch (status) {
+      case 'completed':
+        return <CheckCircle sx={{ color: theme.palette.success.main, fontSize: compactMode ? 18 : 20 }} />;
+      case 'active':
+        return <Schedule sx={{ color: theme.palette.primary.main, fontSize: compactMode ? 18 : 20 }} />;
+      case 'returned':
+        return <Warning sx={{ color: theme.palette.error.main, fontSize: compactMode ? 18 : 20 }} />;
+      default:
+        return <RadioButtonUnchecked sx={{ color: theme.palette.grey[400], fontSize: compactMode ? 18 : 20 }} />;
+    }
+  };
+
+  const getStatusColor = (status: WorkflowStep['status']) => {
+    switch (status) {
+      case 'completed': return theme.palette.success.main;
+      case 'active': return theme.palette.primary.main;
+      case 'returned': return theme.palette.error.main;
+      default: return theme.palette.grey[400];
+    }
+  };
+
+  const getStatusText = (step: WorkflowStep) => {
+    switch (step.status) {
+      case 'completed':
+        return `Completed ${step.completedDate}`;
+      case 'active':
+        return `Since: ${step.pendingSince}, Pending: ${step.actualDays || 0} days`;
+      case 'returned':
+        return `Returned: ${step.returnReason}`;
+      default:
+        return `Est: ${step.estimatedDays} days`;
+    }
+  };
+
+  const currentStepIndex = steps.findIndex(step => step.id === currentStep);
+  const completionPercentage = currentStepIndex >= 0 ? ((currentStepIndex + 1) / steps.length) * 100 : 0;
+
+  return (
+    <Box>
+      {/* Header */}
+      <Box
+        sx={{
+          p: compactMode ? 2 : 2.5,
+          borderRadius: 2,
+          background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.05)} 0%, ${alpha(theme.palette.primary.main, 0.02)} 100%)`,
+          border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+          mb: 2,
+          position: 'relative',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 3,
+            background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${alpha(theme.palette.primary.main, 0.7)} 100%)`
+          }
+        }}
+      >
+        <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
+          <Typography 
+            variant="h6" 
+            fontWeight={600}
+            sx={{ 
+              fontSize: compactMode ? '0.9rem' : '1rem',
+              color: theme.palette.primary.main
+            }}
+          >
+            {title}
+          </Typography>
+          
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Typography variant="body2" color="text.secondary">
+              Step {currentStepIndex + 1} of {steps.length}
+            </Typography>
+            <Chip
+              label={`${Math.round(completionPercentage)}%`}
+              size="small"
+              color="primary"
+              sx={{ fontWeight: 600 }}
+            />
+          </Stack>
+        </Stack>
+
+        {/* Progress Bar */}
+        {showTimeline && (
+          <LinearProgress
+            variant="determinate"
+            value={completionPercentage}
+            sx={{
+              height: 6,
+              borderRadius: 3,
+              bgcolor: alpha(theme.palette.primary.main, 0.1),
+              '& .MuiLinearProgress-bar': {
+                borderRadius: 3,
+                bgcolor: theme.palette.primary.main
+              }
+            }}
+          />
+        )}
+      </Box>
+
+      {/* Workflow Steps */}
+      <Box>
+        {compactMode ? (
+          // Compact Horizontal Layout
+          <Stack 
+            direction="row" 
+            spacing={1} 
+            alignItems="center"
+            sx={{
+              overflowX: 'auto',
+              pb: 1,
+              '&::-webkit-scrollbar': {
+                height: 4,
+              },
+              '&::-webkit-scrollbar-track': {
+                bgcolor: 'grey.100',
+                borderRadius: 2,
+              },
+              '&::-webkit-scrollbar-thumb': {
+                bgcolor: 'grey.400',
+                borderRadius: 2,
+              },
+            }}
+          >
+            {steps.map((step, index) => (
+              <React.Fragment key={step.id}>
+                <Tooltip title={`${step.title} - ${getStatusText(step)}`}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      minWidth: 80,
+                      p: 1,
+                      borderRadius: 1,
+                      bgcolor: step.status === 'active' ? alpha(theme.palette.primary.main, 0.1) : 'transparent',
+                      border: step.status === 'active' ? `1px solid ${alpha(theme.palette.primary.main, 0.3)}` : 'none'
+                    }}
+                  >
+                    {getStatusIcon(step.status)}
+                    <Typography 
+                      variant="caption" 
+                      fontWeight={step.status === 'active' ? 700 : 500}
+                      sx={{ 
+                        mt: 0.5, 
+                        textAlign: 'center',
+                        fontSize: '0.65rem',
+                        color: step.status === 'active' ? 'primary.main' : 'text.secondary'
+                      }}
+                    >
+                      {step.position}
+                    </Typography>
+                  </Box>
+                </Tooltip>
+                
+                {index < steps.length - 1 && (
+                  <ArrowForward 
+                    sx={{ 
+                      fontSize: 16, 
+                      color: step.status === 'completed' ? theme.palette.success.main : 'grey.400',
+                      mx: 0.5
+                    }} 
+                  />
+                )}
+              </React.Fragment>
+            ))}
+          </Stack>
+        ) : (
+          // Full Detailed Layout
+          <Stack spacing={2}>
+            {steps.map((step, index) => {
+              const isActive = step.status === 'active';
+              const isCompleted = step.status === 'completed';
+              
+              return (
+                <Box
+                  key={step.id}
+                  sx={{
+                    p: 2.5,
+                    border: `1px solid ${alpha(getStatusColor(step.status), 0.3)}`,
+                    borderRadius: 1.5,
+                    background: `linear-gradient(135deg, ${alpha(getStatusColor(step.status), 0.03)} 0%, transparent 100%)`,
+                    position: 'relative',
+                    '&::before': isActive ? {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: 3,
+                      background: `linear-gradient(90deg, ${getStatusColor(step.status)} 0%, ${alpha(getStatusColor(step.status), 0.7)} 100%)`
+                    } : undefined
+                  }}
+                >
+                  <Stack direction="row" spacing={2} alignItems="flex-start">
+                    {/* Step Icon */}
+                    <Box sx={{ mt: 0.5 }}>
+                      {getStatusIcon(step.status)}
+                    </Box>
+                    
+                    {/* Step Content */}
+                    <Box flex={1}>
+                      <Stack direction="row" justifyContent="space-between" alignItems="flex-start" mb={1}>
+                        <Box>
+                          <Typography 
+                            variant="subtitle1" 
+                            fontWeight={600}
+                            sx={{ color: isActive ? 'primary.main' : 'text.primary' }}
+                          >
+                            {step.title}
+                          </Typography>
+                          <Typography 
+                            variant="body2" 
+                            color="text.secondary"
+                            fontWeight={500}
+                          >
+                            {step.position}
+                          </Typography>
+                        </Box>
+                        
+                        <Stack alignItems="flex-end" spacing={0.5}>
+                          <Chip
+                            label={step.status.toUpperCase().replace('_', ' ')}
+                            size="small"
+                            sx={{
+                              bgcolor: alpha(getStatusColor(step.status), 0.1),
+                              color: getStatusColor(step.status),
+                              fontWeight: 600,
+                              fontSize: '0.7rem'
+                            }}
+                          />
+                          
+                          {step.delegationLimit && (
+                            <Typography 
+                              variant="caption" 
+                              color="text.secondary"
+                              sx={{ fontSize: '0.65rem' }}
+                            >
+                              Limit: {step.delegationLimit}
+                            </Typography>
+                          )}
+                        </Stack>
+                      </Stack>
+                      
+                      {/* Status Details */}
+                      <Typography 
+                        variant="body2" 
+                        color="text.secondary"
+                        sx={{ mb: step.remarks ? 1 : 0, fontSize: '0.8rem' }}
+                      >
+                        {getStatusText(step)}
+                      </Typography>
+                      
+                      {/* Remarks */}
+                      {step.remarks && (
+                        <Box
+                          sx={{
+                            p: 1.5,
+                            bgcolor: alpha(theme.palette.warning.main, 0.05),
+                            borderRadius: 1,
+                            border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`
+                          }}
+                        >
+                          <Typography 
+                            variant="caption" 
+                            sx={{ 
+                              fontStyle: 'italic',
+                              color: 'text.secondary',
+                              fontSize: '0.75rem'
+                            }}
+                          >
+                            💬 {step.remarks}
+                          </Typography>
+                        </Box>
+                      )}
+                    </Box>
+                  </Stack>
+                  
+                  {/* Connector Line */}
+                  {index < steps.length - 1 && (
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        left: 26,
+                        bottom: -16,
+                        width: 2,
+                        height: 16,
+                        bgcolor: isCompleted ? theme.palette.success.main : alpha(theme.palette.grey[400], 0.5)
+                      }}
+                    />
+                  )}
+                </Box>
+              );
+            })}
+          </Stack>
+        )}
+      </Box>
+
+      {/* Current Status Summary */}
+      {!compactMode && (
+        <Box
+          sx={{
+            mt: 3,
+            p: 2,
+            bgcolor: alpha(theme.palette.primary.main, 0.02),
+            borderRadius: 1,
+            border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`
+          }}
+        >
+          <Stack direction="row" spacing={3} alignItems="center">
+            <Stack alignItems="center">
+              <Typography variant="h6" color="success.main" fontWeight={700}>
+                {steps.filter(step => step.status === 'completed').length}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                Completed
+              </Typography>
+            </Stack>
+            
+            <Stack alignItems="center">
+              <Typography variant="h6" color="primary.main" fontWeight={700}>
+                {steps.filter(step => step.status === 'active').length}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                Active
+              </Typography>
+            </Stack>
+            
+            <Stack alignItems="center">
+              <Typography variant="h6" color="grey.600" fontWeight={700}>
+                {steps.filter(step => step.status === 'pending').length}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                Pending
+              </Typography>
+            </Stack>
+            
+            <Stack alignItems="center">
+              <Typography variant="h6" color="error.main" fontWeight={700}>
+                {steps.filter(step => step.status === 'returned').length}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                Returned
+              </Typography>
+            </Stack>
+          </Stack>
+        </Box>
+      )}
+    </Box>
+  );
+};
+
+export default ApprovalWorkflow;

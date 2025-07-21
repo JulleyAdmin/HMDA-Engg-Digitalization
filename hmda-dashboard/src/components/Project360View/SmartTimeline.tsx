@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -10,7 +10,11 @@ import {
   alpha,
   Popover,
   Paper,
-  Chip
+  Chip,
+  Skeleton,
+  CircularProgress,
+  Fade,
+  Grow
 } from '@mui/material';
 import {
   CheckCircle,
@@ -24,6 +28,8 @@ import { ProjectStage } from '../../types/Project';
 interface SmartTimelineProps {
   currentStage: ProjectStage;
   projectTimeline?: any; // We'll define proper timeline type later
+  loading?: boolean;
+  showProgress?: boolean;
 }
 
 interface StageInfo {
@@ -37,10 +43,37 @@ interface StageInfo {
   issues?: string[];
 }
 
-const SmartTimeline: React.FC<SmartTimelineProps> = ({ currentStage, projectTimeline }) => {
+const SmartTimeline: React.FC<SmartTimelineProps> = ({ 
+  currentStage, 
+  projectTimeline, 
+  loading = false, 
+  showProgress = true 
+}) => {
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedStage, setSelectedStage] = useState<number | null>(null);
+  const [animateProgress, setAnimateProgress] = useState(false);
+  const [stagesLoaded, setStagesLoaded] = useState<boolean[]>(new Array(9).fill(false));
+
+  // Simulate loading states for stages
+  useEffect(() => {
+    if (!loading) {
+      const timer = setTimeout(() => {
+        setAnimateProgress(true);
+        // Stagger the loading of stages for visual effect
+        Object.keys(stages).forEach((_, index) => {
+          setTimeout(() => {
+            setStagesLoaded(prev => {
+              const newLoaded = [...prev];
+              newLoaded[index] = true;
+              return newLoaded;
+            });
+          }, index * 150); // 150ms delay between each stage
+        });
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [loading]);
 
   // Define all 9 stages with their information
   const stages: Partial<Record<ProjectStage, StageInfo>> = {
@@ -174,6 +207,151 @@ const SmartTimeline: React.FC<SmartTimelineProps> = ({ currentStage, projectTime
 
   const open = Boolean(anchorEl);
 
+  // Loading skeleton component
+  const TimelineSkeleton = () => (
+    <Box>
+      <Stack direction="row" alignItems="center" spacing={2} mb={2}>
+        <Skeleton variant="text" width={120} height={24} />
+        <Skeleton variant="rectangular" width={80} height={24} sx={{ borderRadius: 1 }} />
+        <Skeleton variant="rectangular" width={100} height={24} sx={{ borderRadius: 1 }} />
+      </Stack>
+      
+      <Box sx={{ overflowX: 'auto', pb: 2 }}>
+        <Stack direction="row" spacing={0} alignItems="center" sx={{ minWidth: 'max-content' }}>
+          {Array.from({ length: 9 }).map((_, index) => (
+            <React.Fragment key={index}>
+              <Box sx={{ position: 'relative' }}>
+                <Skeleton 
+                  variant="circular" 
+                  width={40} 
+                  height={40}
+                  animation="wave"
+                  sx={{
+                    animationDelay: `${index * 0.1}s`
+                  }}
+                />
+                <Skeleton 
+                  variant="text" 
+                  width={60} 
+                  height={16} 
+                  sx={{ 
+                    position: 'absolute',
+                    top: '100%',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    mt: 1,
+                    animationDelay: `${index * 0.1}s`
+                  }} 
+                />
+              </Box>
+              {index < 8 && (
+                <Skeleton 
+                  variant="rectangular" 
+                  width={40} 
+                  height={4}
+                  animation="wave"
+                  sx={{
+                    flex: 1,
+                    minWidth: 40,
+                    animationDelay: `${index * 0.1}s`
+                  }}
+                />
+              )}
+            </React.Fragment>
+          ))}
+        </Stack>
+      </Box>
+    </Box>
+  );
+
+  // Enhanced progress indicator with pulse animation
+  const EnhancedProgressIndicator = ({ progress, stage }: { progress: number; stage: ProjectStage }) => (
+    <Box
+      sx={{
+        position: 'relative',
+        width: 40,
+        height: 40,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+    >
+      {/* Background circle */}
+      <CircularProgress
+        variant="determinate"
+        value={100}
+        size={36}
+        thickness={3}
+        sx={{
+          position: 'absolute',
+          color: theme.palette.grey[200],
+        }}
+      />
+      
+      {/* Progress circle with animation */}
+      <CircularProgress
+        variant="determinate"
+        value={animateProgress ? progress : 0}
+        size={36}
+        thickness={3}
+        sx={{
+          position: 'absolute',
+          color: getProgressBarColor(stages[stage] || {} as StageInfo),
+          transition: 'all 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
+          transform: 'rotate(-90deg)',
+          '& .MuiCircularProgress-circle': {
+            strokeLinecap: 'round',
+          }
+        }}
+      />
+      
+      {/* Center content */}
+      <Typography
+        variant="caption"
+        sx={{
+          position: 'absolute',
+          fontSize: '0.65rem',
+          fontWeight: 700,
+          color: 'primary.main'
+        }}
+      >
+        {progress}%
+      </Typography>
+      
+      {/* Pulse animation for active stages */}
+      {stages[stage]?.status === 'active' && (
+        <Box
+          sx={{
+            position: 'absolute',
+            width: 50,
+            height: 50,
+            borderRadius: '50%',
+            border: `2px solid ${alpha(theme.palette.primary.main, 0.3)}`,
+            animation: 'pulse 2s infinite',
+            '@keyframes pulse': {
+              '0%': {
+                transform: 'scale(1)',
+                opacity: 0.8,
+              },
+              '70%': {
+                transform: 'scale(1.1)',
+                opacity: 0,
+              },
+              '100%': {
+                transform: 'scale(1)',
+                opacity: 0,
+              },
+            },
+          }}
+        />
+      )}
+    </Box>
+  );
+
+  if (loading) {
+    return <TimelineSkeleton />;
+  }
+
   return (
     <Box>
       {/* Timeline Header */}
@@ -223,25 +401,50 @@ const SmartTimeline: React.FC<SmartTimelineProps> = ({ currentStage, projectTime
           {Object.entries(stages).map(([stageNum, info], index) => {
             const stage = parseInt(stageNum) as ProjectStage;
             const isLast = index === Object.entries(stages).length - 1;
+            const isLoaded = stagesLoaded[index];
             
             return (
               <React.Fragment key={stage}>
                 {/* Stage Node */}
-                <Box sx={{ position: 'relative' }}>
-                  <Tooltip title={`${info.name} (${info.plannedDuration})`}>
-                    <IconButton
-                      size="small"
-                      onClick={(e) => handleStageClick(e, stage)}
-                      sx={{
-                        p: 0.5,
-                        '&:hover': {
-                          bgcolor: alpha(getStageColor(info), 0.1)
-                        }
-                      }}
-                    >
-                      {getStageIcon(stage, info)}
-                    </IconButton>
-                  </Tooltip>
+                <Grow
+                  in={isLoaded}
+                  timeout={{
+                    enter: 500,
+                    exit: 300,
+                  }}
+                  style={{
+                    transformOrigin: '50% 50%',
+                  }}
+                >
+                  <Box sx={{ position: 'relative' }}>
+                    {/* Enhanced progress visualization for active stages */}
+                    {info.status === 'active' && showProgress && info.progress !== undefined ? (
+                      <Tooltip title={`${info.name} (${info.progress}% complete)`}>
+                        <Box
+                          onClick={(e) => handleStageClick(e, stage)}
+                          sx={{ cursor: 'pointer' }}
+                        >
+                          <EnhancedProgressIndicator progress={info.progress} stage={stage} />
+                        </Box>
+                      </Tooltip>
+                    ) : (
+                      <Tooltip title={`${info.name} (${info.plannedDuration})`}>
+                        <IconButton
+                          size="small"
+                          onClick={(e) => handleStageClick(e, stage)}
+                          sx={{
+                            p: 0.5,
+                            transition: 'all 0.3s ease',
+                            '&:hover': {
+                              bgcolor: alpha(getStageColor(info), 0.1),
+                              transform: 'scale(1.1)'
+                            }
+                          }}
+                        >
+                          {getStageIcon(stage, info)}
+                        </IconButton>
+                      </Tooltip>
+                    )}
                   
                   {/* Stage Label */}
                   <Typography 
@@ -261,23 +464,46 @@ const SmartTimeline: React.FC<SmartTimelineProps> = ({ currentStage, projectTime
                     {stage}
                   </Typography>
                   
-                  {/* Progress Indicator for Active Stage */}
-                  {info.status === 'active' && info.progress !== undefined && (
-                    <Typography 
-                      variant="caption" 
-                      sx={{ 
-                        position: 'absolute',
-                        bottom: '100%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        mb: 0.5,
-                        fontSize: '0.65rem',
-                        fontWeight: 700,
-                        color: 'primary.main'
-                      }}
-                    >
-                      ▶{info.progress}%
-                    </Typography>
+                  {/* Animated Status Indicator */}
+                  {info.status === 'active' && (
+                    <Fade in={animateProgress} timeout={1000}>
+                      <Box
+                        sx={{
+                          position: 'absolute',
+                          bottom: '100%',
+                          left: '50%',
+                          transform: 'translateX(-50%)',
+                          mb: 0.5,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 0.5
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            width: 6,
+                            height: 6,
+                            borderRadius: '50%',
+                            bgcolor: 'primary.main',
+                            animation: 'blink 1s infinite',
+                            '@keyframes blink': {
+                              '0%, 50%': { opacity: 1 },
+                              '51%, 100%': { opacity: 0.3 },
+                            },
+                          }}
+                        />
+                        <Typography 
+                          variant="caption" 
+                          sx={{ 
+                            fontSize: '0.65rem',
+                            fontWeight: 700,
+                            color: 'primary.main'
+                          }}
+                        >
+                          {info.progress ? `${info.progress}%` : 'Active'}
+                        </Typography>
+                      </Box>
+                    </Fade>
                   )}
                   
                   {/* Duration Display */}
@@ -295,32 +521,77 @@ const SmartTimeline: React.FC<SmartTimelineProps> = ({ currentStage, projectTime
                   >
                     {info.actualDuration || info.plannedDuration}
                   </Typography>
-                </Box>
-
-                {/* Connector Line */}
-                {!isLast && (
-                  <Box sx={{ 
-                    flex: 1, 
-                    height: 4,
-                    minWidth: 40,
-                    bgcolor: info.status === 'completed' ? getStageColor(info) : 'grey.300',
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }}>
-                    {info.status === 'active' && info.progress !== undefined && (
-                      <Box
-                        sx={{
-                          position: 'absolute',
-                          left: 0,
-                          top: 0,
-                          height: '100%',
-                          width: `${info.progress}%`,
-                          bgcolor: getProgressBarColor(info),
-                          transition: 'width 0.3s ease'
-                        }}
-                      />
-                    )}
                   </Box>
+                </Grow>
+
+                {/* Enhanced Connector Line */}
+                {!isLast && (
+                  <Grow
+                    in={isLoaded}
+                    timeout={{
+                      enter: 600 + (index * 100),
+                      exit: 300,
+                    }}
+                  >
+                    <Box sx={{ 
+                      flex: 1, 
+                      height: 4,
+                      minWidth: 40,
+                      bgcolor: info.status === 'completed' ? getStageColor(info) : 'grey.300',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      borderRadius: 2,
+                      transition: 'all 0.5s ease'
+                    }}>
+                      {info.status === 'active' && info.progress !== undefined && (
+                        <Box
+                          sx={{
+                            position: 'absolute',
+                            left: 0,
+                            top: 0,
+                            height: '100%',
+                            width: animateProgress ? `${info.progress}%` : '0%',
+                            bgcolor: getProgressBarColor(info),
+                            transition: 'width 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                            borderRadius: 2,
+                            '&::after': {
+                              content: '""',
+                              position: 'absolute',
+                              top: 0,
+                              right: 0,
+                              width: '20px',
+                              height: '100%',
+                              background: `linear-gradient(90deg, transparent 0%, ${alpha(theme.palette.common.white, 0.8)} 100%)`,
+                              animation: info.progress > 0 && info.progress < 100 ? 'shimmer 2s infinite' : 'none',
+                              '@keyframes shimmer': {
+                                '0%': { transform: 'translateX(-20px)' },
+                                '100%': { transform: 'translateX(20px)' },
+                              }
+                            }
+                          }}
+                        />
+                      )}
+                      
+                      {/* Flow animation for completed stages */}
+                      {info.status === 'completed' && animateProgress && (
+                        <Box
+                          sx={{
+                            position: 'absolute',
+                            top: 0,
+                            left: '-10px',
+                            width: '10px',
+                            height: '100%',
+                            background: `linear-gradient(90deg, transparent 0%, ${alpha(theme.palette.common.white, 0.6)} 50%, transparent 100%)`,
+                            animation: 'flow 3s ease-in-out infinite',
+                            '@keyframes flow': {
+                              '0%': { left: '-10px' },
+                              '100%': { left: '100%' },
+                            }
+                          }}
+                        />
+                      )}
+                    </Box>
+                  </Grow>
                 )}
               </React.Fragment>
             );

@@ -144,7 +144,24 @@ const SmartSidebar: React.FC<SmartSidebarProps> = ({ project, currentStage }) =>
   return (
     <Stack spacing={2}>
       {/* CE Attention Section */}
-      <Card variant="outlined" sx={{ p: 2 }}>
+      <Card 
+        sx={{ 
+          p: 2,
+          position: 'relative',
+          overflow: 'hidden',
+          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+          border: '1px solid #e2e8f0',
+          background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 4,
+            background: 'linear-gradient(90deg, #ef4444 0%, #f87171 100%)'
+          }
+        }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
           <Typography variant="h6" fontWeight={600} fontSize="0.9rem">
             CE ATTENTION
@@ -156,14 +173,33 @@ const SmartSidebar: React.FC<SmartSidebarProps> = ({ project, currentStage }) =>
 
         <Stack spacing={2}>
           {pendingApprovals.map((approval) => (
-            <Card 
+            <Box 
               key={approval.id}
-              variant="outlined" 
               sx={{ 
                 p: 1.5,
+                borderRadius: 1,
+                border: 2,
                 borderColor: getPriorityColor(approval.priority),
-                borderWidth: 2,
-                bgcolor: alpha(getPriorityColor(approval.priority), 0.05)
+                bgcolor: alpha(getPriorityColor(approval.priority), 0.05),
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                position: 'relative',
+                overflow: 'hidden',
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 3,
+                  background: getPriorityColor(approval.priority)
+                },
+                '&:hover': {
+                  borderColor: getPriorityColor(approval.priority),
+                  background: alpha(getPriorityColor(approval.priority), 0.1),
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+                }
               }}
             >
               <Stack spacing={1}>
@@ -207,7 +243,7 @@ const SmartSidebar: React.FC<SmartSidebarProps> = ({ project, currentStage }) =>
                   </Button>
                 </Stack>
               </Stack>
-            </Card>
+            </Box>
           ))}
         </Stack>
 
@@ -232,7 +268,24 @@ const SmartSidebar: React.FC<SmartSidebarProps> = ({ project, currentStage }) =>
       </Card>
 
       {/* Risk Radar */}
-      <Card variant="outlined" sx={{ p: 2 }}>
+      <Card 
+        sx={{ 
+          p: 2,
+          position: 'relative',
+          overflow: 'hidden',
+          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+          border: '1px solid #e2e8f0',
+          background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 4,
+            background: 'linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%)'
+          }
+        }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
           <Typography variant="h6" fontWeight={600} fontSize="0.9rem">
             RISK RADAR
@@ -309,7 +362,24 @@ const SmartSidebar: React.FC<SmartSidebarProps> = ({ project, currentStage }) =>
       </Card>
 
       {/* Quick Stats */}
-      <Card variant="outlined" sx={{ p: 2 }}>
+      <Card 
+        sx={{ 
+          p: 2,
+          position: 'relative',
+          overflow: 'hidden',
+          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+          border: '1px solid #e2e8f0',
+          background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 4,
+            background: 'linear-gradient(90deg, #059669 0%, #10b981 100%)'
+          }
+        }}>
         <Typography variant="h6" fontWeight={600} fontSize="0.9rem" mb={2}>
           QUICK STATS
         </Typography>

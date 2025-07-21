@@ -19,8 +19,7 @@ import {
   Engineering,
   Assessment
 } from '@mui/icons-material';
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer } from 'recharts';
-import { ChartContainer } from './ChartContainer';
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer, LabelList } from 'recharts';
 import { HMDAProject } from '../types/Project';
 
 interface DashboardOverviewProps {
@@ -77,7 +76,11 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, subtitle, icon, color
             variant="h3" 
             component="div" 
             sx={{ 
-              color: `${color}.main`,
+              color: color === 'primary' ? '#1e3a8a' : 
+                     color === 'secondary' ? '#059669' : 
+                     color === 'success' ? '#059669' : 
+                     color === 'warning' ? '#d97706' : 
+                     color === 'error' ? '#dc2626' : '#1f2937',
               fontWeight: 800,
               fontSize: '1.75rem',
               lineHeight: 1.1,
@@ -140,10 +143,19 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, subtitle, icon, color
             width: 48, 
             height: 48, 
             borderRadius: '12px',
-            background: `linear-gradient(135deg, ${color === 'primary' ? '#1e3a8a20' : color === 'secondary' ? '#05966920' : color === 'success' ? '#10b98120' : color === 'warning' ? '#f59e0b20' : '#ef444420'} 0%, ${color === 'primary' ? '#3b82f620' : color === 'secondary' ? '#10b98120' : color === 'success' ? '#34d39920' : color === 'warning' ? '#fbbf2420' : '#f8717120'} 100%)`,
+            backgroundColor: color === 'primary' ? '#1e3a8a15' : 
+                           color === 'secondary' ? '#05966915' : 
+                           color === 'success' ? '#05966915' : 
+                           color === 'warning' ? '#d9770615' : 
+                           color === 'error' ? '#dc262615' : '#1f293715',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            color: color === 'primary' ? '#1e3a8a' : 
+                   color === 'secondary' ? '#059669' : 
+                   color === 'success' ? '#059669' : 
+                   color === 'warning' ? '#d97706' : 
+                   color === 'error' ? '#dc2626' : '#1f2937'
           }}
         >
           {icon}
@@ -199,17 +211,45 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ projects }
   }));
 
   // Chart data
+  const getCategoryName = (key: string): string => {
+    switch(key) {
+      case 'INFRA': return 'Infrastructure';
+      case 'URBAN': return 'Urban Development';
+      case 'ENV': return 'Environmental';
+      case 'SMART': return 'Smart City';
+      default: return key;
+    }
+  };
+
   const categoryData = Object.entries(categoryDistribution).map(([key, value]) => ({
-    name: key.replace('_', ' '),
+    name: getCategoryName(key),
     value,
-    color: key === 'INFRASTRUCTURE' ? '#1e3a8a' : key === 'URBAN_DEVELOPMENT' ? '#059669' : key === 'ENVIRONMENTAL' ? '#10b981' : '#f59e0b'
+    color: key === 'INFRA' ? '#1e3a8a' : 
+           key === 'URBAN' ? '#059669' : 
+           key === 'ENV' ? '#10b981' : 
+           key === 'SMART' ? '#f59e0b' : '#6b7280'
   }));
   
   console.log('Category Data:', categoryData);
   console.log('Stage Data:', stageDistribution);
 
+  const getStageName = (stageNum: string): string => {
+    const stageMap: Record<string, string> = {
+      '1': 'Concept',
+      '2': 'DPR',
+      '3': 'Tender',
+      '4': 'Award',
+      '5': 'Construction',
+      '6': 'QC',
+      '7': 'Testing',
+      '8': 'Handover',
+      '9': 'DLP'
+    };
+    return stageMap[stageNum] || `Stage ${stageNum}`;
+  };
+
   const stageData = Object.entries(stageDistribution).map(([key, value]) => ({
-    name: key,
+    name: getStageName(key),
     value,
     projects: value
   }));
@@ -333,6 +373,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ projects }
                     <XAxis dataKey="name" angle={-45} textAnchor="end" fontSize={12} />
                     <YAxis fontSize={12} />
                     <Bar dataKey="value" fill="#1e3a8a" radius={[8, 8, 0, 0]}>
+                      <LabelList dataKey="value" position="top" style={{ fontSize: '12px', fontWeight: 600 }} />
                       {stageData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={index % 2 === 0 ? '#1e3a8a' : '#3b82f6'} />
                       ))}
@@ -363,7 +404,9 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ projects }
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="label" angle={-45} textAnchor="end" fontSize={12} />
                   <YAxis fontSize={12} />
-                  <Bar dataKey="value" fill="#059669" radius={[8, 8, 0, 0]} />
+                  <Bar dataKey="value" fill="#059669" radius={[8, 8, 0, 0]}>
+                    <LabelList dataKey="value" position="top" style={{ fontSize: '12px', fontWeight: 600 }} />
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </Box>
@@ -379,23 +422,31 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ projects }
               </Typography>
             }
           >
-            <ChartContainer height={300}>
-                <PieChart>
-                  <Pie
-                    data={riskData}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={100}
-                    dataKey="value"
-                    label={({name, value}) => `${name}: ${value}`}
-                  >
-                    {riskData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Legend />
-                </PieChart>
-            </ChartContainer>
+            <Box sx={{ width: '100%', height: 300 }}>
+              {riskData.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={riskData}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      dataKey="value"
+                      label={({name, value}) => `${name}: ${value}`}
+                    >
+                      {riskData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              ) : (
+                <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+                  <Typography color="text.secondary">No data available</Typography>
+                </Box>
+              )}
+            </Box>
           </FullscreenableCard>
         </Box>
       </Box>
