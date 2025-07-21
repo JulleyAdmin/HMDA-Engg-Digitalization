@@ -1,0 +1,151 @@
+Project ID,Project Name,Category,Sub Category,Current Stage,Total Budget (₹),Physical Progress (%),Financial Progress (%),CE Score,Risk Level,Circle,Ward,Locality,Contractor,Contractor Grade,Planned Start,Planned Completion,Delay Days,Quality Score,Priority
+ENV-2025-001-C1,"Road No. 36 Eco Park - Phase 3",ENV,GI,7,1172480547,71.1,64.5,NaN,LOW,C1,"Jubilee Hills","Road No. 36","Ramky Infrastructure",A,2024-06-12,2025-10-12,24,70.3,MEDIUM
+SMART-2025-002-C4,"Main Road Smart Infrastructure - Phase 3",SMART,IS,4,4729056824,45,36.7,NaN,LOW,C4,"Zaheerabad","Main Road","AFCONS Infrastructure",AA,2024-07-11,2025-12-11,0,72.4,LOW
+SMART-2025-003-C3,"Metro Station Digital Hub - Phase 3",SMART,DI,8,2015191595,88.2,81.9,NaN,MEDIUM,C3,"Miyapur","Metro Station","Tata Projects",AAA,2024-09-10,2027-05-10,51,88.3,MEDIUM
+ENV-2025-004-C5,"Bus Stand Green Belt - Phase 3",ENV,PC,7,128813596856,71.4,63.3,NaN,HIGH,C5,"Vikarabad","Bus Stand","NCC Limited",AA,2024-06-07,2026-06-07,26,77.6,HIGH
+SMART-2025-005-C2,"IT Corridor Smart Infrastructure - Phase 2",SMART,DI,4,642114826,49.1,42,NaN,LOW,C2,"Nanakramguda","IT Corridor","Simplex Infrastructures",A,2024-10-14,2025-05-14,0,85.1,LOW
+INFRA-2025-006-C1,"Mindspace Elevated Corridor - Phase 2",INFRA,RT,3,1735010296,36.6,32.1,NaN,LOW,C1,"Madhapur","Mindspace","L&T Construction",AAA,2024-01-27,2025-10-27,0,94.2,LOW
+INFRA-2025-007-C5,"Bus Stand Bridge - Phase 1",INFRA,RT,6,53038451140,60.9,57.7,NaN,HIGH,C5,"Vikarabad","Bus Stand","KNR Constructions",A,2024-01-29,2027-05-29,65,89.6,HIGH
+URBAN-2025-008-C3,"IIT Campus Area Development - Phase 1",URBAN,PA,9,210731540361,94.2,87.3,NaN,HIGH,C3,"Kompally","IIT Campus","IRB Infrastructure",AA,2023-04-01,2024-07-01,66,85.5,HIGH
+ENV-2025-009-C3,"X Roads Lake Rejuvenation - Phase 1",ENV,GI,7,43876560759,74.5,65.4,NaN,LOW,C3,"Nizampet","X Roads","NCC Limited",AA,2024-08-06,2025-06-06,29,86.6,MEDIUM
+INFRA-2025-010-C1,"DLF Bridge - Phase 1",INFRA,RT,8,9307416905,87.5,87.1,NaN,LOW,C1,"Gachibowli","DLF","Tata Projects",AAA,2024-04-13,2028-01-13,2,89.7,MEDIUM
+INFRA-2025-011-C1,"Mindspace Flyover - Phase 3",INFRA,RT,1,66492358739,6.6,3.8,NaN,MEDIUM,C1,"Madhapur","Mindspace","NCC Limited",AA,2024-07-16,2025-09-16,0,73.6,MEDIUM
+INFRA-2025-012-C2,"Airport Road Road Widening - Phase 1",INFRA,RT,7,195357856187,70.8,64,NaN,HIGH,C2,"Shamshabad","Airport Road","L&T Construction",AAA,2024-05-12,2027-06-12,73,91.9,HIGH
+URBAN-2025-013-C5,"Bus Stand Township Development - Phase 3",URBAN,AD,2,29203229600,28.3,25.3,NaN,LOW,C5,"Vikarabad","Bus Stand","IRB Infrastructure",AA,2023-10-24,2027-02-24,0,71.4,MEDIUM
+SMART-2025-014-C3,"Housing Board Smart Infrastructure - Phase 3",SMART,IS,9,1777801134,95.4,87.6,NaN,MEDIUM,C3,"Bachupally","Housing Board","KNR Constructions",A,2024-06-12,2028-03-12,33,82.3,MEDIUM
+INFRA-2025-015-C3,"Metro Station Bridge - Phase 1",INFRA,PU,6,47176759153,67.1,62.7,NaN,MEDIUM,C3,"Miyapur","Metro Station","Simplex Infrastructures",A,2024-08-06,2028-05-06,48,76.4,MEDIUM
+ENV-2025-016-C5,"Market Area Green Belt - Phase 2",ENV,PC,1,226091013617,11.2,9.4,NaN,HIGH,C5,"Chevella","Market Area","IRB Infrastructure",AA,2023-06-10,2025-07-10,0,87.1,HIGH
+SMART-2025-017-C3,"Metro Station Command Center - Phase 3",SMART,IS,9,9248252194,93.6,88,NaN,LOW,C3,"Miyapur","Metro Station","KNR Constructions",A,2023-09-05,2027-02-05,14,76.8,MEDIUM
+SMART-2025-018-C5,"Market Area Digital Hub - Phase 3",SMART,DI,8,32463666293,85.2,76.8,NaN,MEDIUM,C5,"Chevella","Market Area","Tata Projects",AAA,2024-11-26,2025-06-26,48,83.2,MEDIUM
+ENV-2025-019-C1,"Road No. 36 Eco Park - Phase 3",ENV,GI,7,286590496381,74,73.7,NaN,HIGH,C1,"Jubilee Hills","Road No. 36","KNR Constructions",A,2024-12-16,2027-10-16,62,94.0,HIGH
+SMART-2025-020-C5,"Railway Station Digital Hub - Phase 1",SMART,IS,9,1661792192,98.5,94.7,NaN,HIGH,C5,"Tandur","Railway Station","IRB Infrastructure",AA,2023-05-06,2023-11-06,65,73.7,HIGH
+SMART-2025-021-C1,"Mindspace Smart Infrastructure - Phase 3",SMART,DI,6,2389688021,67.4,67,NaN,MEDIUM,C1,"Madhapur","Mindspace","Simplex Infrastructures",A,2023-06-17,2027-06-17,52,71.9,MEDIUM
+SMART-2025-022-C3,"Housing Board Smart Infrastructure - Phase 3",SMART,DI,4,738909601,43,41.3,NaN,LOW,C3,"Bachupally","Housing Board","Nagarjuna Construction",A,2023-07-17,2026-06-17,0,70.9,LOW
+INFRA-2025-023-C3,"X Roads Flyover - Phase 2",INFRA,WS,9,73622849958,93.2,84.4,NaN,MEDIUM,C3,"Nizampet","X Roads","KNR Constructions",A,2023-09-11,2026-10-11,39,77.5,MEDIUM
+SMART-2025-024-C3,"Housing Board Command Center - Phase 2",SMART,DI,1,10883973637,5.4,4,NaN,LOW,C3,"Bachupally","Housing Board","L&T Construction",AAA,2024-04-07,2027-01-07,0,85.2,MEDIUM
+URBAN-2025-025-C3,"Housing Board Complex - Phase 1",URBAN,TD,1,30804070102,11.1,9,NaN,LOW,C3,"Bachupally","Housing Board","Tata Projects",AAA,2024-04-02,2025-11-02,0,84.9,MEDIUM
+URBAN-2025-026-C2,"Airport Road Area Development - Phase 1",URBAN,AD,3,73366988811,34.8,32.5,NaN,MEDIUM,C2,"Shamshabad","Airport Road","AFCONS Infrastructure",AA,2024-09-21,2026-05-21,0,79.0,MEDIUM
+URBAN-2025-027-C3,"Metro Station Township Development - Phase 1",URBAN,TD,2,1515800169,22.9,19.1,NaN,LOW,C3,"Miyapur","Metro Station","NCC Limited",AA,2023-01-27,2026-05-27,0,76.6,LOW
+INFRA-2025-028-C2,"TSIIC Bridge - Phase 1",INFRA,PU,6,78421031849,62.8,59.2,NaN,HIGH,C2,"Attapur","TSIIC","NCC Limited",AA,2024-10-29,2026-12-29,72,70.6,HIGH
+ENV-2025-029-C5,"Market Area Eco Park - Phase 2",ENV,PC,7,27128968977,78.4,72.3,NaN,LOW,C5,"Chevella","Market Area","Ramky Infrastructure",A,2024-08-02,2026-03-02,22,82.1,MEDIUM
+SMART-2025-030-C2,"Financial District Command Center - Phase 3",SMART,IS,8,64721351815,82.2,73.6,NaN,MEDIUM,C2,"Kokapet","Financial District","NCC Limited",AA,2024-07-29,2028-02-29,39,73.2,MEDIUM
+INFRA-2025-031-C4,"Industrial Area Road Widening - Phase 3",INFRA,WS,4,485418483846,44.3,40.2,NaN,HIGH,C4,"Patancheru","Industrial Area","Simplex Infrastructures",A,2023-12-16,2025-04-16,0,85.7,HIGH
+INFRA-2025-032-C4,"Industrial Area Bridge - Phase 2",INFRA,PU,9,150309938392,90.4,89.9,NaN,HIGH,C4,"Patancheru","Industrial Area","KNR Constructions",A,2023-09-16,2026-12-16,87,89.0,HIGH
+INFRA-2025-033-C5,"Bus Stand Road Widening - Phase 1",INFRA,WS,1,265476444539,6.4,0.6,NaN,HIGH,C5,"Vikarabad","Bus Stand","AFCONS Infrastructure",AA,2023-06-30,2027-05-31,0,71.0,HIGH
+URBAN-2025-034-C4,"Industrial Area Township Development - Phase 2",URBAN,PA,5,89888380369,59.6,53.8,NaN,MEDIUM,C4,"Patancheru","Industrial Area","NCC Limited",AA,2024-07-25,2027-06-25,11,87.2,MEDIUM
+URBAN-2025-035-C2,"Airport Road Township Development - Phase 2",URBAN,AD,6,1138140974,69.5,62.6,NaN,MEDIUM,C2,"Shamshabad","Airport Road","NCC Limited",AA,2023-08-05,2024-09-05,43,90.0,MEDIUM
+URBAN-2025-036-C5,"Railway Station Township Development - Phase 2",URBAN,AD,7,162512518874,71.7,67,NaN,HIGH,C5,"Tandur","Railway Station","AFCONS Infrastructure",AA,2024-02-29,2024-11-29,30,89.1,HIGH
+URBAN-2025-037-C5,"Market Area Township Development - Phase 3",URBAN,TD,8,1047857022,86.6,76.8,NaN,LOW,C5,"Chevella","Market Area","AFCONS Infrastructure",AA,2024-03-01,2025-04-01,3,72.9,MEDIUM
+SMART-2025-038-C3,"IIT Campus Command Center - Phase 1",SMART,IS,7,67315324628,78.2,68.3,NaN,MEDIUM,C3,"Kompally","IIT Campus","MEIL",AA,2024-05-13,2026-04-13,8,73.4,MEDIUM
+SMART-2025-039-C3,"Metro Station Command Center - Phase 1",SMART,IS,6,1143296566,68.1,63,NaN,LOW,C3,"Miyapur","Metro Station","Simplex Infrastructures",A,2023-04-14,2027-01-14,17,73.5,MEDIUM
+SMART-2025-040-C5,"Bus Stand Smart Infrastructure - Phase 3",SMART,DI,4,207120914574,40.8,30.8,NaN,HIGH,C5,"Vikarabad","Bus Stand","Ramky Infrastructure",A,2023-05-02,2025-08-02,0,92.3,HIGH
+SMART-2025-041-C3,"IIT Campus Digital Hub - Phase 1",SMART,IS,2,50891388604,22.2,17.3,NaN,MEDIUM,C3,"Kompally","IIT Campus","Ramky Infrastructure",A,2024-05-25,2025-09-25,0,85.5,MEDIUM
+INFRA-2025-042-C3,"X Roads Road Widening - Phase 1",INFRA,WS,5,3620570734,55,50,NaN,LOW,C3,"Nizampet","X Roads","NCC Limited",AA,2024-02-07,2025-05-07,12,94.8,MEDIUM
+URBAN-2025-043-C4,"Town Center Complex - Phase 2",URBAN,PA,5,12155744265,59.3,57.1,NaN,MEDIUM,C4,"Sangareddy","Town Center","Tata Projects",AAA,2023-05-31,2026-10-01,39,79.3,MEDIUM
+URBAN-2025-044-C1,"Road No. 12 Area Development - Phase 3",URBAN,TD,9,214359648373,90.3,89.9,NaN,HIGH,C1,"Banjara Hills","Road No. 12","Ramky Infrastructure",A,2023-12-10,2025-08-10,34,73.3,HIGH
+ENV-2025-045-C1,"Cyber Towers Eco Park - Phase 3",ENV,PC,6,362204398962,63,57,NaN,HIGH,C1,"Hitech City","Cyber Towers","NCC Limited",AA,2024-08-09,2027-01-09,13,86.4,HIGH
+SMART-2025-046-C5,"Bus Stand Command Center - Phase 1",SMART,IS,5,1901640141,55.7,52,NaN,LOW,C5,"Vikarabad","Bus Stand","Nagarjuna Construction",A,2024-01-02,2024-08-02,4,70.9,MEDIUM
+ENV-2025-047-C1,"Cyber Towers Green Belt - Phase 1",ENV,GI,5,71315147295,53.8,45.8,NaN,MEDIUM,C1,"Hitech City","Cyber Towers","L&T Construction",AAA,2024-12-02,2027-10-02,60,73.1,MEDIUM
+URBAN-2025-048-C4,"Industrial Area Township Development - Phase 2",URBAN,AD,3,671924249,39.5,32.7,NaN,LOW,C4,"Patancheru","Industrial Area","Tata Projects",AAA,2024-02-09,2027-09-09,0,70.3,LOW
+URBAN-2025-049-C2,"IT Corridor Township Development - Phase 3",URBAN,PA,2,18061155027,23.3,20.7,NaN,LOW,C2,"Nanakramguda","IT Corridor","MEIL",AA,2024-03-10,2026-08-10,0,79.0,MEDIUM
+URBAN-2025-050-C5,"Railway Station Township Development - Phase 3",URBAN,PA,7,1563749447,76.9,74,NaN,LOW,C5,"Tandur","Railway Station","Tata Projects",AAA,2024-07-09,2026-08-09,26,87.9,MEDIUM
+INFRA-2025-051-C2,"Financial District Flyover - Phase 1",INFRA,PU,1,349312876073,11.3,3.8,NaN,HIGH,C2,"Kokapet","Financial District","AFCONS Infrastructure",AA,2024-05-16,2027-11-16,0,72.5,HIGH
+ENV-2025-052-C3,"IIT Campus Green Belt - Phase 1",ENV,PC,1,1980399023,12.3,8.9,NaN,LOW,C3,"Kompally","IIT Campus","Nagarjuna Construction",A,2023-09-14,2026-08-14,0,80.7,LOW
+ENV-2025-053-C5,"Railway Station Green Belt - Phase 2",ENV,GI,6,441248591844,62.3,55.8,NaN,HIGH,C5,"Tandur","Railway Station","Ramky Infrastructure",A,2024-08-13,2025-10-13,37,73.0,HIGH
+SMART-2025-054-C1,"Cyber Towers Command Center - Phase 1",SMART,IS,6,267366875606,66.5,59.4,NaN,HIGH,C1,"Hitech City","Cyber Towers","KNR Constructions",A,2023-03-14,2025-05-14,73,92.5,HIGH
+URBAN-2025-055-C1,"Mindspace Area Development - Phase 3",URBAN,AD,9,1589161231,98.7,89.8,NaN,HIGH,C1,"Madhapur","Mindspace","Nagarjuna Construction",A,2023-01-10,2026-10-10,85,77.3,HIGH
+INFRA-2025-056-C5,"Bus Stand Flyover - Phase 1",INFRA,RT,2,13625306144,27.2,23.8,NaN,LOW,C5,"Vikarabad","Bus Stand","MEIL",AA,2023-08-29,2024-04-29,0,84.8,MEDIUM
+SMART-2025-057-C3,"X Roads Command Center - Phase 2",SMART,DI,8,191910985687,85.7,83.5,NaN,HIGH,C3,"Nizampet","X Roads","Tata Projects",AAA,2023-06-19,2026-12-19,83,91.5,HIGH
+SMART-2025-058-C2,"Airport Road Smart Infrastructure - Phase 3",SMART,DI,4,498521348146,48.4,42.7,NaN,HIGH,C2,"Shamshabad","Airport Road","L&T Construction",AAA,2024-04-21,2027-01-21,0,80.7,HIGH
+ENV-2025-059-C5,"Market Area Lake Rejuvenation - Phase 3",ENV,GI,3,62435428300,39.8,32.6,NaN,MEDIUM,C5,"Chevella","Market Area","Nagarjuna Construction",A,2024-09-20,2026-10-20,0,84.1,MEDIUM
+INFRA-2025-060-C4,"Industrial Area Bridge - Phase 3",INFRA,PU,1,53958184286,8.7,5.3,NaN,MEDIUM,C4,"Patancheru","Industrial Area","KNR Constructions",A,2023-10-08,2026-11-08,0,90.1,MEDIUM
+ENV-2025-061-C5,"Market Area Lake Rejuvenation - Phase 1",ENV,PC,1,538385921,16.5,12.1,NaN,LOW,C5,"Chevella","Market Area","AFCONS Infrastructure",AA,2024-10-14,2025-10-14,0,80.8,LOW
+ENV-2025-062-C3,"Housing Board Lake Rejuvenation - Phase 2",ENV,GI,2,426542531326,22.8,15.4,NaN,HIGH,C3,"Bachupally","Housing Board","MEIL",AA,2024-02-11,2026-07-11,0,85.5,HIGH
+INFRA-2025-063-C3,"Metro Station Bridge - Phase 3",INFRA,WS,7,271768398050,70.3,62.1,NaN,HIGH,C3,"Miyapur","Metro Station","L&T Construction",AAA,2024-03-02,2025-05-02,90,76.2,HIGH
+ENV-2025-064-C4,"Town Center Lake Rejuvenation - Phase 2",ENV,GI,4,1888144235,40.6,40.5,NaN,LOW,C4,"Sangareddy","Town Center","AFCONS Infrastructure",AA,2024-01-03,2027-03-03,0,74.3,LOW
+ENV-2025-065-C3,"Housing Board Green Belt - Phase 3",ENV,GI,7,226706644628,78.8,71.1,NaN,HIGH,C3,"Bachupally","Housing Board","Nagarjuna Construction",A,2024-03-24,2026-01-24,23,88.6,HIGH
+URBAN-2025-066-C3,"Metro Station Township Development - Phase 2",URBAN,AD,1,10000044220,19.2,11.1,NaN,LOW,C3,"Miyapur","Metro Station","NCC Limited",AA,2024-10-26,2027-06-26,0,83.0,MEDIUM
+INFRA-2025-067-C3,"Housing Board Bridge - Phase 3",INFRA,WS,9,39759012134,94.7,91.6,NaN,HIGH,C3,"Bachupally","Housing Board","NCC Limited",AA,2024-08-14,2027-11-14,87,73.6,HIGH
+INFRA-2025-068-C5,"Market Area Flyover - Phase 3",INFRA,RT,6,6955793871,63.1,55,NaN,HIGH,C5,"Chevella","Market Area","Nagarjuna Construction",A,2024-10-09,2027-09-09,90,89.0,HIGH
+URBAN-2025-069-C4,"Town Center Area Development - Phase 3",URBAN,AD,1,2574055929,11.5,9.1,NaN,LOW,C4,"Sangareddy","Town Center","Tata Projects",AAA,2023-08-31,2025-03-31,0,81.5,LOW
+ENV-2025-070-C5,"Market Area Lake Rejuvenation - Phase 2",ENV,PC,3,142029178581,38.7,38,NaN,HIGH,C5,"Chevella","Market Area","IRB Infrastructure",AA,2024-04-15,2026-08-15,0,72.0,HIGH
+INFRA-2025-071-C3,"IIT Campus Road Widening - Phase 3",INFRA,RT,3,5868932131,38.7,35.4,NaN,LOW,C3,"Kompally","IIT Campus","IRB Infrastructure",AA,2024-04-21,2028-04-21,0,92.7,LOW
+SMART-2025-072-C3,"Housing Board Smart Infrastructure - Phase 1",SMART,DI,9,1720257900,91.2,90.5,NaN,LOW,C3,"Bachupally","Housing Board","Tata Projects",AAA,2023-12-19,2026-12-19,2,73.7,MEDIUM
+URBAN-2025-073-C4,"Town Center Township Development - Phase 1",URBAN,PA,8,6446729325,87.8,81.9,NaN,HIGH,C4,"Sangareddy","Town Center","L&T Construction",AAA,2024-05-16,2024-12-16,71,93.3,HIGH
+SMART-2025-074-C4,"Industrial Area Digital Hub - Phase 1",SMART,IS,5,109036948191,54.5,53.9,NaN,HIGH,C4,"Patancheru","Industrial Area","L&T Construction",AAA,2023-06-14,2025-06-14,9,70.0,HIGH
+INFRA-2025-075-C2,"Airport Road Bridge - Phase 3",INFRA,RT,1,45543625694,8.3,0,NaN,LOW,C2,"Shamshabad","Airport Road","KNR Constructions",A,2024-07-28,2027-03-28,0,88.4,MEDIUM
+ENV-2025-076-C2,"IT Corridor Lake Rejuvenation - Phase 1",ENV,GI,4,942851466,41.9,41.6,NaN,LOW,C2,"Nanakramguda","IT Corridor","AFCONS Infrastructure",AA,2024-08-09,2026-10-09,0,86.7,LOW
+INFRA-2025-077-C5,"Bus Stand Elevated Corridor - Phase 3",INFRA,PU,5,33752433203,50,42.2,NaN,LOW,C5,"Vikarabad","Bus Stand","KNR Constructions",A,2024-09-08,2027-02-08,11,86.4,MEDIUM
+INFRA-2025-078-C3,"Housing Board Bridge - Phase 3",INFRA,PU,5,40110184108,50.8,50.8,NaN,MEDIUM,C3,"Bachupally","Housing Board","Tata Projects",AAA,2023-09-12,2024-10-12,34,90.0,MEDIUM
+URBAN-2025-079-C3,"IIT Campus Area Development - Phase 2",URBAN,AD,3,62087330782,37.2,30.6,NaN,MEDIUM,C3,"Kompally","IIT Campus","L&T Construction",AAA,2023-06-27,2027-06-27,0,90.5,MEDIUM
+URBAN-2025-080-C5,"Railway Station Area Development - Phase 1",URBAN,TD,9,435936873124,96.8,96.5,NaN,HIGH,C5,"Tandur","Railway Station","L&T Construction",AAA,2023-10-26,2024-06-26,26,79.9,HIGH
+INFRA-2025-081-C2,"Airport Road Flyover - Phase 2",INFRA,RT,8,3006825803,85,78.6,NaN,MEDIUM,C2,"Shamshabad","Airport Road","Ramky Infrastructure",A,2023-12-21,2025-05-21,47,86.7,MEDIUM
+SMART-2025-082-C3,"IIT Campus Smart Infrastructure - Phase 1",SMART,IS,1,1577628521,18.9,17.8,NaN,LOW,C3,"Kompally","IIT Campus","L&T Construction",AAA,2024-03-06,2027-04-06,0,70.2,LOW
+SMART-2025-083-C5,"Railway Station Digital Hub - Phase 1",SMART,IS,5,3245864773,52.8,48.6,NaN,LOW,C5,"Tandur","Railway Station","Nagarjuna Construction",A,2023-06-19,2027-04-19,9,95.0,MEDIUM
+INFRA-2025-084-C4,"Industrial Area Bridge - Phase 2",INFRA,RT,1,18144887596,7.7,6.3,NaN,LOW,C4,"Patancheru","Industrial Area","MEIL",AA,2024-05-19,2027-11-19,0,87.5,MEDIUM
+URBAN-2025-085-C3,"IIT Campus Area Development - Phase 3",URBAN,TD,9,934520717,93.2,88.2,NaN,HIGH,C3,"Kompally","IIT Campus","Nagarjuna Construction",A,2024-05-30,2027-03-02,72,74.5,HIGH
+ENV-2025-086-C1,"Cyber Towers Lake Rejuvenation - Phase 3",ENV,GI,4,348312333121,49.1,48.2,NaN,HIGH,C1,"Hitech City","Cyber Towers","MEIL",AA,2024-08-24,2025-07-24,0,90.3,HIGH
+SMART-2025-087-C3,"Metro Station Digital Hub - Phase 2",SMART,DI,7,57005465375,77.6,69.2,NaN,HIGH,C3,"Miyapur","Metro Station","Tata Projects",AAA,2023-03-23,2024-01-23,71,80.4,HIGH
+ENV-2025-088-C3,"Housing Board Eco Park - Phase 1",ENV,GI,4,241533285181,41.7,35.2,NaN,HIGH,C3,"Bachupally","Housing Board","Ramky Infrastructure",A,2023-08-18,2025-01-18,0,73.6,HIGH
+ENV-2025-089-C1,"DLF Eco Park - Phase 1",ENV,PC,9,1994261279,92.6,86.8,NaN,HIGH,C1,"Gachibowli","DLF","Nagarjuna Construction",A,2024-05-07,2027-01-07,84,78.1,HIGH
+URBAN-2025-090-C2,"Airport Road Complex - Phase 1",URBAN,PA,2,11243380751,25.3,17.5,NaN,LOW,C2,"Shamshabad","Airport Road","KNR Constructions",A,2024-07-23,2026-03-23,0,74.4,MEDIUM
+URBAN-2025-091-C4,"Town Center Area Development - Phase 1",URBAN,TD,2,3513918006,21.4,15.4,NaN,LOW,C4,"Sangareddy","Town Center","Tata Projects",AAA,2023-05-25,2026-12-25,0,94.9,LOW
+URBAN-2025-092-C2,"TSIIC Area Development - Phase 2",URBAN,TD,9,194511183319,98.7,89,NaN,HIGH,C2,"Attapur","TSIIC","KNR Constructions",A,2024-03-08,2025-08-08,25,72.3,HIGH
+URBAN-2025-093-C2,"TSIIC Complex - Phase 3",URBAN,PA,8,42469559843,80.7,75.9,NaN,MEDIUM,C2,"Attapur","TSIIC","AFCONS Infrastructure",AA,2024-08-23,2027-03-23,42,73.9,MEDIUM
+INFRA-2025-094-C5,"Market Area Elevated Corridor - Phase 1",INFRA,WS,1,88541226775,7.4,5.8,NaN,MEDIUM,C5,"Chevella","Market Area","Simplex Infrastructures",A,2024-09-30,2028-07-30,0,93.3,MEDIUM
+URBAN-2025-095-C2,"TSIIC Complex - Phase 1",URBAN,PA,6,926364347,69.6,64.9,NaN,MEDIUM,C2,"Attapur","TSIIC","Simplex Infrastructures",A,2024-12-12,2026-12-12,48,90.4,MEDIUM
+ENV-2025-096-C5,"Market Area Lake Rejuvenation - Phase 1",ENV,PC,6,59139774327,67.2,59,NaN,MEDIUM,C5,"Chevella","Market Area","IRB Infrastructure",AA,2023-03-26,2026-12-26,59,74.9,MEDIUM
+SMART-2025-097-C5,"Bus Stand Command Center - Phase 2",SMART,DI,8,796434840,89.2,82.8,NaN,LOW,C5,"Vikarabad","Bus Stand","IRB Infrastructure",AA,2023-07-18,2025-05-18,11,92.1,MEDIUM
+INFRA-2025-098-C4,"Town Center Road Widening - Phase 2",INFRA,PU,3,99314646176,30.1,22.1,NaN,MEDIUM,C4,"Sangareddy","Town Center","MEIL",AA,2023-09-25,2024-04-25,0,72.8,MEDIUM
+ENV-2025-099-C1,"Road No. 12 Lake Rejuvenation - Phase 1",ENV,GI,4,100403565203,45.9,45.2,NaN,HIGH,C1,"Banjara Hills","Road No. 12","Simplex Infrastructures",A,2023-09-28,2024-11-28,0,80.9,HIGH
+ENV-2025-100-C1,"Road No. 12 Green Belt - Phase 1",ENV,PC,8,22268436141,84.9,81.6,NaN,MEDIUM,C1,"Banjara Hills","Road No. 12","MEIL",AA,2024-01-22,2027-10-22,45,79.1,MEDIUM
+URBAN-2025-101-C1,"DLF Township Development - Phase 2",URBAN,AD,4,212821261245,44.6,38.9,NaN,HIGH,C1,"Gachibowli","DLF","L&T Construction",AAA,2024-12-27,2026-06-27,0,84.1,HIGH
+ENV-2025-102-C1,"DLF Eco Park - Phase 2",ENV,PC,9,67082175130,97.6,94.2,NaN,MEDIUM,C1,"Gachibowli","DLF","L&T Construction",AAA,2024-07-23,2025-06-23,44,92.9,MEDIUM
+URBAN-2025-103-C1,"Road No. 12 Township Development - Phase 2",URBAN,PA,3,111726885610,35.6,30,NaN,HIGH,C1,"Banjara Hills","Road No. 12","L&T Construction",AAA,2024-11-12,2028-05-12,0,79.7,HIGH
+URBAN-2025-104-C3,"Metro Station Township Development - Phase 3",URBAN,TD,8,38798295923,85.9,76.2,NaN,HIGH,C3,"Miyapur","Metro Station","IRB Infrastructure",AA,2023-03-18,2025-12-18,73,91.8,HIGH
+ENV-2025-105-C2,"Financial District Lake Rejuvenation - Phase 1",ENV,GI,4,18052951555,45,36.5,NaN,LOW,C2,"Kokapet","Financial District","IRB Infrastructure",AA,2024-05-28,2025-02-28,0,94.9,MEDIUM
+INFRA-2025-106-C3,"Metro Station Elevated Corridor - Phase 3",INFRA,WS,1,13856615731,15.5,12.8,NaN,LOW,C3,"Miyapur","Metro Station","AFCONS Infrastructure",AA,2024-07-24,2025-08-24,0,90.1,MEDIUM
+ENV-2025-107-C4,"Town Center Lake Rejuvenation - Phase 2",ENV,GI,8,15748339429,90,89.8,NaN,LOW,C4,"Sangareddy","Town Center","Tata Projects",AAA,2024-09-15,2028-08-15,14,74.7,MEDIUM
+SMART-2025-108-C4,"Industrial Area Smart Infrastructure - Phase 3",SMART,DI,6,5317009176,62.5,59.2,NaN,LOW,C4,"Patancheru","Industrial Area","Nagarjuna Construction",A,2024-07-01,2028-07-01,5,87.3,MEDIUM
+SMART-2025-109-C2,"IT Corridor Smart Infrastructure - Phase 1",SMART,IS,3,23859658501,30.1,20.2,NaN,LOW,C2,"Nanakramguda","IT Corridor","Nagarjuna Construction",A,2024-05-16,2026-10-16,0,70.8,MEDIUM
+INFRA-2025-110-C2,"TSIIC Road Widening - Phase 2",INFRA,RT,8,568718984,80.2,78.5,NaN,LOW,C2,"Attapur","TSIIC","NCC Limited",AA,2024-09-07,2025-10-07,9,73.1,MEDIUM
+SMART-2025-111-C3,"Housing Board Digital Hub - Phase 1",SMART,IS,6,1627217612,61.4,52.4,NaN,LOW,C3,"Bachupally","Housing Board","AFCONS Infrastructure",AA,2023-10-18,2024-08-18,30,77.4,MEDIUM
+ENV-2025-112-C4,"Industrial Area Green Belt - Phase 3",ENV,PC,1,73481039903,14.8,12,NaN,MEDIUM,C4,"Patancheru","Industrial Area","NCC Limited",AA,2024-04-22,2027-11-22,0,77.1,MEDIUM
+ENV-2025-113-C1,"Road No. 12 Lake Rejuvenation - Phase 1",ENV,PC,3,16018282538,35.9,29.2,NaN,LOW,C1,"Banjara Hills","Road No. 12","Ramky Infrastructure",A,2024-09-10,2025-11-10,0,75.4,MEDIUM
+ENV-2025-114-C1,"Road No. 36 Lake Rejuvenation - Phase 2",ENV,GI,2,75038746280,28.8,21.9,NaN,MEDIUM,C1,"Jubilee Hills","Road No. 36","Simplex Infrastructures",A,2023-05-26,2026-06-26,0,76.9,MEDIUM
+ENV-2025-115-C1,"Mindspace Green Belt - Phase 1",ENV,GI,1,476614144001,7.3,1.6,NaN,HIGH,C1,"Madhapur","Mindspace","Nagarjuna Construction",A,2024-03-08,2026-08-08,0,72.2,HIGH
+URBAN-2025-116-C1,"Road No. 12 Township Development - Phase 1",URBAN,PA,3,778331885,38.6,33.7,NaN,LOW,C1,"Banjara Hills","Road No. 12","IRB Infrastructure",AA,2023-07-02,2026-06-02,0,76.4,LOW
+ENV-2025-117-C3,"Metro Station Eco Park - Phase 3",ENV,PC,9,2609187920,97.9,90,NaN,HIGH,C3,"Miyapur","Metro Station","L&T Construction",AAA,2023-02-05,2026-04-05,64,70.6,HIGH
+INFRA-2025-118-C2,"Airport Road Flyover - Phase 1",INFRA,PU,8,1119931051,82.5,76.4,NaN,MEDIUM,C2,"Shamshabad","Airport Road","Nagarjuna Construction",A,2024-03-01,2026-05-01,51,81.2,MEDIUM
+ENV-2025-119-C3,"Metro Station Lake Rejuvenation - Phase 1",ENV,GI,6,978522802,65,56.8,NaN,LOW,C3,"Miyapur","Metro Station","KNR Constructions",A,2024-11-17,2027-07-17,18,80.0,MEDIUM
+ENV-2025-120-C3,"Housing Board Lake Rejuvenation - Phase 3",ENV,PC,9,57566233147,97.2,96.6,NaN,MEDIUM,C3,"Bachupally","Housing Board","NCC Limited",AA,2024-08-27,2028-05-27,13,93.1,MEDIUM
+ENV-2025-121-C4,"Main Road Lake Rejuvenation - Phase 1",ENV,GI,9,10113965894,97.8,96.3,NaN,HIGH,C4,"Zaheerabad","Main Road","AFCONS Infrastructure",AA,2023-05-14,2027-05-14,89,94.2,HIGH
+URBAN-2025-122-C4,"Main Road Township Development - Phase 2",URBAN,AD,2,1177387585,21.6,16.6,NaN,LOW,C4,"Zaheerabad","Main Road","Nagarjuna Construction",A,2024-01-04,2026-12-04,0,88.7,LOW
+INFRA-2025-123-C3,"IIT Campus Bridge - Phase 2",INFRA,RT,2,2457851105,28,24.3,NaN,LOW,C3,"Kompally","IIT Campus","AFCONS Infrastructure",AA,2023-04-27,2024-06-27,0,80.4,LOW
+SMART-2025-124-C5,"Railway Station Digital Hub - Phase 3",SMART,IS,4,1024166232,45.8,39.7,NaN,LOW,C5,"Tandur","Railway Station","Ramky Infrastructure",A,2024-02-29,2026-04-29,0,71.3,LOW
+INFRA-2025-125-C3,"Metro Station Elevated Corridor - Phase 3",INFRA,RT,2,2073161757,29,21.6,NaN,LOW,C3,"Miyapur","Metro Station","IRB Infrastructure",AA,2024-07-18,2026-11-18,0,70.8,LOW
+INFRA-2025-126-C1,"Road No. 36 Bridge - Phase 2",INFRA,RT,9,1680414188,94.5,87.2,NaN,MEDIUM,C1,"Jubilee Hills","Road No. 36","IRB Infrastructure",AA,2023-04-20,2024-11-20,50,87.4,MEDIUM
+INFRA-2025-127-C4,"Main Road Bridge - Phase 3",INFRA,RT,5,2071777474,57.1,55.9,NaN,HIGH,C4,"Zaheerabad","Main Road","MEIL",AA,2023-03-21,2027-02-21,75,85.8,HIGH
+INFRA-2025-128-C1,"DLF Flyover - Phase 2",INFRA,WS,5,2571929705,53.9,51.6,NaN,MEDIUM,C1,"Gachibowli","DLF","L&T Construction",AAA,2023-05-27,2027-05-27,39,77.7,MEDIUM
+INFRA-2025-129-C5,"Railway Station Bridge - Phase 1",INFRA,RT,1,17276989456,6,1.5,NaN,LOW,C5,"Tandur","Railway Station","Ramky Infrastructure",A,2023-10-17,2025-11-17,0,90.8,MEDIUM
+SMART-2025-130-C2,"IT Corridor Command Center - Phase 2",SMART,DI,7,1385933003,74.6,67.8,NaN,HIGH,C2,"Nanakramguda","IT Corridor","IRB Infrastructure",AA,2024-04-19,2026-04-19,80,70.5,HIGH
+SMART-2025-131-C2,"Financial District Command Center - Phase 1",SMART,DI,5,91633727844,54.2,51.6,NaN,MEDIUM,C2,"Kokapet","Financial District","KNR Constructions",A,2023-08-17,2026-09-17,32,94.7,MEDIUM
+URBAN-2025-132-C4,"Main Road Township Development - Phase 1",URBAN,TD,9,14291232589,94.1,86.5,NaN,LOW,C4,"Zaheerabad","Main Road","Tata Projects",AAA,2023-05-14,2026-08-14,17,71.4,MEDIUM
+URBAN-2025-133-C3,"Metro Station Township Development - Phase 2",URBAN,PA,3,77239189158,33.8,33.4,NaN,MEDIUM,C3,"Miyapur","Metro Station","AFCONS Infrastructure",AA,2023-04-27,2025-07-27,0,93.3,MEDIUM
+SMART-2025-134-C4,"Industrial Area Smart Infrastructure - Phase 2",SMART,DI,1,33349538363,10.3,4.1,NaN,LOW,C4,"Patancheru","Industrial Area","IRB Infrastructure",AA,2023-10-20,2025-03-20,0,72.5,MEDIUM
+URBAN-2025-135-C4,"Town Center Township Development - Phase 2",URBAN,AD,9,48884152933,99.8,99.2,NaN,MEDIUM,C4,"Sangareddy","Town Center","KNR Constructions",A,2023-05-28,2027-05-28,59,91.2,MEDIUM
+ENV-2025-136-C1,"Cyber Towers Lake Rejuvenation - Phase 2",ENV,GI,1,41004654686,15.9,12.8,NaN,LOW,C1,"Hitech City","Cyber Towers","Tata Projects",AAA,2024-04-01,2025-08-01,0,88.0,MEDIUM
+SMART-2025-137-C2,"IT Corridor Digital Hub - Phase 2",SMART,DI,8,11399764222,89.6,84.4,NaN,MEDIUM,C2,"Nanakramguda","IT Corridor","AFCONS Infrastructure",AA,2023-10-07,2026-03-07,50,90.6,MEDIUM
+URBAN-2025-138-C5,"Market Area Complex - Phase 3",URBAN,PA,3,313902983485,37.2,33,NaN,HIGH,C5,"Chevella","Market Area","AFCONS Infrastructure",AA,2024-03-16,2027-03-16,0,72.2,HIGH
+URBAN-2025-139-C2,"Financial District Complex - Phase 2",URBAN,TD,2,717197061,28.8,20.7,NaN,LOW,C2,"Kokapet","Financial District","KNR Constructions",A,2024-09-11,2026-01-11,0,86.0,LOW
+ENV-2025-140-C2,"Airport Road Eco Park - Phase 1",ENV,GI,5,54031430490,58.5,55.3,NaN,MEDIUM,C2,"Shamshabad","Airport Road","NCC Limited",AA,2024-08-23,2028-04-23,60,92.6,MEDIUM
+SMART-2025-141-C2,"Airport Road Digital Hub - Phase 2",SMART,IS,8,1493055930,81.9,72.5,NaN,MEDIUM,C2,"Shamshabad","Airport Road","L&T Construction",AAA,2023-03-09,2027-01-09,38,84.4,MEDIUM
+INFRA-2025-142-C2,"Airport Road Bridge - Phase 2",INFRA,WS,9,11400195861,94.7,86.1,NaN,LOW,C2,"Shamshabad","Airport Road","L&T Construction",AAA,2023-10-14,2027-04-14,6,72.6,MEDIUM
+ENV-2025-143-C5,"Market Area Eco Park - Phase 2",ENV,GI,9,1395459050,93.8,87.1,NaN,LOW,C5,"Chevella","Market Area","Simplex Infrastructures",A,2023-11-28,2025-07-28,30,82.1,MEDIUM
+INFRA-2025-144-C4,"Main Road Bridge - Phase 3",INFRA,PU,8,371898983099,86,80.7,NaN,HIGH,C4,"Zaheerabad","Main Road","KNR Constructions",A,2023-03-24,2024-01-24,22,93.2,HIGH
+INFRA-2025-145-C5,"Bus Stand Bridge - Phase 1",INFRA,RT,7,23215795678,70.8,65.4,NaN,LOW,C5,"Vikarabad","Bus Stand","IRB Infrastructure",AA,2024-09-15,2027-09-15,21,88.1,MEDIUM
+ENV-2025-146-C5,"Railway Station Green Belt - Phase 3",ENV,PC,6,594016508,68.1,62.2,NaN,HIGH,C5,"Tandur","Railway Station","Tata Projects",AAA,2023-07-25,2027-07-25,78,80.7,HIGH
+ENV-2025-147-C1,"Cyber Towers Eco Park - Phase 2",ENV,PC,1,1088146731,16.6,13.7,NaN,LOW,C1,"Hitech City","Cyber Towers","MEIL",AA,2023-04-02,2024-06-02,0,91.5,LOW
+SMART-2025-148-C4,"Main Road Digital Hub - Phase 2",SMART,IS,7,610945880,70,64.1,NaN,MEDIUM,C4,"Zaheerabad","Main Road","Tata Projects",AAA,2023-03-19,2025-08-19,56,90.0,MEDIUM
+ENV-2025-149-C3,"X Roads Lake Rejuvenation - Phase 3",ENV,GI,2,1023863422,26.7,24,NaN,LOW,C3,"Nizampet","X Roads","Ramky Infrastructure",A,2023-10-09,2024-10-09,0,88.7,LOW
+URBAN-2025-150-C3,"Metro Station Township Development - Phase 3",URBAN,TD,9,1483334250,96.7,90.3,NaN,LOW,C3,"Miyapur","Metro Station","Tata Projects",AAA,2023-07-13,2027-05-13,29,92.0,MEDIUM

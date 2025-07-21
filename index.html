@@ -1,0 +1,2405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HMDA Engineering Process Understanding - Interactive Presentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --hmda-primary: #1e3a8a;
+            --hmda-secondary: #059669;
+            --hmda-accent: #dc2626;
+            --hmda-light: #f8fafc;
+            --hmda-dark: #1e293b;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--hmda-primary) 0%, var(--hmda-secondary) 100%);
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .presentation-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(30, 58, 138, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .progress-container {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 2rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--hmda-secondary);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .slide-counter {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            min-width: 100px;
+            text-align: right;
+        }
+
+        .slide-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            margin-top: 80px;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 2rem 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: var(--transition);
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide.prev {
+            transform: translateX(-100%);
+        }
+
+        .slide-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+            background: linear-gradient(45deg, #fff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .process-diagram {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .process-flow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .process-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .process-step:hover {
+            transform: translateY(-5px);
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--hmda-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .arrow {
+            font-size: 1.5rem;
+            color: var(--hmda-secondary);
+            animation: pulse 2s infinite;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: var(--transition);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--hmda-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .interactive-demo {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .demo-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .demo-button {
+            background: var(--hmda-secondary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .demo-button:hover {
+            background: #047857;
+            transform: translateY(-2px);
+        }
+
+        .demo-button.active {
+            background: var(--hmda-accent);
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-button:hover {
+            background: var(--hmda-secondary);
+            transform: scale(1.1);
+        }
+
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .timeline-item {
+            text-align: center;
+            position: relative;
+            flex: 1;
+        }
+
+        .timeline-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--hmda-secondary);
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            position: relative;
+            z-index: 2;
+        }
+
+        .timeline-content {
+            font-size: 0.9rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--hmda-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 1rem 2rem;
+            }
+            
+            .slide-title {
+                font-size: 2rem;
+            }
+            
+            .slide-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .header {
+                padding: 1rem;
+            }
+            
+            .process-flow {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        .delegation-matrix {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .matrix-table th,
+        .matrix-table td {
+            padding: 0.75rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .matrix-table th {
+            background: rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+        }
+
+        .matrix-table td {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .highlighted {
+            background: var(--hmda-secondary) !important;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Elevated Corridor Project Specific Styles */
+        .project-header {
+            background: linear-gradient(135deg, var(--hmda-accent) 0%, #dc2626 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .project-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .project-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+        }
+
+        .project-value {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #fbbf24;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .persona-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .persona-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .persona-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--hmda-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .persona-role {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1rem;
+        }
+
+        .persona-responsibility {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--hmda-dark);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1rem 0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .form-field {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--hmda-dark);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--hmda-primary);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .approval-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .approval-stage {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            position: relative;
+        }
+
+        .approval-stage.active {
+            background: rgba(5, 150, 105, 0.3);
+            border-left: 4px solid var(--hmda-secondary);
+        }
+
+        .approval-stage.completed {
+            background: rgba(5, 150, 105, 0.2);
+            border-left: 4px solid var(--hmda-secondary);
+        }
+
+        .stage-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--hmda-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+
+        .stage-content {
+            flex: 1;
+        }
+
+        .stage-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .stage-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .stage-timeline {
+            font-size: 0.8rem;
+            color: var(--hmda-secondary);
+            font-weight: 600;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .dashboard-widget {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .widget-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--hmda-secondary);
+        }
+
+        .widget-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .widget-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .notification-feed {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .notification-time {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .interactive-button {
+            background: var(--hmda-secondary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin: 0.25rem;
+        }
+
+        .interactive-button:hover {
+            background: #047857;
+            transform: translateY(-2px);
+        }
+
+        .interactive-button.secondary {
+            background: var(--hmda-primary);
+        }
+
+        .interactive-button.secondary:hover {
+            background: #1e40af;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon" style="width: 40px; height: 40px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--hmda-primary); font-weight: bold;">HMDA</div>
+                <div class="logo-text">Process Intelligence Portal</div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+            <div class="slide-counter" id="slideCounter">1 / 25</div>
+        </header>
+
+        <!-- Slide Container -->
+        <div class="slide-container" id="slideContainer">
+            
+            <!-- Slide 1: Title -->
+            <div class="slide active" data-slide="1">
+                <div class="slide-title">Transforming HMDA Engineering</div>
+                <div class="slide-subtitle">Built on Deep Process Understanding</div>
+                <div class="slide-content">
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-value">45%</div>
+                            <div class="metric-label">Building Permit Growth (2024)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">1,920</div>
+                            <div class="metric-label">Development Applications (Jul-Nov)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">306%</div>
+                            <div class="metric-label">Layout Application Increase</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">7,257</div>
+                            <div class="metric-label">Sq Km Jurisdiction</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: Research Journey -->
+            <div class="slide" data-slide="2">
+                <div class="slide-title">Our Understanding Journey</div>
+                <div class="slide-subtitle">Comprehensive Research & Analysis</div>
+                <div class="slide-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot">1</div>
+                            <div class="timeline-content">
+                                <strong>Research Phase</strong><br>
+                                Deep document analysis<br>
+                                <small>2 months</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot">2</div>
+                            <div class="timeline-content">
+                                <strong>Process Mapping</strong><br>
+                                Detailed workflow study<br>
+                                <small>Comprehensive</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot">3</div>
+                            <div class="timeline-content">
+                                <strong>SOP Analysis</strong><br>
+                                Deep operational dive<br>
+                                <small>Granular</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot">4</div>
+                            <div class="timeline-content">
+                                <strong>Integration Design</strong><br>
+                                System connectivity<br>
+                                <small>Holistic</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot">5</div>
+                            <div class="timeline-content">
+                                <strong>Solution Architecture</strong><br>
+                                Future-ready design<br>
+                                <small>Scalable</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: HMDA Ecosystem Understanding -->
+            <div class="slide" data-slide="3">
+                <div class="slide-title">HMDA Engineering Ecosystem</div>
+                <div class="slide-subtitle">Complete Understanding of Interconnected Systems</div>
+                <div class="slide-content">
+                    <div class="process-diagram">
+                        <div style="text-align: center; margin-bottom: 2rem;">
+                            <div style="background: var(--hmda-secondary); padding: 1rem 2rem; border-radius: 10px; display: inline-block; font-weight: 600;">
+                                HMDA Engineering Department
+                            </div>
+                            <div style="margin-top: 1rem;">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 800px; margin: 0 auto;">
+                                    <div style="background: rgba(255,255,255,0.1); padding: 0.8rem; border-radius: 8px; font-size: 0.9rem;">
+                                        <strong>Metropolitan Commissioner</strong><br>
+                                        Sri Sarfaraz Ahmad, I.A.S
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.1); padding: 0.8rem; border-radius: 8px; font-size: 0.9rem;">
+                                        <strong>Chief Engineer</strong><br>
+                                        B. Ravinder
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.1); padding: 0.8rem; border-radius: 8px; font-size: 0.9rem;">
+                                        <strong>Joint Commissioner</strong><br>
+                                        Sri Kota Sreevatsa, I.A.S
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.1); padding: 0.8rem; border-radius: 8px; font-size: 0.9rem;">
+                                        <strong>Secretary</strong><br>
+                                        R. Upender Reddy
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="process-flow">
+                            <div class="process-step" onclick="highlightStep(this)">
+                                <div class="step-icon"><i class="fas fa-drafting-compass"></i></div>
+                                <div class="step-title">Planning</div>
+                                <div class="step-description">DPMS Integration<br>Feasibility Studies</div>
+                            </div>
+                            <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+                            <div class="process-step" onclick="highlightStep(this)">
+                                <div class="step-icon"><i class="fas fa-tools"></i></div>
+                                <div class="step-title">Execution</div>
+                                <div class="step-description">E-Procurement<br>Quality Control</div>
+                            </div>
+                            <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+                            <div class="process-step" onclick="highlightStep(this)">
+                                <div class="step-icon"><i class="fas fa-check-circle"></i></div>
+                                <div class="step-title">Quality</div>
+                                <div class="step-description">QC Division<br>Compliance</div>
+                            </div>
+                            <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+                            <div class="process-step" onclick="highlightStep(this)">
+                                <div class="step-icon"><i class="fas fa-clipboard-check"></i></div>
+                                <div class="step-title">Compliance</div>
+                                <div class="step-description">BuildNow<br>AI Compliance</div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; margin-top: 2rem;">
+                            <div style="margin-bottom: 1rem;">
+                                <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">Operational Zones</div>
+                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; max-width: 600px; margin: 0 auto;">
+                                    <div style="background: rgba(5,150,105,0.2); padding: 0.5rem; border-radius: 6px; font-size: 0.8rem;">
+                                        <strong>Ghatkesar</strong>
+                                    </div>
+                                    <div style="background: rgba(5,150,105,0.2); padding: 0.5rem; border-radius: 6px; font-size: 0.8rem;">
+                                        <strong>Medchal</strong>
+                                    </div>
+                                    <div style="background: rgba(5,150,105,0.2); padding: 0.5rem; border-radius: 6px; font-size: 0.8rem;">
+                                        <strong>Shamshabad</strong>
+                                    </div>
+                                    <div style="background: rgba(5,150,105,0.2); padding: 0.5rem; border-radius: 6px; font-size: 0.8rem;">
+                                        <strong>Shankarpally</strong>
+                                    </div>
+                                </div>
+                                <div style="font-size: 0.8rem; margin-top: 0.5rem; color: rgba(255,255,255,0.8);">
+                                    7,257 Sq Km • 7 Districts • 70 Mandals • 1,032 Villages
+                                </div>
+                            </div>
+                            <div style="margin: 1.5rem 0;">
+                                <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem;">Reporting Structure</div>
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem;">
+                                    <div style="background: linear-gradient(135deg, #059669, #047857); padding: 0.6rem 1.2rem; border-radius: 8px; font-size: 0.9rem; font-weight: 600;">
+                                        Metropolitan Commissioner (Sri Sarfaraz Ahmad)
+                                    </div>
+                                    <div style="height: 20px; width: 2px; background: rgba(255,255,255,0.4);"></div>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 500px;">
+                                        <div style="background: rgba(5,150,105,0.7); padding: 0.5rem 0.8rem; border-radius: 6px; font-size: 0.8rem; text-align: center;">
+                                            <strong>Joint Commissioner</strong><br>Sri Kota Sreevatsa
+                                        </div>
+                                        <div style="background: rgba(5,150,105,0.7); padding: 0.5rem 0.8rem; border-radius: 6px; font-size: 0.8rem; text-align: center;">
+                                            <strong>Secretary</strong><br>R. Upender Reddy
+                                        </div>
+                                    </div>
+                                    <div style="height: 20px; width: 2px; background: rgba(255,255,255,0.4);"></div>
+                                    <div style="background: rgba(30,58,138,0.8); padding: 0.6rem 1.2rem; border-radius: 8px; font-size: 0.9rem; font-weight: 600;">
+                                        Chief Engineer (B. Ravinder)
+                                    </div>
+                                    <div style="height: 15px; width: 2px; background: rgba(255,255,255,0.4);"></div>
+                                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; max-width: 700px;">
+                                        <div style="background: rgba(30,58,138,0.6); padding: 0.4rem; border-radius: 4px; font-size: 0.7rem; text-align: center;">
+                                            <strong>DCE Ghatkesar</strong><br>Zone Operations
+                                        </div>
+                                        <div style="background: rgba(30,58,138,0.6); padding: 0.4rem; border-radius: 4px; font-size: 0.7rem; text-align: center;">
+                                            <strong>DCE Medchal</strong><br>Infrastructure Dev
+                                        </div>
+                                        <div style="background: rgba(30,58,138,0.6); padding: 0.4rem; border-radius: 4px; font-size: 0.7rem; text-align: center;">
+                                            <strong>DCE Shamshabad</strong><br>Project Execution
+                                        </div>
+                                        <div style="background: rgba(30,58,138,0.6); padding: 0.4rem; border-radius: 4px; font-size: 0.7rem; text-align: center;">
+                                            <strong>DCE Shankarpally</strong><br>Planning & Design
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="background: var(--hmda-accent); padding: 1rem 2rem; border-radius: 10px; display: inline-block; font-weight: 600;">
+                                Integrated PES Solution
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Current Pain Points -->
+            <div class="slide" data-slide="4">
+                <div class="slide-title">Current Pain Points Identified</div>
+                <div class="slide-subtitle">Comprehensive Bottleneck Analysis</div>
+                <div class="slide-content">
+                    <div class="delegation-matrix">
+                        <table class="matrix-table">
+                            <thead>
+                                <tr>
+                                    <th>Process Area</th>
+                                    <th>Current State</th>
+                                    <th>Impact</th>
+                                    <th>Opportunity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Progress Tracking</strong></td>
+                                    <td>Excel-based, Manual</td>
+                                    <td class="highlighted">2-3 week delays</td>
+                                    <td>Real-time dashboards</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Quality Control</strong></td>
+                                    <td>Paper inspections</td>
+                                    <td class="highlighted">30% rework rate</td>
+                                    <td>Digital QC system</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Payment Processing</strong></td>
+                                    <td>Manual measurement</td>
+                                    <td class="highlighted">45-day cycle</td>
+                                    <td>Automated approvals</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Resource Planning</strong></td>
+                                    <td>Fragmented tracking</td>
+                                    <td class="highlighted">25% underutilized</td>
+                                    <td>AI-powered optimization</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: Building Permission Process -->
+            <div class="slide" data-slide="5">
+                <div class="slide-title">Building Permission Process</div>
+                <div class="slide-subtitle">Revolutionary BuildNow AI-Powered System (2024-2025)</div>
+                <div class="slide-content">
+                    <div class="interactive-demo">
+                        <div class="demo-controls">
+                            <button class="demo-button active" onclick="showProcess('standard')">BuildNow AI Process</button>
+                            <button class="demo-button" onclick="showProcess('selfcert')">TG-bPASS Legacy</button>
+                            <button class="demo-button" onclick="showProcess('fasttrack')">AI Super-Fast</button>
+                        </div>
+                        <div id="processView">
+                            <div class="process-flow">
+                                <div class="process-step">
+                                    <div class="step-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                                    <div class="step-title">Digital Upload</div>
+                                    <div class="step-description">BuildNow Portal<br>Document Submission</div>
+                                </div>
+                                <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+                                <div class="process-step">
+                                    <div class="step-icon"><i class="fas fa-robot"></i></div>
+                                    <div class="step-title">AI Scrutiny</div>
+                                    <div class="step-description">Instant Analysis<br>30-71 Seconds</div>
+                                </div>
+                                <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+                                <div class="process-step">
+                                    <div class="step-icon"><i class="fas fa-check-circle"></i></div>
+                                    <div class="step-title">Auto-Approval</div>
+                                    <div class="step-description">Zero Human Intervention<br>Instant Compliance</div>
+                                </div>
+                                <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+                                <div class="process-step">
+                                    <div class="step-icon"><i class="fas fa-mobile-alt"></i></div>
+                                    <div class="step-title">Instant Certificate</div>
+                                    <div class="step-description">Digital Download<br>Real-time Notification</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 6: Approval Delegation Matrix -->
+            <div class="slide" data-slide="6">
+                <div class="slide-title">Approval Delegation Matrix</div>
+                <div class="slide-subtitle">Validated 2024-25 Authority Limits & Powers</div>
+                <div class="slide-content">
+                    <div class="delegation-matrix">
+                        <table class="matrix-table">
+                            <thead>
+                                <tr>
+                                    <th>Authority</th>
+                                    <th>Technical Sanction</th>
+                                    <th>Administrative Approval</th>
+                                    <th>Financial Approval</th>
+                                    <th>Tender Approval</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>AE</strong></td>
+                                    <td>₹10L</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>EE</strong></td>
+                                    <td>₹2Cr</td>
+                                    <td>₹50L</td>
+                                    <td>₹50L</td>
+                                    <td>₹1Cr</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>DCE</strong></td>
+                                    <td>₹10Cr</td>
+                                    <td>₹2Cr</td>
+                                    <td>₹2Cr</td>
+                                    <td>₹5Cr</td>
+                                </tr>
+                                <tr class="highlighted">
+                                    <td><strong>CE</strong></td>
+                                    <td>₹50Cr</td>
+                                    <td>₹10Cr</td>
+                                    <td>₹10Cr</td>
+                                    <td>₹25Cr</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Secretary</strong></td>
+                                    <td>₹100Cr</td>
+                                    <td>₹50Cr</td>
+                                    <td>₹50Cr</td>
+                                    <td>₹50Cr</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Commissioner</strong></td>
+                                    <td>₹500Cr</td>
+                                    <td>₹200Cr</td>
+                                    <td>₹200Cr</td>
+                                    <td>₹200Cr</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Board</strong></td>
+                                    <td>Above</td>
+                                    <td>Above</td>
+                                    <td>Above</td>
+                                    <td>Above</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 7: Project Lifecycle -->
+            <div class="slide" data-slide="7">
+                <div class="slide-title">Project Lifecycle Understanding</div>
+                <div class="slide-subtitle">End-to-End Process Mastery</div>
+                <div class="slide-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot">1</div>
+                            <div class="timeline-content">
+                                <strong>Initiation</strong><br>
+                                Need Assessment<br>
+                                <small>1-2 months</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot">2</div>
+                            <div class="timeline-content">
+                                <strong>Planning</strong><br>
+                                DPR Preparation<br>
+                                <small>3-6 months</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot">3</div>
+                            <div class="timeline-content">
+                                <strong>Approval</strong><br>
+                                Multi-level clearance<br>
+                                <small>2-3 months</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot">4</div>
+                            <div class="timeline-content">
+                                <strong>Execution</strong><br>
+                                Construction & QC<br>
+                                <small>6-36 months</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot">5</div>
+                            <div class="timeline-content">
+                                <strong>Closure</strong><br>
+                                Handover & Maintenance<br>
+                                <small>1-2 months</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 8: System Integration -->
+            <div class="slide" data-slide="8">
+                <div class="slide-title">System Integration Landscape</div>
+                <div class="slide-subtitle">Complete Connectivity Understanding</div>
+                <div class="slide-content">
+                    <div class="process-diagram">
+                        <div style="text-align: center; margin-bottom: 2rem;">
+                            <div style="background: var(--hmda-accent); padding: 1rem 2rem; border-radius: 10px; display: inline-block; font-weight: 600;">
+                                Project Execution System (PES)
+                            </div>
+                        </div>
+                        <div class="features-grid">
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fas fa-clipboard-list"></i></div>
+                                <div class="feature-title">DPMS/BuildNow</div>
+                                <div class="feature-description">AI-powered building approvals and instant permissions</div>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fas fa-gavel"></i></div>
+                                <div class="feature-title">E-Procurement</div>
+                                <div class="feature-description">Tender management and contract awards</div>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fas fa-rupee-sign"></i></div>
+                                <div class="feature-title">Finance System</div>
+                                <div class="feature-description">Payment processing and budget tracking</div>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fas fa-map"></i></div>
+                                <div class="feature-title">GIS Platform</div>
+                                <div class="feature-description">Spatial data and location services</div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; margin-top: 2rem;">
+                            <div style="color: rgba(255, 255, 255, 0.8);">
+                                External Systems: GHMC • HMWSSB • Metro Rail • R&B Department
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 9: Benefits Realization -->
+            <div class="slide" data-slide="9">
+                <div class="slide-title">Quantified Benefits</div>
+                <div class="slide-subtitle">Measurable Impact Projections</div>
+                <div class="slide-content">
+                    <div class="delegation-matrix">
+                        <table class="matrix-table">
+                            <thead>
+                                <tr>
+                                    <th>Metric</th>
+                                    <th>Current State</th>
+                                    <th>Target Year 1</th>
+                                    <th>Target Year 3</th>
+                                    <th>Impact</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Project Delays</strong></td>
+                                    <td>35%</td>
+                                    <td>25% (-10%)</td>
+                                    <td class="highlighted">15% (-20%)</td>
+                                    <td>Faster delivery</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cost Overruns</strong></td>
+                                    <td>25%</td>
+                                    <td>20% (-5%)</td>
+                                    <td class="highlighted">10% (-15%)</td>
+                                    <td>₹200Cr savings/year</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Payment Cycle</strong></td>
+                                    <td>45 days</td>
+                                    <td>30 days</td>
+                                    <td class="highlighted">21 days</td>
+                                    <td>Better cash flow</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Paper Usage</strong></td>
+                                    <td>100%</td>
+                                    <td>40%</td>
+                                    <td class="highlighted">5%</td>
+                                    <td>90% reduction</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Citizen Satisfaction</strong></td>
+                                    <td>3.2/5</td>
+                                    <td>4.0/5</td>
+                                    <td class="highlighted">4.5/5</td>
+                                    <td>Enhanced transparency</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 10: Implementation Roadmap -->
+            <div class="slide" data-slide="10">
+                <div class="slide-title">Implementation Roadmap</div>
+                <div class="slide-subtitle">Phased Approach for Success</div>
+                <div class="slide-content">
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-foundation"></i></div>
+                            <div class="feature-title">Phase 1: Foundation</div>
+                            <div class="feature-description">
+                                Months 1-6<br>
+                                • Core modules development<br>
+                                • Pilot with 5 projects<br>
+                                • User training program
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-expand-arrows-alt"></i></div>
+                            <div class="feature-title">Phase 2: Scale</div>
+                            <div class="feature-description">
+                                Months 7-12<br>
+                                • Projects >₹10Cr rollout<br>
+                                • Mobile app deployment<br>
+                                • Public portal launch
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-rocket"></i></div>
+                            <div class="feature-title">Phase 3: Innovation</div>
+                            <div class="feature-description">
+                                Months 13-18<br>
+                                • AI/ML deployment<br>
+                                • IoT integration<br>
+                                • Blockchain PoC
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 11: Next Steps -->
+            <div class="slide" data-slide="11">
+                <div class="slide-title">Next Steps</div>
+                <div class="slide-subtitle">Partnership Journey Begins</div>
+                <div class="slide-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot">1</div>
+                            <div class="timeline-content">
+                                <strong>Week 1</strong><br>
+                                Detailed discovery workshop<br>
+                                <small>Process validation</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot">2</div>
+                            <div class="timeline-content">
+                                <strong>Week 2-3</strong><br>
+                                Process validation sessions<br>
+                                <small>Stakeholder alignment</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot">3</div>
+                            <div class="timeline-content">
+                                <strong>Week 4</strong><br>
+                                Proof of Concept<br>
+                                <small>Live demonstration</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot">4</div>
+                            <div class="timeline-content">
+                                <strong>Week 5-6</strong><br>
+                                Pilot project selection<br>
+                                <small>Implementation planning</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot">5</div>
+                            <div class="timeline-content">
+                                <strong>Week 8</strong><br>
+                                Implementation kickoff<br>
+                                <small>Project launch</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Slide: Thank You -->
+            <div class="slide" data-slide="12">
+                <div class="slide-title">Thank You</div>
+                <div class="slide-subtitle">Questions & Strategic Discussion</div>
+                <div class="slide-content">
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-handshake"></i></div>
+                            <div class="feature-title">Partnership Commitment</div>
+                            <div class="feature-description">
+                                Long-term collaboration for HMDA's digital transformation success
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-trophy"></i></div>
+                            <div class="feature-title">Excellence Guarantee</div>
+                            <div class="feature-description">
+                                World-class solution delivery with measurable outcomes
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-users"></i></div>
+                            <div class="feature-title">Expert Team</div>
+                            <div class="feature-description">
+                                Dedicated specialists with deep domain expertise
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 3rem;">
+                        <div style="font-size: 1.2rem; color: var(--hmda-secondary); font-weight: 600;">
+                            "Building Tomorrow's Hyderabad, Digitally Today"
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 13: Elevated Corridor Project Introduction -->
+            <div class="slide" data-slide="13">
+                <div class="slide-content">
+                    <div class="project-header">
+                        <div class="project-title">Elevated Urban Corridor</div>
+                        <div class="project-subtitle">Comprehensive Infrastructure Development Project</div>
+                        <div class="project-value">₹652 Crores</div>
+                        <div style="font-size: 1rem; margin-top: 1rem;">
+                            EPC Model • Multi-Phase Implementation • 25.5 Km Corridor • Strategic Connectivity Enhancement
+                        </div>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-value">25.5</div>
+                            <div class="metric-label">Km Corridor Length</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">36</div>
+                            <div class="metric-label">Month Timeline</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">8</div>
+                            <div class="metric-label">Major Junctions</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">4</div>
+                            <div class="metric-label">Zones Connected</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 14: Project Team Personas -->
+            <div class="slide" data-slide="14">
+                <div class="slide-title">Project Team Personas</div>
+                <div class="slide-subtitle">Key Stakeholders in Project Lifecycle</div>
+                <div class="slide-content">
+                    <div class="features-grid">
+                        <div class="persona-card" onclick="highlightPersona(this, 'aee')">
+                            <div class="persona-name">AEE K. Ramesh</div>
+                            <div class="persona-role">Assistant Executive Engineer - Infrastructure Projects</div>
+                            <div class="persona-responsibility">Project initiation, technical feasibility, initial documentation</div>
+                        </div>
+                        <div class="persona-card" onclick="highlightPersona(this, 'ee')">
+                            <div class="persona-name">EE P. Srinivas</div>
+                            <div class="persona-role">Executive Engineer - Corridor Development</div>
+                            <div class="persona-responsibility">DPR preparation, technical review, contractor coordination</div>
+                        </div>
+                        <div class="persona-card" onclick="highlightPersona(this, 'dce')">
+                            <div class="persona-name">DCE M. Venkatesh</div>
+                            <div class="persona-role">Deputy Chief Engineer - Engineering Wing</div>
+                            <div class="persona-responsibility">Administrative approval, budget verification, inter-agency coordination</div>
+                        </div>
+                        <div class="persona-card" onclick="highlightPersona(this, 'ce')">
+                            <div class="persona-name">CE B. Ravinder</div>
+                            <div class="persona-role">Chief Engineer - HMDA</div>
+                            <div class="persona-responsibility">Strategic approval, final project authority, policy alignment</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 15: AEE Project Initiation Form -->
+            <div class="slide" data-slide="15">
+                <div class="slide-title">Phase 1: Project Initiation</div>
+                <div class="slide-subtitle">AEE K. Ramesh - Infrastructure Projects Division</div>
+                <div class="slide-content">
+                    <div class="form-container">
+                        <h3 style="color: var(--hmda-primary); margin-bottom: 1rem;">HMDA Project Initiation Form (PIF-2024-EC-INF)</h3>
+                        <div class="form-field">
+                            <label class="form-label">Project Title</label>
+                            <input type="text" class="form-input" value="Elevated Urban Corridor - Comprehensive Infrastructure Development" readonly>
+                        </div>
+                        <div class="form-field">
+                            <label class="form-label">Location & Route Alignment</label>
+                            <input type="text" class="form-input" value="Multi-zone corridor spanning Ghatkesar-Medchal-Shamshabad sectors" readonly>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-field">
+                                <label class="form-label">Project Length</label>
+                                <input type="text" class="form-input" value="25.5 kilometers" readonly>
+                            </div>
+                            <div class="form-field">
+                                <label class="form-label">Estimated Cost</label>
+                                <input type="text" class="form-input" value="₹652 crores" readonly>
+                            </div>
+                        </div>
+                        <div class="form-field">
+                            <label class="form-label">Implementation Model</label>
+                            <input type="text" class="form-input" value="EPC (Engineering, Procurement, Construction) - 36 months" readonly>
+                        </div>
+                        <div class="form-field">
+                            <label class="form-label">Project Justification</label>
+                            <textarea class="form-input" rows="3" readonly>Traffic congestion relief, improved connectivity between growth centers, economic development corridor creation, reduced travel time by 40%, supporting planned development in 4 HMDA zones</textarea>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 1rem;">
+                        <button class="interactive-button">Submit for EE Review</button>
+                        <button class="interactive-button secondary">Save Draft</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 16: Approval Flow Visualization -->
+            <div class="slide" data-slide="16">
+                <div class="slide-title">Approval Flow & Authority Matrix</div>
+                <div class="slide-subtitle">₹300 Crore DBFOT Project Routing</div>
+                <div class="slide-content">
+                    <div class="approval-flow">
+                        <div class="approval-stage completed">
+                            <div class="stage-number">1</div>
+                            <div class="stage-content">
+                                <div class="stage-title">AEE Level (₹10L limit exceeded)</div>
+                                <div class="stage-description">Project initiated • Auto-routed to EE due to value</div>
+                                <div class="stage-timeline">Completed: 2 days</div>
+                            </div>
+                        </div>
+                        <div class="approval-stage completed">
+                            <div class="stage-number">2</div>
+                            <div class="stage-content">
+                                <div class="stage-title">EE Level (₹2Cr limit exceeded)</div>
+                                <div class="stage-description">Technical review • Marine engineering consultation • Auto-routed to DCE</div>
+                                <div class="stage-timeline">Completed: 21 days</div>
+                            </div>
+                        </div>
+                        <div class="approval-stage completed">
+                            <div class="stage-number">3</div>
+                            <div class="stage-content">
+                                <div class="stage-title">DCE Level (₹10Cr limit exceeded)</div>
+                                <div class="stage-description">Administrative approval • Budget verification • Multi-dept coordination</div>
+                                <div class="stage-timeline">Completed: 18 days</div>
+                            </div>
+                        </div>
+                        <div class="approval-stage active">
+                            <div class="stage-number">4</div>
+                            <div class="stage-content">
+                                <div class="stage-title">CE Level (₹50Cr limit exceeded)</div>
+                                <div class="stage-description">Strategic review • Vision alignment • Route to Secretary</div>
+                                <div class="stage-timeline">In Progress: 12 days</div>
+                            </div>
+                        </div>
+                        <div class="approval-stage">
+                            <div class="stage-number">5</div>
+                            <div class="stage-content">
+                                <div class="stage-title">Commissioner + Board Approval</div>
+                                <div class="stage-description">Final authority for ₹300Cr DBFOT project • State government coordination</div>
+                                <div class="stage-timeline">Pending</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 17: EE Technical Dashboard -->
+            <div class="slide" data-slide="17">
+                <div class="slide-title">EE Technical Review Dashboard</div>
+                <div class="slide-subtitle">EE P. Srinivas - Corridor Development</div>
+                <div class="slide-content">
+                    <div class="dashboard-grid">
+                        <div class="dashboard-widget">
+                            <div class="widget-title">DPR Reviews</div>
+                            <div class="widget-value">23</div>
+                            <div class="widget-label">Pending Technical Review</div>
+                        </div>
+                        <div class="dashboard-widget">
+                            <div class="widget-title">Corridor Project</div>
+                            <div class="widget-value">₹652 Cr</div>
+                            <div class="widget-label">EPC Coordination</div>
+                        </div>
+                        <div class="dashboard-widget">
+                            <div class="widget-title">Contractor Reports</div>
+                            <div class="widget-value">8/12</div>
+                            <div class="widget-label">Monthly Submissions</div>
+                        </div>
+                        <div class="dashboard-widget">
+                            <div class="widget-title">Quality Score</div>
+                            <div class="widget-value">94%</div>
+                            <div class="widget-label">Current Month</div>
+                        </div>
+                    </div>
+                    <div class="process-diagram">
+                        <h4 style="color: var(--hmda-secondary); margin-bottom: 1rem;">Technical Scrutiny Checklist</h4>
+                        <div class="features-grid">
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fas fa-building"></i></div>
+                                <div class="feature-title">Structural Engineering</div>
+                                <div class="feature-description">Elevated structure design, load analysis, seismic considerations</div>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fas fa-water"></i></div>
+                                <div class="feature-title">Marine Engineering</div>
+                                <div class="feature-description">Water filtration systems, life support systems for marine life</div>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fas fa-leaf"></i></div>
+                                <div class="feature-title">Environmental Impact</div>
+                                <div class="feature-description">Water usage, waste management, marine life ethics compliance</div>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fas fa-fire"></i></div>
+                                <div class="feature-title">Fire Safety</div>
+                                <div class="feature-description">Emergency evacuation from underwater tunnels</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 18: DCE Administrative Dashboard -->
+            <div class="slide" data-slide="18">
+                <div class="slide-title">DCE Administrative Overview</div>
+                <div class="slide-subtitle">DCE M. Venkatesh - Engineering Wing Portfolio</div>
+                <div class="slide-content">
+                    <div class="dashboard-grid">
+                        <div class="dashboard-widget">
+                            <div class="widget-title">Zone Infrastructure Projects</div>
+                            <div class="widget-value">28</div>
+                            <div class="widget-label">4 Zones Active</div>
+                        </div>
+                        <div class="dashboard-widget">
+                            <div class="widget-title">Technical Approvals</div>
+                            <div class="widget-value">145</div>
+                            <div class="widget-label">This Month</div>
+                        </div>
+                        <div class="dashboard-widget">
+                            <div class="widget-title">Quality Inspections</div>
+                            <div class="widget-value">89%</div>
+                            <div class="widget-label">Compliance Rate</div>
+                        </div>
+                        <div class="dashboard-widget">
+                            <div class="widget-title">EPC Monitoring</div>
+                            <div class="widget-value">₹652 Cr</div>
+                            <div class="widget-label">Corridor Progress: 32%</div>
+                        </div>
+                    </div>
+                    <div class="delegation-matrix">
+                        <h4 style="color: var(--hmda-secondary); margin-bottom: 1rem;">Multi-Department Coordination Matrix</h4>
+                        <table class="matrix-table">
+                            <thead>
+                                <tr>
+                                    <th>Department</th>
+                                    <th>Approval Status</th>
+                                    <th>Timeline</th>
+                                    <th>Contact</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Finance Department</strong></td>
+                                    <td class="highlighted">Budget Confirmed</td>
+                                    <td>5 days</td>
+                                    <td>Chief Financial Officer</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Legal Department</strong></td>
+                                    <td>DBFOT Template Review</td>
+                                    <td>7 days</td>
+                                    <td>Legal Advisor</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tourism Department</strong></td>
+                                    <td class="highlighted">Strategic Alignment ✓</td>
+                                    <td>3 days</td>
+                                    <td>Tourism Director</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Forest Department</strong></td>
+                                    <td>Marine Life Import Permits</td>
+                                    <td>14 days</td>
+                                    <td>Principal Chief Conservator</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 19: CE Strategic Dashboard -->
+            <div class="slide" data-slide="19">
+                <div class="slide-title">CE Strategic Review</div>
+                <div class="slide-subtitle">B. Ravinder - Chief Engineer Decision Framework</div>
+                <div class="slide-content">
+                    <div class="dashboard-grid">
+                        <div class="dashboard-widget">
+                            <div class="widget-title">Strategic Portfolio</div>
+                            <div class="widget-value">14</div>
+                            <div class="widget-label">₹58,652 Cr + Corridor</div>
+                        </div>
+                        <div class="dashboard-widget">
+                            <div class="widget-title">Building Permits YTD</div>
+                            <div class="widget-value">3,456</div>
+                            <div class="widget-label">+42% Growth (2024)</div>
+                        </div>
+                        <div class="dashboard-widget">
+                            <div class="widget-title">Budget Utilization</div>
+                            <div class="widget-value">68%</div>
+                            <div class="widget-label">₹325 Cr Utilized</div>
+                        </div>
+                        <div class="dashboard-widget">
+                            <div class="widget-title">Zone Performance</div>
+                            <div class="widget-value">GOOD</div>
+                            <div class="widget-label">All 4 Zones Active</div>
+                        </div>
+                    </div>
+                    <div class="process-diagram">
+                        <h4 style="color: var(--hmda-secondary); margin-bottom: 1rem;">Authority Delegation Matrix: ₹652Cr Elevated Corridor</h4>
+                        <div class="delegation-matrix">
+                            <table class="matrix-table">
+                                <thead>
+                                    <tr>
+                                        <th>Authority Level</th>
+                                        <th>Financial Limit</th>
+                                        <th>Corridor Project Status</th>
+                                        <th>Action Required</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>CE Limit</strong></td>
+                                        <td>₹50 Cr</td>
+                                        <td class="highlighted">EXCEEDED</td>
+                                        <td>Route to Secretary</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>DBFOT Model</strong></td>
+                                        <td>Special Approval</td>
+                                        <td class="highlighted">REQUIRED</td>
+                                        <td>Commissioner Involvement</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Environmental Impact</strong></td>
+                                        <td>Category A</td>
+                                        <td class="highlighted">STATE GOVT</td>
+                                        <td>Clearance Needed</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Final Authority</strong></td>
+                                        <td>Mega Project</td>
+                                        <td>Board + State</td>
+                                        <td>Approval Required</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div style="text-align: center; margin-top: 1rem;">
+                            <div style="background: var(--hmda-secondary); padding: 1rem; border-radius: 10px; font-weight: 600;">
+                                Recommendation: APPROVE with Enhanced Monitoring Framework
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 20: Project Execution Monitoring -->
+            <div class="slide" data-slide="20">
+                <div class="slide-title">Project Execution Dashboard</div>
+                <div class="slide-subtitle">Budget Allocation & Execution Monitoring - 2024-25</div>
+                <div class="slide-content">
+                    <div class="dashboard-grid">
+                        <div class="dashboard-widget">
+                            <div class="widget-title">Corridor Project Budget</div>
+                            <div class="widget-value">₹652 Cr</div>
+                            <div class="widget-label">EPC Implementation</div>
+                        </div>
+                        <div class="dashboard-widget">
+                            <div class="widget-title">Budget Utilized</div>
+                            <div class="widget-value">₹208 Cr</div>
+                            <div class="widget-label">32% of Total Allocation</div>
+                        </div>
+                        <div class="dashboard-widget">
+                            <div class="widget-title">HMDA Annual Budget</div>
+                            <div class="widget-value">₹500 Cr</div>
+                            <div class="widget-label">2024-25 Allocation</div>
+                        </div>
+                        <div class="dashboard-widget">
+                            <div class="widget-title">Strategic Mega Projects</div>
+                            <div class="widget-value">₹58,652 Cr</div>
+                            <div class="widget-label">Musi Riverfront + Corridor</div>
+                        </div>
+                    </div>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot" style="background: var(--hmda-secondary);">✓</div>
+                            <div class="timeline-content">
+                                <strong>Phase 1: Planning & Design</strong><br>
+                                DPR completion & approvals<br>
+                                <small>Completed - ₹35 Cr (5.4%)</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot" style="background: #fbbf24;">⚠</div>
+                            <div class="timeline-content">
+                                <strong>Phase 2: EPC Implementation</strong><br>
+                                Elevated structure construction<br>
+                                <small>In Progress - ₹208 Cr (32%)</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot">3</div>
+                            <div class="timeline-content">
+                                <strong>Phase 3: Systems Integration</strong><br>
+                                Traffic management & utilities<br>
+                                <small>Pending - ₹409 Cr (62.6%)</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot">4</div>
+                            <div class="timeline-content">
+                                <strong>Phase 4: Completion & Handover</strong><br>
+                                Testing, commissioning & operation<br>
+                                <small>Planned - ₹652 Cr (100%)</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 21: Notification Center -->
+            <div class="slide" data-slide="21">
+                <div class="slide-title">Real-Time Notifications</div>
+                <div class="slide-subtitle">Multi-Channel Communication System</div>
+                <div class="slide-content">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <h4 style="color: var(--hmda-secondary); margin-bottom: 1rem;">Recent Alerts</h4>
+                            <div class="notification-feed">
+                                <div class="notification-item">
+                                    <div class="notification-icon" style="background: var(--hmda-secondary);">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <div class="notification-content">
+                                        <div class="notification-title">Foundation Inspection Approved</div>
+                                        <div class="notification-time">2 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="notification-item">
+                                    <div class="notification-icon" style="background: #fbbf24;">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="notification-content">
+                                        <div class="notification-title">Marine Equipment Delivery Delayed</div>
+                                        <div class="notification-time">5 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="notification-item">
+                                    <div class="notification-icon" style="background: var(--hmda-primary);">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div class="notification-content">
+                                        <div class="notification-title">Environmental Compliance Report Due</div>
+                                        <div class="notification-time">1 day ago</div>
+                                    </div>
+                                </div>
+                                <div class="notification-item">
+                                    <div class="notification-icon" style="background: var(--hmda-accent);">
+                                        <i class="fas fa-exclamation"></i>
+                                    </div>
+                                    <div class="notification-content">
+                                        <div class="notification-title">Safety Protocol Update Required</div>
+                                        <div class="notification-time">2 days ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--hmda-secondary); margin-bottom: 1rem;">Communication Channels</h4>
+                            <div class="features-grid">
+                                <div class="feature-card">
+                                    <div class="feature-icon"><i class="fas fa-sms"></i></div>
+                                    <div class="feature-title">SMS Alerts</div>
+                                    <div class="feature-description">Instant notifications for critical updates and approvals</div>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon"><i class="fas fa-envelope"></i></div>
+                                    <div class="feature-title">Email Reports</div>
+                                    <div class="feature-description">Detailed progress reports and documentation</div>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+                                    <div class="feature-title">Mobile Push</div>
+                                    <div class="feature-description">Real-time updates to HMDA mobile app</div>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon"><i class="fas fa-desktop"></i></div>
+                                    <div class="feature-title">Dashboard Alerts</div>
+                                    <div class="feature-description">Visual indicators on management dashboards</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 22: Document Management Workflow -->
+            <div class="slide" data-slide="22">
+                <div class="slide-title">Document Lifecycle Management</div>
+                <div class="slide-subtitle">Digital Document Workflow</div>
+                <div class="slide-content">
+                    <div class="process-flow">
+                        <div class="process-step">
+                            <div class="step-icon"><i class="fas fa-file-plus"></i></div>
+                            <div class="step-title">Creation</div>
+                            <div class="step-description">Template-based<br>Auto-numbering</div>
+                        </div>
+                        <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+                        <div class="process-step">
+                            <div class="step-icon"><i class="fas fa-edit"></i></div>
+                            <div class="step-title">Review</div>
+                            <div class="step-description">Multi-user<br>Version control</div>
+                        </div>
+                        <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+                        <div class="process-step">
+                            <div class="step-icon"><i class="fas fa-signature"></i></div>
+                            <div class="step-title">Approval</div>
+                            <div class="step-description">Digital signatures<br>Authority matrix</div>
+                        </div>
+                        <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+                        <div class="process-step">
+                            <div class="step-icon"><i class="fas fa-archive"></i></div>
+                            <div class="step-title">Archive</div>
+                            <div class="step-description">Searchable<br>Audit trail</div>
+                        </div>
+                    </div>
+                    <div class="delegation-matrix">
+                        <h4 style="color: var(--hmda-secondary); margin-bottom: 1rem;">Document Types & Status</h4>
+                        <table class="matrix-table">
+                            <thead>
+                                <tr>
+                                    <th>Document Type</th>
+                                    <th>Current Version</th>
+                                    <th>Status</th>
+                                    <th>Next Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Technical Drawings</strong></td>
+                                    <td>v2.3</td>
+                                    <td class="highlighted">Approved</td>
+                                    <td>Construction Use</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Environmental Clearance</strong></td>
+                                    <td>v1.0</td>
+                                    <td>Under Review</td>
+                                    <td>TSPCB Response</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>DBFOT Agreement</strong></td>
+                                    <td>v1.5</td>
+                                    <td>Legal Review</td>
+                                    <td>Legal Department</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Quality Control Reports</strong></td>
+                                    <td>v3.1</td>
+                                    <td class="highlighted">Current</td>
+                                    <td>Weekly Updates</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 23: Mobile Field Experience -->
+            <div class="slide" data-slide="23">
+                <div class="slide-title">Mobile Field Operations</div>
+                <div class="slide-subtitle">Real-Time Site Management</div>
+                <div class="slide-content">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <h4 style="color: var(--hmda-secondary); margin-bottom: 1rem;">Field Officer Mobile App</h4>
+                            <div class="form-container" style="max-height: 300px;">
+                                <div class="form-field">
+                                    <label class="form-label">Site Inspection Form</label>
+                                    <input type="text" class="form-input" value="Marine Engineering Section - Tunnel 2" readonly>
+                                </div>
+                                <div class="form-field">
+                                    <label class="form-label">GPS Location</label>
+                                    <input type="text" class="form-input" value="17.3615°N, 78.2747°E (Auto-captured)" readonly>
+                                </div>
+                                <div class="form-field">
+                                    <label class="form-label">Quality Assessment</label>
+                                    <select class="form-input">
+                                        <option>Excellent - Meets marine standards</option>
+                                        <option>Good - Minor adjustments needed</option>
+                                        <option>Fair - Significant issues</option>
+                                    </select>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                                    <button class="interactive-button">Take Photo</button>
+                                    <button class="interactive-button secondary">Voice Note</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--hmda-secondary); margin-bottom: 1rem;">Management Mobile Dashboard</h4>
+                            <div class="dashboard-grid">
+                                <div class="dashboard-widget">
+                                    <div class="widget-title">Today's Inspections</div>
+                                    <div class="widget-value">8/12</div>
+                                    <div class="widget-label">Completed</div>
+                                </div>
+                                <div class="dashboard-widget">
+                                    <div class="widget-title">Quality Issues</div>
+                                    <div class="widget-value">2</div>
+                                    <div class="widget-label">Pending Resolution</div>
+                                </div>
+                                <div class="dashboard-widget">
+                                    <div class="widget-title">Safety Score</div>
+                                    <div class="widget-value">98%</div>
+                                    <div class="widget-label">Compliance Rate</div>
+                                </div>
+                                <div class="dashboard-widget">
+                                    <div class="widget-title">Marine Life Status</div>
+                                    <div class="widget-value">100%</div>
+                                    <div class="widget-label">Survival Rate</div>
+                                </div>
+                            </div>
+                            <div style="text-align: center; margin-top: 1rem;">
+                                <button class="interactive-button">View Full Report</button>
+                                <button class="interactive-button secondary">Emergency Contact</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 24: Analytics & Performance -->
+            <div class="slide" data-slide="24">
+                <div class="slide-title">HMDA Performance Analytics</div>
+                <div class="slide-subtitle">Real-time Operational Metrics & Growth Trends</div>
+                <div class="slide-content">
+                    <div class="dashboard-grid">
+                        <div class="dashboard-widget">
+                            <div class="widget-title">Building Permits (2024 vs 2023)</div>
+                            <div class="widget-value">+45%</div>
+                            <div class="widget-label">1,061 vs 756 (Jul-Nov)</div>
+                        </div>
+                        <div class="dashboard-widget">
+                            <div class="widget-title">Development Applications</div>
+                            <div class="widget-value">1,920</div>
+                            <div class="widget-label">Jul-Nov 2024 (+45% YoY)</div>
+                        </div>
+                        <div class="dashboard-widget">
+                            <div class="widget-title">Digital Transformation</div>
+                            <div class="widget-value">100%</div>
+                            <div class="widget-label">TG-bPASS to BuildNow Migration</div>
+                        </div>
+                        <div class="dashboard-widget">
+                            <div class="widget-title">Processing Time</div>
+                            <div class="widget-value">30-71 SEC</div>
+                            <div class="widget-label">BuildNow AI Approvals</div>
+                        </div>
+                    </div>
+                    <div class="delegation-matrix">
+                        <h4 style="color: var(--hmda-secondary); margin-bottom: 1rem;">HMDA Operational Performance (2023 vs 2024)</h4>
+                        <table class="matrix-table">
+                            <thead>
+                                <tr>
+                                    <th>Application Type</th>
+                                    <th>2023 (Jul-Nov)</th>
+                                    <th>2024 (Jul-Nov)</th>
+                                    <th>Growth</th>
+                                    <th>Trend</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Development Permissions</strong></td>
+                                    <td>1,326</td>
+                                    <td>1,920</td>
+                                    <td class="highlighted">+45%</td>
+                                    <td>↗ Strong Growth</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Building Permissions</strong></td>
+                                    <td>756</td>
+                                    <td>1,061</td>
+                                    <td class="highlighted">+40%</td>
+                                    <td>↗ Consistent Growth</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Occupancy Certificates</strong></td>
+                                    <td>467</td>
+                                    <td>560</td>
+                                    <td class="highlighted">+20%</td>
+                                    <td>↗ Steady Increase</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Layout Applications</strong></td>
+                                    <td>16 (Nov)</td>
+                                    <td>65 (Nov)</td>
+                                    <td class="highlighted">+306%</td>
+                                    <td>↗ Exceptional Growth</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Slide: Project Success Demonstration -->
+            <div class="slide" data-slide="25">
+                <div class="slide-title">Project Execution Excellence</div>
+                <div class="slide-subtitle">Elevated Corridor - Operational Mastery Demonstrated</div>
+                <div class="slide-content">
+                    <div class="project-header" style="background: linear-gradient(135deg, var(--hmda-secondary) 0%, #059669 100%);">
+                        <div class="project-title">Operational Excellence Achieved</div>
+                        <div class="project-subtitle">Complete Project Lifecycle Management</div>
+                        <div style="font-size: 1.2rem; margin-top: 1rem;">
+                            From ₹652Cr EPC Initiation to Successful Delivery
+                        </div>
+                    </div>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-users"></i></div>
+                            <div class="feature-title">Persona-Based Operations</div>
+                            <div class="feature-description">Deep understanding of AEE, EE, DCE, CE workflows and decision-making processes</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-route"></i></div>
+                            <div class="feature-title">Authority Flow Mastery</div>
+                            <div class="feature-description">Precise routing through HMDA approval hierarchy with accurate delegation limits</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-file-alt"></i></div>
+                            <div class="feature-title">Real Form Systems</div>
+                            <div class="feature-description">Authentic HMDA forms, documentation workflows, and approval processes</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                            <div class="feature-title">Operational Analytics</div>
+                            <div class="feature-description">Real-time dashboards, KPI tracking, and performance monitoring systems</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+                            <div class="feature-title">Mobile-First Design</div>
+                            <div class="feature-description">Field operations, inspection apps, and management dashboards optimized for mobile</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-handshake"></i></div>
+                            <div class="feature-title">DBFOT Expertise</div>
+                            <div class="feature-description">Complex PPP model implementation with 33-year concession management</div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <div style="font-size: 1.5rem; color: var(--hmda-secondary); font-weight: 600; margin-bottom: 1rem;">
+                            "Proven Understanding of HMDA's Operational Reality"
+                        </div>
+                        <div style="font-size: 1rem; color: rgba(255, 255, 255, 0.8);">
+                            Ready to enhance your existing systems, not replace them
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="nav-button" onclick="toggleFullscreen()">
+                <i class="fas fa-expand"></i>
+            </button>
+            <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 25;
+
+        function updateProgress() {
+            const progress = (currentSlide / totalSlides) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('slideCounter').textContent = `${currentSlide} / ${totalSlides}`;
+        }
+
+        function changeSlide(direction) {
+            const slides = document.querySelectorAll('.slide');
+            const current = slides[currentSlide - 1];
+            
+            if (direction === 1 && currentSlide < totalSlides) {
+                current.classList.remove('active');
+                current.classList.add('prev');
+                currentSlide++;
+                slides[currentSlide - 1].classList.add('active');
+                slides[currentSlide - 1].classList.remove('prev');
+            } else if (direction === -1 && currentSlide > 1) {
+                current.classList.remove('active');
+                currentSlide--;
+                slides[currentSlide - 1].classList.add('active');
+                slides[currentSlide - 1].classList.remove('prev');
+                if (slides[currentSlide]) {
+                    slides[currentSlide].classList.remove('prev');
+                }
+            }
+            
+            updateProgress();
+            updateNavButtons();
+        }
+
+        function updateNavButtons() {
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+        }
+
+        function highlightStep(element) {
+            // Remove previous highlights
+            document.querySelectorAll('.process-step').forEach(step => {
+                step.style.transform = '';
+                step.style.background = '';
+            });
+            
+            // Highlight clicked step
+            element.style.transform = 'translateY(-10px) scale(1.05)';
+            element.style.background = 'rgba(255, 255, 255, 0.1)';
+            element.style.borderRadius = '15px';
+            element.style.padding = '1rem';
+        }
+
+        function showProcess(type) {
+            // Update button states
+            document.querySelectorAll('.demo-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Show different process flows based on type
+            const processView = document.getElementById('processView');
+            // This could be expanded to show different process variations
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Elevated Corridor Project Specific Functions
+        function highlightPersona(element, personaType) {
+            // Remove previous highlights
+            document.querySelectorAll('.persona-card').forEach(card => {
+                card.style.transform = '';
+                card.style.background = '';
+            });
+            
+            // Highlight clicked persona
+            element.style.transform = 'translateY(-10px) scale(1.02)';
+            element.style.background = 'rgba(5, 150, 105, 0.3)';
+            element.style.borderLeft = '4px solid var(--hmda-secondary)';
+            
+            // Show persona-specific information (could be expanded)
+            console.log('Selected persona:', personaType);
+        }
+
+        function simulateApprovalFlow() {
+            const stages = document.querySelectorAll('.approval-stage');
+            let currentStage = 0;
+            
+            const interval = setInterval(() => {
+                if (currentStage < stages.length) {
+                    stages[currentStage].classList.add('completed');
+                    stages[currentStage].classList.remove('active');
+                    
+                    currentStage++;
+                    
+                    if (currentStage < stages.length) {
+                        stages[currentStage].classList.add('active');
+                    }
+                } else {
+                    clearInterval(interval);
+                }
+            }, 2000);
+        }
+
+        function updateDashboardMetrics() {
+            // Simulate real-time dashboard updates
+            const widgets = document.querySelectorAll('.widget-value');
+            widgets.forEach(widget => {
+                if (widget.textContent.includes('%')) {
+                    // Randomly update percentage values slightly
+                    const currentValue = parseInt(widget.textContent);
+                    const newValue = Math.min(100, Math.max(0, currentValue + Math.floor(Math.random() * 6) - 3));
+                    widget.textContent = newValue + '%';
+                }
+            });
+        }
+
+        function simulateNotifications() {
+            const notifications = [
+                { icon: 'check', color: 'var(--hmda-secondary)', title: 'Quality inspection passed', time: 'Just now' },
+                { icon: 'clock', color: '#fbbf24', title: 'Equipment delivery scheduled', time: '5 minutes ago' },
+                { icon: 'envelope', color: 'var(--hmda-primary)', title: 'Monthly report generated', time: '10 minutes ago' }
+            ];
+            
+            const feed = document.querySelector('.notification-feed');
+            if (feed) {
+                const randomNotification = notifications[Math.floor(Math.random() * notifications.length)];
+                
+                const notificationElement = document.createElement('div');
+                notificationElement.className = 'notification-item';
+                notificationElement.innerHTML = `
+                    <div class="notification-icon" style="background: ${randomNotification.color};">
+                        <i class="fas fa-${randomNotification.icon}"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">${randomNotification.title}</div>
+                        <div class="notification-time">${randomNotification.time}</div>
+                    </div>
+                `;
+                
+                feed.insertBefore(notificationElement, feed.firstChild);
+                
+                // Remove oldest notification if more than 4
+                if (feed.children.length > 4) {
+                    feed.removeChild(feed.lastChild);
+                }
+            }
+        }
+
+        function initializeCorridorProjectFeatures() {
+            // Update dashboard metrics every 30 seconds
+            setInterval(updateDashboardMetrics, 30000);
+            
+            // Add new notification every 2 minutes
+            setInterval(simulateNotifications, 120000);
+            
+            // Add click handlers for interactive buttons
+            document.querySelectorAll('.interactive-button').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Visual feedback
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                    
+                    console.log('Button clicked:', this.textContent);
+                });
+            });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowRight':
+                case ' ':
+                    e.preventDefault();
+                    changeSlide(1);
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    changeSlide(-1);
+                    break;
+                case 'F11':
+                    e.preventDefault();
+                    toggleFullscreen();
+                    break;
+            }
+        });
+
+        // Touch/swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const threshold = 50;
+            if (touchEndX < touchStartX - threshold) {
+                changeSlide(1); // Swipe left - next slide
+            }
+            if (touchEndX > touchStartX + threshold) {
+                changeSlide(-1); // Swipe right - previous slide
+            }
+        }
+
+        // Initialize
+        updateProgress();
+        updateNavButtons();
+        
+        // Initialize Corridor Project specific features
+        document.addEventListener('DOMContentLoaded', initializeCorridorProjectFeatures);
+
+        // Auto-advance animation for demo (optional)
+        function startAutoDemo() {
+            setInterval(() => {
+                if (currentSlide < totalSlides) {
+                    changeSlide(1);
+                } else {
+                    currentSlide = 0;
+                    changeSlide(1);
+                }
+            }, 10000); // Change slide every 10 seconds
+        }
+
+        // Uncomment to enable auto-advance
+        // startAutoDemo();
+    </script>
+</body>
+</html>

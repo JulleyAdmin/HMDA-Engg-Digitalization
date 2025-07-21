@@ -1,0 +1,974 @@
+{
+  "metadata": {
+    "generatedAt": "2025-07-20T21:22:23.519Z",
+    "description": "Sample projects representing different categories and complexities"
+  },
+  "projects": [
+    {
+      "projectId": "ENV-2025-001-C1",
+      "projectName": "Road No. 36 Eco Park - Phase 3",
+      "category": "ENV",
+      "subCategory": "GI",
+      "currentStage": 7,
+      "stageStartDate": "2025-03-26",
+      "totalBudget": 1172480547,
+      "physicalProgress": 71.1,
+      "financialProgress": 64.5,
+      "ceScore": null,
+      "riskLevel": "LOW",
+      "location": {
+        "circle": "C1",
+        "ward": "Jubilee Hills",
+        "mandal": "Jubilee Hills",
+        "locality": "Road No. 36",
+        "pincode": "500033",
+        "coordinates": {
+          "latitude": 17.549429658251917,
+          "longitude": 78.50293764192959
+        }
+      },
+      "contractor": {
+        "name": "Ramky Infrastructure",
+        "grade": "A",
+        "performanceRating": 3.720369355414959,
+        "currentLoad": 68,
+        "safetyRecord": 169,
+        "completedProjects": 44,
+        "ongoingProjects": 7,
+        "blacklisted": false,
+        "specialization": [
+          "ROADS",
+          "BUILDINGS"
+        ]
+      },
+      "consultant": "M/s STUP Consultants",
+      "timeline": {
+        "plannedStart": "2024-06-12",
+        "actualStart": "2024-06-24",
+        "plannedCompletion": "2025-10-12",
+        "projectedCompletion": "2025-11-05",
+        "delayDays": 24,
+        "monsoonBuffer": 96,
+        "daysInCurrentStage": 64
+      },
+      "financial": {
+        "contractValue": 1172480547,
+        "originalEstimate": 1207136649,
+        "paidTillDate": 755749023,
+        "pendingBills": 0,
+        "lastPaymentDate": "2025-06-22",
+        "mobilizationAdvance": 117248054,
+        "retentionAmount": 58624027,
+        "variations": [],
+        "costOverrun": 10.452360635877188,
+        "budgetUtilization": 64.45727614819322
+      },
+      "quality": {
+        "overallScore": 70.30499995789239,
+        "testsCompleted": 65,
+        "testsPassed": 58,
+        "testsPassRate": 89.81854965185694,
+        "ncrsOpen": 1,
+        "ncrsClosed": 17,
+        "lastAuditScore": null,
+        "lastAuditDate": "2025-07-11",
+        "thirdPartyAudit": false,
+        "materialTestingLab": "Third Party Lab"
+      },
+      "stakeholders": {
+        "politicalInterest": "ROUTINE",
+        "publicSentiment": "VERY_POSITIVE",
+        "mediaAttention": "LOW",
+        "complaintsThisMonth": 1,
+        "appreciationLetters": 3,
+        "rtiQueries": 3,
+        "socialMediaMentions": 33
+      },
+      "realWorldFactors": {
+        "monsoonImpact": "LOW",
+        "landIssues": "COURT_CASE",
+        "utilityShifting": "COMPLETED",
+        "environmentalClearance": "PENDING",
+        "heritageImpact": false,
+        "trafficImpact": "LOW"
+      },
+      "milestones": [
+        {
+          "id": "M01",
+          "name": "Project Sanction",
+          "plannedDate": "2022-12-31",
+          "actualDate": "2023-01-09",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": []
+        },
+        {
+          "id": "M02",
+          "name": "DPR Approval",
+          "plannedDate": "2023-02-28",
+          "actualDate": "2023-03-10",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M01"
+          ]
+        },
+        {
+          "id": "M03",
+          "name": "Tender Award",
+          "plannedDate": "2023-04-30",
+          "actualDate": "2023-05-08",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M02"
+          ]
+        },
+        {
+          "id": "M04",
+          "name": "Site Handover",
+          "plannedDate": "2023-06-30",
+          "actualDate": "2023-07-01",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M03"
+          ]
+        },
+        {
+          "id": "M05",
+          "name": "25% Physical Progress",
+          "plannedDate": "2023-08-31",
+          "actualDate": "2023-09-03",
+          "status": "COMPLETED",
+          "importance": "HIGH",
+          "dependencies": [
+            "M04"
+          ]
+        },
+        {
+          "id": "M06",
+          "name": "50% Physical Progress",
+          "plannedDate": "2023-10-31",
+          "actualDate": "2023-11-08",
+          "status": "COMPLETED",
+          "importance": "HIGH",
+          "dependencies": [
+            "M05"
+          ]
+        },
+        {
+          "id": "M07",
+          "name": "75% Physical Progress",
+          "plannedDate": "2023-12-31",
+          "actualDate": "2024-01-11",
+          "status": "COMPLETED",
+          "importance": "HIGH",
+          "dependencies": [
+            "M06"
+          ]
+        },
+        {
+          "id": "M08",
+          "name": "Testing Complete",
+          "plannedDate": "2024-02-29",
+          "status": "IN_PROGRESS",
+          "importance": "HIGH",
+          "dependencies": [
+            "M07"
+          ]
+        },
+        {
+          "id": "M09",
+          "name": "Project Handover",
+          "plannedDate": "2024-04-30",
+          "status": "PENDING",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M08"
+          ]
+        }
+      ],
+      "createdDate": "2025-07-20",
+      "lastUpdated": "2025-07-20T21:22:23.513Z",
+      "createdBy": "CE Office",
+      "tags": [
+        "ENV",
+        "ONGOING"
+      ],
+      "priority": "MEDIUM"
+    },
+    {
+      "projectId": "SMART-2025-002-C4",
+      "projectName": "Main Road Smart Infrastructure - Phase 3",
+      "category": "SMART",
+      "subCategory": "IS",
+      "currentStage": 4,
+      "stageStartDate": "2025-05-10",
+      "totalBudget": 4729056824,
+      "physicalProgress": 45,
+      "financialProgress": 36.7,
+      "ceScore": null,
+      "riskLevel": "LOW",
+      "location": {
+        "circle": "C4",
+        "ward": "Zaheerabad",
+        "mandal": "Zaheerabad",
+        "locality": "Main Road",
+        "pincode": "502220",
+        "coordinates": {
+          "latitude": 17.206386297181513,
+          "longitude": 78.63854154036078
+        }
+      },
+      "contractor": {
+        "name": "AFCONS Infrastructure",
+        "grade": "AA",
+        "performanceRating": 3.833168436317635,
+        "currentLoad": 48,
+        "safetyRecord": 59,
+        "completedProjects": 10,
+        "ongoingProjects": 3,
+        "blacklisted": false,
+        "specialization": [
+          "FLYOVERS",
+          "BRIDGES"
+        ]
+      },
+      "consultant": "M/s Aarvee Associates",
+      "timeline": {
+        "plannedStart": "2024-07-11",
+        "actualStart": "2024-08-10",
+        "plannedCompletion": "2025-12-11",
+        "projectedCompletion": "2025-12-11",
+        "delayDays": 0,
+        "monsoonBuffer": 102,
+        "daysInCurrentStage": 70
+      },
+      "financial": {
+        "contractValue": 4729056824,
+        "originalEstimate": 4904947268,
+        "paidTillDate": 1735919132,
+        "pendingBills": 4,
+        "lastPaymentDate": "2025-07-03",
+        "mobilizationAdvance": 472905682,
+        "retentionAmount": 236452841,
+        "variations": [],
+        "costOverrun": 3.5003467267249952,
+        "budgetUtilization": 36.70751266310645
+      },
+      "quality": {
+        "overallScore": 72.39000201098773,
+        "testsCompleted": 0,
+        "testsPassed": 0,
+        "testsPassRate": 90.22405041263204,
+        "ncrsOpen": 1,
+        "ncrsClosed": 17,
+        "lastAuditScore": null,
+        "lastAuditDate": "2025-06-25",
+        "thirdPartyAudit": false,
+        "materialTestingLab": "HMDA Lab"
+      },
+      "stakeholders": {
+        "politicalInterest": "ROUTINE",
+        "publicSentiment": "NEUTRAL",
+        "mediaAttention": "LOW",
+        "complaintsThisMonth": 3,
+        "appreciationLetters": 1,
+        "rtiQueries": 2,
+        "socialMediaMentions": 2
+      },
+      "realWorldFactors": {
+        "monsoonImpact": "LOW",
+        "landIssues": "COURT_CASE",
+        "utilityShifting": "IN_PROGRESS",
+        "environmentalClearance": "PENDING",
+        "heritageImpact": true,
+        "trafficImpact": "LOW"
+      },
+      "milestones": [
+        {
+          "id": "M01",
+          "name": "Project Sanction",
+          "plannedDate": "2022-12-31",
+          "actualDate": "2023-01-14",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": []
+        },
+        {
+          "id": "M02",
+          "name": "DPR Approval",
+          "plannedDate": "2023-02-28",
+          "actualDate": "2023-03-11",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M01"
+          ]
+        },
+        {
+          "id": "M03",
+          "name": "Tender Award",
+          "plannedDate": "2023-04-30",
+          "actualDate": "2023-05-10",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M02"
+          ]
+        },
+        {
+          "id": "M04",
+          "name": "Site Handover",
+          "plannedDate": "2023-06-30",
+          "actualDate": "2023-06-30",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M03"
+          ]
+        },
+        {
+          "id": "M05",
+          "name": "25% Physical Progress",
+          "plannedDate": "2023-08-31",
+          "status": "IN_PROGRESS",
+          "importance": "HIGH",
+          "dependencies": [
+            "M04"
+          ]
+        },
+        {
+          "id": "M06",
+          "name": "50% Physical Progress",
+          "plannedDate": "2023-10-31",
+          "status": "PENDING",
+          "importance": "HIGH",
+          "dependencies": [
+            "M05"
+          ]
+        },
+        {
+          "id": "M07",
+          "name": "75% Physical Progress",
+          "plannedDate": "2023-12-31",
+          "status": "PENDING",
+          "importance": "HIGH",
+          "dependencies": [
+            "M06"
+          ]
+        },
+        {
+          "id": "M08",
+          "name": "Testing Complete",
+          "plannedDate": "2024-02-29",
+          "status": "PENDING",
+          "importance": "HIGH",
+          "dependencies": [
+            "M07"
+          ]
+        },
+        {
+          "id": "M09",
+          "name": "Project Handover",
+          "plannedDate": "2024-04-30",
+          "status": "PENDING",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M08"
+          ]
+        }
+      ],
+      "createdDate": "2025-07-20",
+      "lastUpdated": "2025-07-20T21:22:23.513Z",
+      "createdBy": "CE Office",
+      "tags": [
+        "SMART",
+        "PLANNING"
+      ],
+      "priority": "LOW"
+    },
+    {
+      "projectId": "SMART-2025-003-C3",
+      "projectName": "Metro Station Digital Hub - Phase 3",
+      "category": "SMART",
+      "subCategory": "DI",
+      "currentStage": 8,
+      "stageStartDate": "2025-01-30",
+      "totalBudget": 2015191595,
+      "physicalProgress": 88.2,
+      "financialProgress": 81.9,
+      "ceScore": null,
+      "riskLevel": "MEDIUM",
+      "location": {
+        "circle": "C3",
+        "ward": "Miyapur",
+        "mandal": "Miyapur",
+        "locality": "Metro Station",
+        "pincode": "500049",
+        "coordinates": {
+          "latitude": 17.3211237225539,
+          "longitude": 78.60900991287205
+        }
+      },
+      "contractor": {
+        "name": "Tata Projects",
+        "grade": "AAA",
+        "performanceRating": 4.514553843683498,
+        "currentLoad": 43,
+        "safetyRecord": 239,
+        "completedProjects": 49,
+        "ongoingProjects": 5,
+        "blacklisted": false,
+        "specialization": [
+          "AIRPORTS",
+          "SMART_CITY"
+        ]
+      },
+      "consultant": "M/s COWI India",
+      "timeline": {
+        "plannedStart": "2024-09-10",
+        "actualStart": "2024-09-24",
+        "plannedCompletion": "2027-05-10",
+        "projectedCompletion": "2027-06-30",
+        "delayDays": 51,
+        "monsoonBuffer": 192,
+        "daysInCurrentStage": 16
+      },
+      "financial": {
+        "contractValue": 2015191595,
+        "originalEstimate": 2086874669,
+        "paidTillDate": 1650924663,
+        "pendingBills": 1,
+        "lastPaymentDate": "2025-07-03",
+        "mobilizationAdvance": 201519159,
+        "retentionAmount": 100759579,
+        "variations": [],
+        "costOverrun": 8.8612283593176,
+        "budgetUtilization": 81.92395539129944
+      },
+      "quality": {
+        "overallScore": 88.26085654964425,
+        "testsCompleted": 88,
+        "testsPassed": 75,
+        "testsPassRate": 85.93032490253994,
+        "ncrsOpen": 1,
+        "ncrsClosed": 29,
+        "lastAuditScore": null,
+        "lastAuditDate": "2025-07-13",
+        "thirdPartyAudit": true,
+        "materialTestingLab": "Third Party Lab"
+      },
+      "stakeholders": {
+        "politicalInterest": "ROUTINE",
+        "publicSentiment": "NEUTRAL",
+        "mediaAttention": "LOW",
+        "complaintsThisMonth": 3,
+        "appreciationLetters": 5,
+        "rtiQueries": 1,
+        "socialMediaMentions": 36
+      },
+      "realWorldFactors": {
+        "monsoonImpact": "LOW",
+        "landIssues": "COURT_CASE",
+        "utilityShifting": "PENDING",
+        "environmentalClearance": "PENDING",
+        "heritageImpact": false,
+        "trafficImpact": "LOW"
+      },
+      "milestones": [
+        {
+          "id": "M01",
+          "name": "Project Sanction",
+          "plannedDate": "2022-12-31",
+          "actualDate": "2023-01-09",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": []
+        },
+        {
+          "id": "M02",
+          "name": "DPR Approval",
+          "plannedDate": "2023-02-28",
+          "actualDate": "2023-03-09",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M01"
+          ]
+        },
+        {
+          "id": "M03",
+          "name": "Tender Award",
+          "plannedDate": "2023-04-30",
+          "actualDate": "2023-05-08",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M02"
+          ]
+        },
+        {
+          "id": "M04",
+          "name": "Site Handover",
+          "plannedDate": "2023-06-30",
+          "actualDate": "2023-06-30",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M03"
+          ]
+        },
+        {
+          "id": "M05",
+          "name": "25% Physical Progress",
+          "plannedDate": "2023-08-31",
+          "actualDate": "2023-09-11",
+          "status": "COMPLETED",
+          "importance": "HIGH",
+          "dependencies": [
+            "M04"
+          ]
+        },
+        {
+          "id": "M06",
+          "name": "50% Physical Progress",
+          "plannedDate": "2023-10-31",
+          "actualDate": "2023-11-11",
+          "status": "COMPLETED",
+          "importance": "HIGH",
+          "dependencies": [
+            "M05"
+          ]
+        },
+        {
+          "id": "M07",
+          "name": "75% Physical Progress",
+          "plannedDate": "2023-12-31",
+          "actualDate": "2024-01-03",
+          "status": "COMPLETED",
+          "importance": "HIGH",
+          "dependencies": [
+            "M06"
+          ]
+        },
+        {
+          "id": "M08",
+          "name": "Testing Complete",
+          "plannedDate": "2024-02-29",
+          "actualDate": "2024-03-03",
+          "status": "COMPLETED",
+          "importance": "HIGH",
+          "dependencies": [
+            "M07"
+          ]
+        },
+        {
+          "id": "M09",
+          "name": "Project Handover",
+          "plannedDate": "2024-04-30",
+          "status": "IN_PROGRESS",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M08"
+          ]
+        }
+      ],
+      "createdDate": "2025-07-20",
+      "lastUpdated": "2025-07-20T21:22:23.513Z",
+      "createdBy": "CE Office",
+      "tags": [
+        "SMART",
+        "ONGOING"
+      ],
+      "priority": "MEDIUM"
+    },
+    {
+      "projectId": "ENV-2025-004-C5",
+      "projectName": "Bus Stand Green Belt - Phase 3",
+      "category": "ENV",
+      "subCategory": "PC",
+      "currentStage": 7,
+      "stageStartDate": "2024-12-20",
+      "totalBudget": 128813596856,
+      "physicalProgress": 71.4,
+      "financialProgress": 63.3,
+      "ceScore": null,
+      "riskLevel": "HIGH",
+      "location": {
+        "circle": "C5",
+        "ward": "Vikarabad",
+        "mandal": "Vikarabad",
+        "locality": "Bus Stand",
+        "pincode": "501101",
+        "coordinates": {
+          "latitude": 17.1495413681903,
+          "longitude": 78.343227590449
+        }
+      },
+      "contractor": {
+        "name": "NCC Limited",
+        "grade": "AA",
+        "performanceRating": 4.421757339834807,
+        "currentLoad": 51,
+        "safetyRecord": 121,
+        "completedProjects": 37,
+        "ongoingProjects": 3,
+        "blacklisted": false,
+        "specialization": [
+          "ROADS",
+          "BUILDINGS",
+          "WATER"
+        ]
+      },
+      "consultant": "M/s Jacobs India",
+      "timeline": {
+        "plannedStart": "2024-06-07",
+        "actualStart": "2024-07-10",
+        "plannedCompletion": "2026-06-07",
+        "projectedCompletion": "2026-07-03",
+        "delayDays": 26,
+        "monsoonBuffer": 144,
+        "daysInCurrentStage": 55
+      },
+      "financial": {
+        "contractValue": 128813596856,
+        "originalEstimate": 127333334040,
+        "paidTillDate": 81514461124,
+        "pendingBills": 2,
+        "lastPaymentDate": "2025-06-21",
+        "mobilizationAdvance": 12881359685,
+        "retentionAmount": 6440679842,
+        "variations": [],
+        "costOverrun": 3.614151746491853,
+        "budgetUtilization": 63.28094480213844
+      },
+      "quality": {
+        "overallScore": 77.63566630748088,
+        "testsCompleted": 199,
+        "testsPassed": 193,
+        "testsPassRate": 97.23998167207702,
+        "ncrsOpen": 2,
+        "ncrsClosed": 25,
+        "lastAuditScore": null,
+        "lastAuditDate": "2025-07-12",
+        "thirdPartyAudit": true,
+        "materialTestingLab": "Third Party Lab"
+      },
+      "stakeholders": {
+        "politicalInterest": "CM",
+        "publicSentiment": "VERY_POSITIVE",
+        "mediaAttention": "HIGH",
+        "complaintsThisMonth": 6,
+        "appreciationLetters": 2,
+        "rtiQueries": 3,
+        "socialMediaMentions": 15
+      },
+      "realWorldFactors": {
+        "monsoonImpact": "LOW",
+        "landIssues": "CLEAR",
+        "utilityShifting": "IN_PROGRESS",
+        "environmentalClearance": "OBTAINED",
+        "heritageImpact": false,
+        "trafficImpact": "LOW"
+      },
+      "milestones": [
+        {
+          "id": "M01",
+          "name": "Project Sanction",
+          "plannedDate": "2022-12-31",
+          "actualDate": "2023-01-14",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": []
+        },
+        {
+          "id": "M02",
+          "name": "DPR Approval",
+          "plannedDate": "2023-02-28",
+          "actualDate": "2023-03-07",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M01"
+          ]
+        },
+        {
+          "id": "M03",
+          "name": "Tender Award",
+          "plannedDate": "2023-04-30",
+          "actualDate": "2023-05-01",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M02"
+          ]
+        },
+        {
+          "id": "M04",
+          "name": "Site Handover",
+          "plannedDate": "2023-06-30",
+          "actualDate": "2023-07-01",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M03"
+          ]
+        },
+        {
+          "id": "M05",
+          "name": "25% Physical Progress",
+          "plannedDate": "2023-08-31",
+          "actualDate": "2023-09-07",
+          "status": "COMPLETED",
+          "importance": "HIGH",
+          "dependencies": [
+            "M04"
+          ]
+        },
+        {
+          "id": "M06",
+          "name": "50% Physical Progress",
+          "plannedDate": "2023-10-31",
+          "actualDate": "2023-11-08",
+          "status": "COMPLETED",
+          "importance": "HIGH",
+          "dependencies": [
+            "M05"
+          ]
+        },
+        {
+          "id": "M07",
+          "name": "75% Physical Progress",
+          "plannedDate": "2023-12-31",
+          "actualDate": "2024-01-11",
+          "status": "COMPLETED",
+          "importance": "HIGH",
+          "dependencies": [
+            "M06"
+          ]
+        },
+        {
+          "id": "M08",
+          "name": "Testing Complete",
+          "plannedDate": "2024-02-29",
+          "status": "IN_PROGRESS",
+          "importance": "HIGH",
+          "dependencies": [
+            "M07"
+          ]
+        },
+        {
+          "id": "M09",
+          "name": "Project Handover",
+          "plannedDate": "2024-04-30",
+          "status": "PENDING",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M08"
+          ]
+        }
+      ],
+      "createdDate": "2025-07-20",
+      "lastUpdated": "2025-07-20T21:22:23.513Z",
+      "createdBy": "CE Office",
+      "tags": [
+        "ENV",
+        "ONGOING"
+      ],
+      "priority": "HIGH"
+    },
+    {
+      "projectId": "SMART-2025-005-C2",
+      "projectName": "IT Corridor Smart Infrastructure - Phase 2",
+      "category": "SMART",
+      "subCategory": "DI",
+      "currentStage": 4,
+      "stageStartDate": "2024-12-22",
+      "totalBudget": 642114826,
+      "physicalProgress": 49.1,
+      "financialProgress": 42,
+      "ceScore": null,
+      "riskLevel": "LOW",
+      "location": {
+        "circle": "C2",
+        "ward": "Nanakramguda",
+        "mandal": "Serilingampally",
+        "locality": "IT Corridor",
+        "pincode": "500032",
+        "coordinates": {
+          "latitude": 17.3067655961589,
+          "longitude": 78.5964339393029
+        }
+      },
+      "contractor": {
+        "name": "Simplex Infrastructures",
+        "grade": "A",
+        "performanceRating": 3.864220821392641,
+        "currentLoad": 53,
+        "safetyRecord": 136,
+        "completedProjects": 57,
+        "ongoingProjects": 6,
+        "blacklisted": false,
+        "specialization": [
+          "METRO",
+          "TUNNELS"
+        ]
+      },
+      "consultant": "M/s COWI India",
+      "timeline": {
+        "plannedStart": "2024-10-14",
+        "actualStart": "2024-11-17",
+        "plannedCompletion": "2025-05-14",
+        "projectedCompletion": "2025-05-14",
+        "delayDays": 0,
+        "monsoonBuffer": 42,
+        "daysInCurrentStage": 64
+      },
+      "financial": {
+        "contractValue": 642114826,
+        "originalEstimate": 667275502,
+        "paidTillDate": 269955102,
+        "pendingBills": 2,
+        "lastPaymentDate": "2025-07-13",
+        "mobilizationAdvance": 64211482,
+        "retentionAmount": 32105741,
+        "variations": [],
+        "costOverrun": 3.9529127903795533,
+        "budgetUtilization": 42.041562031111816
+      },
+      "quality": {
+        "overallScore": 85.1003702452243,
+        "testsCompleted": 0,
+        "testsPassed": 0,
+        "testsPassRate": 92.93674949863774,
+        "ncrsOpen": 0,
+        "ncrsClosed": 12,
+        "lastAuditScore": null,
+        "lastAuditDate": "2025-05-28",
+        "thirdPartyAudit": false,
+        "materialTestingLab": "Third Party Lab"
+      },
+      "stakeholders": {
+        "politicalInterest": "ROUTINE",
+        "publicSentiment": "NEUTRAL",
+        "mediaAttention": "LOW",
+        "complaintsThisMonth": 4,
+        "appreciationLetters": 5,
+        "rtiQueries": 1,
+        "socialMediaMentions": 34
+      },
+      "realWorldFactors": {
+        "monsoonImpact": "LOW",
+        "landIssues": "ACQUISITION_PENDING",
+        "utilityShifting": "COMPLETED",
+        "environmentalClearance": "OBTAINED",
+        "heritageImpact": false,
+        "trafficImpact": "LOW"
+      },
+      "milestones": [
+        {
+          "id": "M01",
+          "name": "Project Sanction",
+          "plannedDate": "2022-12-31",
+          "actualDate": "2023-01-06",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": []
+        },
+        {
+          "id": "M02",
+          "name": "DPR Approval",
+          "plannedDate": "2023-02-28",
+          "actualDate": "2023-03-05",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M01"
+          ]
+        },
+        {
+          "id": "M03",
+          "name": "Tender Award",
+          "plannedDate": "2023-04-30",
+          "actualDate": "2023-05-01",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M02"
+          ]
+        },
+        {
+          "id": "M04",
+          "name": "Site Handover",
+          "plannedDate": "2023-06-30",
+          "actualDate": "2023-07-08",
+          "status": "COMPLETED",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M03"
+          ]
+        },
+        {
+          "id": "M05",
+          "name": "25% Physical Progress",
+          "plannedDate": "2023-08-31",
+          "status": "IN_PROGRESS",
+          "importance": "HIGH",
+          "dependencies": [
+            "M04"
+          ]
+        },
+        {
+          "id": "M06",
+          "name": "50% Physical Progress",
+          "plannedDate": "2023-10-31",
+          "status": "PENDING",
+          "importance": "HIGH",
+          "dependencies": [
+            "M05"
+          ]
+        },
+        {
+          "id": "M07",
+          "name": "75% Physical Progress",
+          "plannedDate": "2023-12-31",
+          "status": "PENDING",
+          "importance": "HIGH",
+          "dependencies": [
+            "M06"
+          ]
+        },
+        {
+          "id": "M08",
+          "name": "Testing Complete",
+          "plannedDate": "2024-02-29",
+          "status": "PENDING",
+          "importance": "HIGH",
+          "dependencies": [
+            "M07"
+          ]
+        },
+        {
+          "id": "M09",
+          "name": "Project Handover",
+          "plannedDate": "2024-04-30",
+          "status": "PENDING",
+          "importance": "CRITICAL",
+          "dependencies": [
+            "M08"
+          ]
+        }
+      ],
+      "createdDate": "2025-07-20",
+      "lastUpdated": "2025-07-20T21:22:23.513Z",
+      "createdBy": "CE Office",
+      "tags": [
+        "SMART",
+        "PLANNING"
+      ],
+      "priority": "LOW"
+    }
+  ]
+}

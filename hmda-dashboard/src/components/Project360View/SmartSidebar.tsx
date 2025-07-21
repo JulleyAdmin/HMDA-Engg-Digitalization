@@ -1,0 +1,422 @@
+import React from 'react';
+import {
+  Box,
+  Card,
+  Typography,
+  Stack,
+  Button,
+  Chip,
+  IconButton,
+  Divider,
+  Badge,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  useTheme,
+  alpha
+} from '@mui/material';
+import {
+  Warning,
+  CheckCircle,
+  Error,
+  TrendingUp,
+  ArrowBack,
+  Visibility,
+  ThumbUp,
+  Schedule,
+  Engineering,
+  HighQuality,
+  Security,
+  People
+} from '@mui/icons-material';
+import { HMDAProject, ProjectStage } from '../../types/Project';
+import dataService from '../../services/dataService';
+
+interface SmartSidebarProps {
+  project: HMDAProject;
+  currentStage: ProjectStage;
+}
+
+interface ApprovalItem {
+  id: string;
+  title: string;
+  amount?: number;
+  waitingDays: number;
+  priority: 'critical' | 'high' | 'medium';
+  type: 'variation' | 'bill' | 'eot' | 'other';
+}
+
+interface RiskItem {
+  id: string;
+  title: string;
+  impact: string;
+  severity: 'high' | 'medium' | 'low';
+}
+
+const SmartSidebar: React.FC<SmartSidebarProps> = ({ project, currentStage }) => {
+  const theme = useTheme();
+
+  // Mock data for pending approvals
+  const pendingApprovals: ApprovalItem[] = [
+    {
+      id: '1',
+      title: 'Variation Order #12',
+      amount: 23000000, // ₹2.3 Cr
+      waitingDays: 3,
+      priority: 'critical',
+      type: 'variation'
+    },
+    {
+      id: '2',
+      title: 'RA Bill 17',
+      amount: 42000000, // ₹4.2 Cr
+      waitingDays: 2,
+      priority: 'high',
+      type: 'bill'
+    },
+    {
+      id: '3',
+      title: 'EOT Request - 45 days',
+      waitingDays: 5,
+      priority: 'high',
+      type: 'eot'
+    }
+  ];
+
+  // Mock data for risks
+  const risks: RiskItem[] = [
+    {
+      id: '1',
+      title: 'Monsoon preparedness',
+      impact: 'Impact: 60 days',
+      severity: 'high'
+    },
+    {
+      id: '2',
+      title: 'P19-20 soil condition',
+      impact: 'Cost impact: ₹3.5 Cr',
+      severity: 'high'
+    },
+    {
+      id: '3',
+      title: 'Material price escalation',
+      impact: 'Budget variance: 8%',
+      severity: 'medium'
+    },
+    {
+      id: '4',
+      title: 'Skilled labor shortage',
+      impact: 'Productivity: -15%',
+      severity: 'medium'
+    },
+    {
+      id: '5',
+      title: 'Utility shifting delays',
+      impact: 'Schedule impact: 10 days',
+      severity: 'medium'
+    }
+  ];
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'critical': return theme.palette.error.main;
+      case 'high': return theme.palette.warning.main;
+      case 'medium': return theme.palette.info.main;
+      default: return theme.palette.grey[500];
+    }
+  };
+
+  const getSeverityIcon = (severity: string) => {
+    switch (severity) {
+      case 'high': return <Error sx={{ color: theme.palette.error.main, fontSize: 20 }} />;
+      case 'medium': return <Warning sx={{ color: theme.palette.warning.main, fontSize: 20 }} />;
+      case 'low': return <CheckCircle sx={{ color: theme.palette.success.main, fontSize: 20 }} />;
+    }
+  };
+
+  // Calculate stats based on project data
+  const contractorRating = project.contractor?.performanceRating || 4.5;
+  const qualityScore = project.quality?.overallScore || 96;
+  const safetyDays = 142; // Mock data
+  const complaints = 2; // Mock data
+
+  return (
+    <Stack spacing={2}>
+      {/* CE Attention Section */}
+      <Card variant="outlined" sx={{ p: 2 }}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
+          <Typography variant="h6" fontWeight={600} fontSize="0.9rem">
+            CE ATTENTION
+          </Typography>
+          <Badge badgeContent={pendingApprovals.length} color="error">
+            <Schedule />
+          </Badge>
+        </Stack>
+
+        <Stack spacing={2}>
+          {pendingApprovals.map((approval) => (
+            <Card 
+              key={approval.id}
+              variant="outlined" 
+              sx={{ 
+                p: 1.5,
+                borderColor: getPriorityColor(approval.priority),
+                borderWidth: 2,
+                bgcolor: alpha(getPriorityColor(approval.priority), 0.05)
+              }}
+            >
+              <Stack spacing={1}>
+                <Stack direction="row" alignItems="flex-start" justifyContent="space-between">
+                  <Box flex={1}>
+                    <Typography variant="subtitle2" fontWeight={600}>
+                      {approval.priority === 'critical' && '🔴 '}
+                      {approval.priority === 'high' && '🟡 '}
+                      {approval.title}
+                    </Typography>
+                    {approval.amount && (
+                      <Typography variant="body2">
+                        Amount: {dataService.formatCurrency(approval.amount)}
+                      </Typography>
+                    )}
+                    <Typography variant="caption" color="text.secondary">
+                      Waiting: {approval.waitingDays} days
+                    </Typography>
+                  </Box>
+                </Stack>
+                
+                <Stack direction="row" spacing={0.5}>
+                  <Button size="small" variant="text" sx={{ fontSize: '0.7rem', py: 0 }}>
+                    View
+                  </Button>
+                  <Button 
+                    size="small" 
+                    variant="text" 
+                    color="success"
+                    sx={{ fontSize: '0.7rem', py: 0 }}
+                  >
+                    Approve
+                  </Button>
+                  <Button 
+                    size="small" 
+                    variant="text" 
+                    color="warning"
+                    sx={{ fontSize: '0.7rem', py: 0 }}
+                  >
+                    Query
+                  </Button>
+                </Stack>
+              </Stack>
+            </Card>
+          ))}
+        </Stack>
+
+        {/* Table Position */}
+        <Divider sx={{ my: 2 }} />
+        <Box>
+          <Typography variant="caption" color="text.secondary">
+            TABLE POSITION
+          </Typography>
+          <Typography variant="body2">
+            Project: 3 of 45
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            Filtered by:
+          </Typography>
+          <Stack direction="row" spacing={0.5} flexWrap="wrap" mt={0.5}>
+            <Chip label={`Stage ${currentStage}`} size="small" />
+            <Chip label="Risk > Medium" size="small" />
+            <Chip label="Circle I" size="small" />
+          </Stack>
+        </Box>
+      </Card>
+
+      {/* Risk Radar */}
+      <Card variant="outlined" sx={{ p: 2 }}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
+          <Typography variant="h6" fontWeight={600} fontSize="0.9rem">
+            RISK RADAR
+          </Typography>
+          <Warning color="warning" />
+        </Stack>
+
+        <Stack spacing={1.5}>
+          {/* Risk Summary */}
+          <Stack direction="row" spacing={1}>
+            <Chip 
+              label={`High: ${risks.filter(r => r.severity === 'high').length}`}
+              size="small"
+              color="error"
+              sx={{ fontSize: '0.7rem' }}
+            />
+            <Chip 
+              label={`Med: ${risks.filter(r => r.severity === 'medium').length}`}
+              size="small"
+              color="warning"
+              sx={{ fontSize: '0.7rem' }}
+            />
+            <Chip 
+              label={`Low: ${risks.filter(r => r.severity === 'low').length}`}
+              size="small"
+              color="success"
+              sx={{ fontSize: '0.7rem' }}
+            />
+          </Stack>
+
+          {/* High Risks */}
+          <Box>
+            <Typography variant="subtitle2" color="error" gutterBottom>
+              🔴 HIGH RISKS ({risks.filter(r => r.severity === 'high').length})
+            </Typography>
+            <Stack spacing={1}>
+              {risks
+                .filter(r => r.severity === 'high')
+                .map(risk => (
+                  <Box key={risk.id}>
+                    <Typography variant="body2" fontWeight={500}>
+                      • {risk.title}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary" sx={{ ml: 2 }}>
+                      {risk.impact}
+                    </Typography>
+                  </Box>
+                ))}
+            </Stack>
+          </Box>
+
+          {/* Medium Risks */}
+          <Box>
+            <Typography variant="subtitle2" color="warning.main" gutterBottom>
+              🟡 MEDIUM RISKS ({risks.filter(r => r.severity === 'medium').length})
+            </Typography>
+            <Stack spacing={0.5}>
+              {risks
+                .filter(r => r.severity === 'medium')
+                .slice(0, 2)
+                .map(risk => (
+                  <Typography key={risk.id} variant="body2">
+                    • {risk.title}
+                  </Typography>
+                ))}
+            </Stack>
+            {risks.filter(r => r.severity === 'medium').length > 2 && (
+              <Button size="small" sx={{ fontSize: '0.7rem', py: 0 }}>
+                Show all...
+              </Button>
+            )}
+          </Box>
+        </Stack>
+      </Card>
+
+      {/* Quick Stats */}
+      <Card variant="outlined" sx={{ p: 2 }}>
+        <Typography variant="h6" fontWeight={600} fontSize="0.9rem" mb={2}>
+          QUICK STATS
+        </Typography>
+
+        <Stack spacing={1.5}>
+          <StatItem
+            icon={<Engineering />}
+            label="Contractor"
+            value={`${project.contractor?.grade || 'A'}+`}
+            subValue={`Rating: ${contractorRating.toFixed(1)}`}
+            color="primary"
+          />
+          
+          <StatItem
+            icon={<HighQuality />}
+            label="Quality"
+            value={`${qualityScore}%`}
+            subValue="Last audit: 4.3/5"
+            color="success"
+          />
+          
+          <StatItem
+            icon={<Security />}
+            label="Safety"
+            value={`${safetyDays}d`}
+            subValue="Accident free"
+            color="info"
+          />
+          
+          <StatItem
+            icon={<People />}
+            label="Complaints"
+            value={complaints.toString()}
+            subValue="1 resolved"
+            color={complaints > 0 ? "warning" : "success"}
+          />
+        </Stack>
+
+        <Divider sx={{ my: 2 }} />
+
+        {/* Quick Actions */}
+        <Stack spacing={1}>
+          <Button 
+            fullWidth 
+            variant="outlined" 
+            size="small"
+            startIcon={<Visibility />}
+            sx={{ justifyContent: 'flex-start' }}
+          >
+            View Full Details
+          </Button>
+          <Button 
+            fullWidth 
+            variant="outlined" 
+            size="small"
+            startIcon={<TrendingUp />}
+            sx={{ justifyContent: 'flex-start' }}
+          >
+            Performance Trends
+          </Button>
+        </Stack>
+      </Card>
+    </Stack>
+  );
+};
+
+// Helper component for stats
+const StatItem: React.FC<{
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  subValue?: string;
+  color?: 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info';
+}> = ({ icon, label, value, subValue, color = 'primary' }) => {
+  const theme = useTheme();
+  
+  return (
+    <Stack direction="row" spacing={2} alignItems="center">
+      <Box
+        sx={{
+          width: 36,
+          height: 36,
+          borderRadius: 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          bgcolor: alpha(theme.palette[color].main, 0.1),
+          color: theme.palette[color].main,
+        }}
+      >
+        {icon}
+      </Box>
+      <Box flex={1}>
+        <Typography variant="caption" color="text.secondary">
+          {label}
+        </Typography>
+        <Typography variant="body2" fontWeight={600}>
+          {value}
+          {subValue && (
+            <Typography component="span" variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+              {subValue}
+            </Typography>
+          )}
+        </Typography>
+      </Box>
+    </Stack>
+  );
+};
+
+export default SmartSidebar;

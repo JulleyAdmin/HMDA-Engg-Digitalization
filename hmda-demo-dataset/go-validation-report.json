@@ -1,0 +1,34 @@
+{
+  "totalProjects": 150,
+  "goFormat": {
+    "valid": 150,
+    "invalid": 0,
+    "issues": []
+  },
+  "goDates": {
+    "valid": 150,
+    "invalid": 0,
+    "issues": []
+  },
+  "approvalAuthority": {
+    "correct": 150,
+    "incorrect": 0,
+    "issues": []
+  },
+  "goUniqueness": {
+    "totalGOs": 150,
+    "uniqueGOs": {},
+    "duplicates": []
+  },
+  "sanctionAmount": {
+    "appropriate": 150,
+    "tooLow": 0,
+    "tooHigh": 0,
+    "issues": []
+  },
+  "fileNumbers": {
+    "valid": 150,
+    "invalid": 0,
+    "uniqueFiles": {}
+  }
+}

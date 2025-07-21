@@ -1,0 +1,57 @@
+{
+  "totalProjects": 150,
+  "documentFormat": {
+    "valid": 901,
+    "invalid": 0,
+    "issues": []
+  },
+  "documentUniqueness": {
+    "totalDocuments": 901,
+    "uniqueDocuments": {},
+    "duplicates": []
+  },
+  "chronology": {
+    "correct": 127,
+    "incorrect": 23,
+    "issues": []
+  },
+  "divisionConsistency": {
+    "consistent": 127,
+    "inconsistent": 0,
+    "issues": []
+  },
+  "stageAlignment": {
+    "correct": 0,
+    "incorrect": 0,
+    "issues": []
+  },
+  "documentCompleteness": {
+    "complete": 127,
+    "incomplete": 0,
+    "issues": [
+      "ENV-2025-016-C5: TS serial number before AA",
+      "SMART-2025-020-C5: TS serial number before AA",
+      "INFRA-2025-033-C5: TS serial number before AA",
+      "SMART-2025-039-C3: TS serial number before AA",
+      "URBAN-2025-044-C1: TS serial number before AA",
+      "INFRA-2025-056-C5: TS serial number before AA",
+      "INFRA-2025-060-C4: TS serial number before AA",
+      "ENV-2025-064-C4: TS serial number before AA",
+      "SMART-2025-072-C3: TS serial number before AA",
+      "INFRA-2025-078-C3: TS serial number before AA",
+      "URBAN-2025-080-C5: TS serial number before AA",
+      "SMART-2025-083-C5: TS serial number before AA",
+      "SMART-2025-087-C3: TS serial number before AA",
+      "ENV-2025-088-C3: TS serial number before AA",
+      "INFRA-2025-098-C4: TS serial number before AA",
+      "ENV-2025-099-C1: TS serial number before AA",
+      "ENV-2025-117-C3: TS serial number before AA",
+      "INFRA-2025-123-C3: TS serial number before AA",
+      "INFRA-2025-126-C1: TS serial number before AA",
+      "INFRA-2025-127-C4: TS serial number before AA",
+      "SMART-2025-137-C2: TS serial number before AA",
+      "INFRA-2025-144-C4: TS serial number before AA",
+      "ENV-2025-149-C3: TS serial number before AA"
+    ]
+  }
+}
