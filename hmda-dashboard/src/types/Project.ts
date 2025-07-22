@@ -47,6 +47,7 @@ export interface Location {
 
 export interface Contractor {
   name: string;
+  nameOfAgency?: string; // HMDA Master Data aligned field
   grade: string;
   performanceRating: number;
   currentLoad: number;
@@ -127,6 +128,7 @@ export interface Milestone {
 }
 
 export interface HMDAProject {
+  // Original fields
   projectId: string;
   projectName: string;
   category: ProjectCategory;
@@ -153,6 +155,32 @@ export interface HMDAProject {
   createdBy: string;
   tags: string[];
   priority: string;
+
+  // HMDA Master Data Aligned Fields
+  serialNumber: number;
+  divisionNumber: string;
+  nameOfProject: string;
+  nameOfWork: string;
+  typeOfWork: string;
+  asFinancialYear: string;
+  estimateAmountCrores: string;
+  ecvCrores: string | null;
+  asFileNumber: string;
+  asApprovalAuthority: 'Metropolitan Commissioner' | 'Govt';
+  tenderNoticeDetails: {
+    number: string;
+    date: string;
+  };
+  loaDetails: {
+    number: string;
+    date: string;
+  };
+  agreementNumber: string;
+  agreementDate: string;
+  statusOfWork: 'Work in progress' | 'Work is completed';
+  expenditureIncurredWithTax: string;
+  expenditureIncurredWithoutTax: string;
+  periodOfCompletion: string;
 }
 
 export interface ProjectDataset {

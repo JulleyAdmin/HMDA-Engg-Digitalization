@@ -30,6 +30,18 @@ import {
 } from '@mui/icons-material';
 import { HMDAProject, ProjectStage } from '../../types/Project';
 import dataService from '../../services/dataService';
+import ConstructionStageV2 from './StageViews/stages/ConstructionStageV2';
+import ConceptualizationStage from './StageViews/stages/ConceptualizationStage';
+// import DPRApprovalsStage from './StageViews/stages/DPRApprovalsStage';
+import MetricsView from './tabs/MetricsView';
+import IssuesView from './tabs/IssuesView';
+import FinanceView from './tabs/FinanceView';
+import QualityView from './tabs/QualityView';
+import DocumentsView from './tabs/DocumentsView';
+import StakeholderView from './tabs/StakeholderView';
+import TimelineView from './tabs/TimelineView';
+import { FullscreenableCard } from '../FullscreenableCard';
+import { MinimizableCard, CollapsibleSection } from '../MinimizableCard';
 
 interface DynamicContentAreaProps {
   project: HMDAProject;
@@ -85,12 +97,14 @@ const DynamicContentArea: React.FC<DynamicContentAreaProps> = ({
   // Render stage-specific content based on current stage
   const renderStageSpecificContent = () => {
     switch (project.currentStage) {
+      case ProjectStage.CONCEPTUALIZATION:
+        return <ConceptualizationStage project={project} compactMode={false} />;
       case ProjectStage.CONSTRUCTION:
-        return <ConstructionStageView project={project} />;
+        return <ConstructionStageV2 project={project} compactMode={false} />;
       case ProjectStage.DPR_APPROVALS:
-        return <DPRStageView project={project} />;
+        return <DefaultStageView project={project} stageName="DPR Approvals" />;
       default:
-        return <DefaultStageView project={project} />;
+        return <DefaultStageView project={project} stageName="General Project View" />;
     }
   };
 
@@ -104,10 +118,20 @@ const DynamicContentArea: React.FC<DynamicContentAreaProps> = ({
       {/* Progress Overview */}
       <Box display="flex" flexWrap="wrap" gap={2} sx={{ mb: 3 }}>
         <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 30%' } }}>
-          <Card variant="outlined" sx={{ p: 2 }}>
-            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-              Progress
-            </Typography>
+          <MinimizableCard
+            title={<Typography variant="subtitle2" fontWeight={600}>Progress</Typography>}
+            icon={<Analytics />}
+            persistKey={`progress-${project.projectId}`}
+            sx={{ height: '100%' }}
+            contentSx={{ p: 2 }}
+            minimizedContent={
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Typography variant="body2">Physical: {project.physicalProgress}%</Typography>
+                <Typography variant="body2" color="text.secondary">|</Typography>
+                <Typography variant="body2">Financial: {project.financialProgress}%</Typography>
+              </Stack>
+            }
+          >
             <Stack spacing={1}>
               <Box>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -140,14 +164,27 @@ const DynamicContentArea: React.FC<DynamicContentAreaProps> = ({
                 Milestone: 4/7 completed
               </Typography>
             </Stack>
-          </Card>
+          </MinimizableCard>
         </Box>
 
         <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 30%' } }}>
-          <Card variant="outlined" sx={{ p: 2 }}>
-            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-              Timeline
-            </Typography>
+          <MinimizableCard
+            title={<Typography variant="subtitle2" fontWeight={600}>Timeline</Typography>}
+            icon={<Timeline />}
+            persistKey={`timeline-${project.projectId}`}
+            badge={project.timeline?.delayDays > 0 ? `${project.timeline.delayDays}d` : undefined}
+            badgeColor="warning"
+            sx={{ height: '100%' }}
+            contentSx={{ p: 2 }}
+            minimizedContent={
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Typography variant="body2">Day {project.timeline?.elapsedDays || 542}/{project.timeline?.totalDays || 900}</Typography>
+                {project.timeline?.delayDays > 0 && (
+                  <Chip label={`${project.timeline.delayDays}d delay`} size="small" color="warning" />
+                )}
+              </Stack>
+            }
+          >
             <Stack spacing={1}>
               <Typography variant="body2">
                 Day {project.timeline?.elapsedDays || 542} of {project.timeline?.totalDays || 900}
@@ -164,14 +201,24 @@ const DynamicContentArea: React.FC<DynamicContentAreaProps> = ({
                 />
               )}
             </Stack>
-          </Card>
+          </MinimizableCard>
         </Box>
 
         <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 30%' } }}>
-          <Card variant="outlined" sx={{ p: 2 }}>
-            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-              Budget
-            </Typography>
+          <MinimizableCard
+            title={<Typography variant="subtitle2" fontWeight={600}>Budget</Typography>}
+            icon={<AccountBalance />}
+            persistKey={`budget-${project.projectId}`}
+            sx={{ height: '100%' }}
+            contentSx={{ p: 2 }}
+            minimizedContent={
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Typography variant="body2">Used: {project.financial?.budgetUtilization || 62.5}%</Typography>
+                <Typography variant="body2" color="text.secondary">|</Typography>
+                <Typography variant="body2">{dataService.formatCurrency((project.financial?.budgetUtilization || 62.5) * project.totalBudget / 100)}</Typography>
+              </Stack>
+            }
+          >
             <Stack spacing={1}>
               <Typography variant="body2">
                 Used: {project.financial?.budgetUtilization || 62.5}%
@@ -183,7 +230,7 @@ const DynamicContentArea: React.FC<DynamicContentAreaProps> = ({
                 Available: {dataService.formatCurrency(project.totalBudget * (100 - (project.financial?.budgetUtilization || 62.5)) / 100)}
               </Typography>
             </Stack>
-          </Card>
+          </MinimizableCard>
         </Box>
       </Box>
 
@@ -218,35 +265,83 @@ const DynamicContentArea: React.FC<DynamicContentAreaProps> = ({
 
       {/* Tab Content */}
       <TabPanel value={selectedTab} index={0}>
-        {renderStageSpecificContent()}
+        <FullscreenableCard 
+          title={<Typography variant="h6">Live View</Typography>}
+          sx={{ bgcolor: 'transparent', boxShadow: 'none' }}
+          contentSx={{ p: 0 }}
+        >
+          {renderStageSpecificContent()}
+        </FullscreenableCard>
       </TabPanel>
 
       <TabPanel value={selectedTab} index={1}>
-        <MetricsView project={project} />
+        <FullscreenableCard 
+          title={<Typography variant="h6">Project Metrics & Analytics</Typography>}
+          sx={{ bgcolor: 'transparent', boxShadow: 'none' }}
+          contentSx={{ p: 0 }}
+        >
+          <MetricsView project={project} />
+        </FullscreenableCard>
       </TabPanel>
 
       <TabPanel value={selectedTab} index={2}>
-        <IssuesView project={project} />
+        <FullscreenableCard 
+          title={<Typography variant="h6">Issues & Risk Management</Typography>}
+          sx={{ bgcolor: 'transparent', boxShadow: 'none' }}
+          contentSx={{ p: 0 }}
+        >
+          <IssuesView project={project} />
+        </FullscreenableCard>
       </TabPanel>
 
       <TabPanel value={selectedTab} index={3}>
-        <FinanceView project={project} />
+        <FullscreenableCard 
+          title={<Typography variant="h6">Financial Overview</Typography>}
+          sx={{ bgcolor: 'transparent', boxShadow: 'none' }}
+          contentSx={{ p: 0 }}
+        >
+          <FinanceView project={project} />
+        </FullscreenableCard>
       </TabPanel>
 
       <TabPanel value={selectedTab} index={4}>
-        <QualityView project={project} />
+        <FullscreenableCard 
+          title={<Typography variant="h6">Quality Control & Compliance</Typography>}
+          sx={{ bgcolor: 'transparent', boxShadow: 'none' }}
+          contentSx={{ p: 0 }}
+        >
+          <QualityView project={project} />
+        </FullscreenableCard>
       </TabPanel>
 
       <TabPanel value={selectedTab} index={5}>
-        <StakeholderView project={project} />
+        <FullscreenableCard 
+          title={<Typography variant="h6">Stakeholder Management</Typography>}
+          sx={{ bgcolor: 'transparent', boxShadow: 'none' }}
+          contentSx={{ p: 0 }}
+        >
+          <StakeholderView project={project} />
+        </FullscreenableCard>
       </TabPanel>
 
       <TabPanel value={selectedTab} index={6}>
-        <DocumentsView project={project} />
+        <FullscreenableCard 
+          title={<Typography variant="h6">Project Documents</Typography>}
+          sx={{ bgcolor: 'transparent', boxShadow: 'none' }}
+          contentSx={{ p: 0 }}
+        >
+          <DocumentsView project={project} />
+        </FullscreenableCard>
       </TabPanel>
 
       <TabPanel value={selectedTab} index={7}>
-        <TimelineView project={project} />
+        <FullscreenableCard 
+          title={<Typography variant="h6">Project Timeline</Typography>}
+          sx={{ bgcolor: 'transparent', boxShadow: 'none' }}
+          contentSx={{ p: 0 }}
+        >
+          <TimelineView project={project} />
+        </FullscreenableCard>
       </TabPanel>
     </Box>
   );
@@ -359,11 +454,11 @@ const DPRStageView: React.FC<{ project: HMDAProject }> = ({ project }) => {
 };
 
 // Default Stage View Component
-const DefaultStageView: React.FC<{ project: HMDAProject }> = ({ project }) => {
+const DefaultStageView: React.FC<{ project: HMDAProject; stageName?: string }> = ({ project, stageName }) => {
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
-        {dataService.getStageLabel(project.currentStage)} Overview
+        {stageName || dataService.getStageLabel(project.currentStage)} Overview
       </Typography>
       
       <Card variant="outlined" sx={{ p: 3, textAlign: 'center' }}>
@@ -379,33 +474,13 @@ const DefaultStageView: React.FC<{ project: HMDAProject }> = ({ project }) => {
 };
 
 // Other Tab Views (simplified for now)
-const MetricsView: React.FC<{ project: HMDAProject }> = ({ project }) => (
-  <Typography>Performance Metrics Dashboard - To be implemented</Typography>
-);
 
-const IssuesView: React.FC<{ project: HMDAProject }> = ({ project }) => (
-  <Typography>Active Issues & Impediments - To be implemented</Typography>
-);
+// IssuesView is now imported from tabs/IssuesView
 
-const FinanceView: React.FC<{ project: HMDAProject }> = ({ project }) => (
-  <Typography>Financial Overview - To be implemented</Typography>
-);
+// FinanceView is now imported from tabs/FinanceView
 
-const QualityView: React.FC<{ project: HMDAProject }> = ({ project }) => (
-  <Typography>Quality Control Metrics - To be implemented</Typography>
-);
+// QualityView is now imported from tabs/QualityView
 
-const StakeholderView: React.FC<{ project: HMDAProject }> = ({ project }) => (
-  <Typography>Stakeholder Engagement Matrix - To be implemented</Typography>
-);
-
-const DocumentsView: React.FC<{ project: HMDAProject }> = ({ project }) => (
-  <Typography>Project Documents - To be implemented</Typography>
-);
-
-const TimelineView: React.FC<{ project: HMDAProject }> = ({ project }) => (
-  <Typography>Detailed Timeline Analysis - To be implemented</Typography>
-);
 
 // Helper Components
 const ProgressItem: React.FC<{ label: string; progress: number; detail: string }> = ({ 

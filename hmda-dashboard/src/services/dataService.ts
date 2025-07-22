@@ -11,8 +11,8 @@ class DataService {
     }
 
     try {
-      console.log('🔄 Attempting to load HMDA dataset...');
-      const response = await fetch('/hmda-projects-150.json');
+      console.log('🔄 Attempting to load HMDA Master-Aligned dataset...');
+      const response = await fetch('/hmda-projects-150-master-aligned.json');
       console.log('📡 Fetch response:', response.status, response.statusText);
       
       if (!response.ok) {
@@ -96,15 +96,20 @@ class DataService {
       );
     }
 
-    // Search text filter
+    // Search text filter - Updated for HMDA fields
     if (filters.searchText && filters.searchText.trim()) {
       const searchLower = filters.searchText.toLowerCase();
       filtered = filtered.filter(p => 
-        p.projectName.toLowerCase().includes(searchLower) ||
+        p.nameOfProject?.toLowerCase().includes(searchLower) ||
+        p.nameOfWork?.toLowerCase().includes(searchLower) ||
+        p.projectName?.toLowerCase().includes(searchLower) ||
         p.projectId.toLowerCase().includes(searchLower) ||
         p.location.locality.toLowerCase().includes(searchLower) ||
         p.location.ward.toLowerCase().includes(searchLower) ||
-        (p.contractor?.name.toLowerCase().includes(searchLower))
+        (p.contractor?.nameOfAgency?.toLowerCase().includes(searchLower)) ||
+        (p.contractor?.name?.toLowerCase().includes(searchLower)) ||
+        p.typeOfWork?.toLowerCase().includes(searchLower) ||
+        p.asFileNumber?.toLowerCase().includes(searchLower)
       );
     }
 

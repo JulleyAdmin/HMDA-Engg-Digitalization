@@ -1,0 +1,453 @@
+import React, { useState } from 'react';
+import {
+  Box,
+  Typography,
+  Stack,
+  Paper,
+  Chip,
+  Card,
+  useTheme,
+  alpha,
+  Tabs,
+  Tab,
+  Divider,
+  IconButton,
+  Button,
+  Badge
+} from '@mui/material';
+import {
+  Lightbulb,
+  LocationOn,
+  AttachMoney,
+  AccountBalance,
+  Assignment,
+  Description,
+  Approval,
+  Analytics,
+  ExpandMore,
+  ExpandLess,
+  Warning,
+  CheckCircle,
+  TrendingUp,
+  Engineering
+} from '@mui/icons-material';
+import { HMDAProject, ProjectStage } from '../../../../types/Project';
+import { 
+  ActionPanel, 
+  ComplianceTracker, 
+  StageInsights
+} from '../base';
+import type { ActionItem, ComplianceItem, InsightItem } from '../base';
+
+// Import Stage 1 screen components
+import NeedIdentificationScreen from './components/NeedIdentificationScreen';
+import SiteVisitAssessmentScreen from './components/SiteVisitAssessmentScreen';
+import PreliminaryCostEstimateScreen from './components/PreliminaryCostEstimateScreen';
+import BudgetVerificationScreen from './components/BudgetVerificationScreen';
+import FeasibilityStudyScreen from './components/FeasibilityStudyScreen';
+import ConceptNotePreparationScreen from './components/ConceptNotePreparationScreen';
+import ApprovalWorkflowScreen from './components/ApprovalWorkflowScreen';
+import Stage1DashboardScreen from './components/Stage1DashboardScreen';
+
+interface ConceptualizationStageProps {
+  project: HMDAProject;
+  compactMode?: boolean;
+  onUpdate?: (updates: Partial<HMDAProject>) => void;
+}
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+const TabPanel: React.FC<TabPanelProps> = ({ children, value, index, ...other }) => (
+  <div
+    role="tabpanel"
+    hidden={value !== index}
+    id={`stage1-tabpanel-${index}`}
+    aria-labelledby={`stage1-tab-${index}`}
+    {...other}
+  >
+    {value === index && <Box sx={{ py: 3 }}>{children}</Box>}
+  </div>
+);
+
+// Executive Summary for Stage 1
+const ConceptualizationSummary: React.FC<{ project: HMDAProject }> = ({ project }) => {
+  const theme = useTheme();
+  
+  const metrics = [
+    { 
+      label: 'Need Assessment', 
+      value: '85%', 
+      change: 12.5, 
+      icon: <Lightbulb />,
+      status: 'ontrack' 
+    },
+    { 
+      label: 'Site Survey', 
+      value: '70%', 
+      change: 8.2, 
+      icon: <LocationOn />,
+      status: 'ontrack' 
+    },
+    { 
+      label: 'Cost Estimate', 
+      value: '92%', 
+      change: 5.1, 
+      icon: <AttachMoney />,
+      status: 'good' 
+    },
+    { 
+      label: 'Approvals', 
+      value: '3 pending', 
+      change: -10, 
+      icon: <Approval />,
+      status: 'delayed',
+      subtitle: 'review stage'
+    }
+  ];
+  
+  return (
+    <Card
+      sx={{
+        p: 3,
+        background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+        border: '1px solid #e2e8f0',
+        position: 'relative',
+        overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 6,
+          background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${alpha(theme.palette.primary.main, 0.7)} 100%)`
+        }
+      }}
+    >
+      <Typography variant="h6" fontWeight={700} mb={3}>
+        Project Conceptualization Executive Summary
+      </Typography>
+      
+      <Box display="flex" flexWrap="wrap" gap={3}>
+        {metrics.map((metric, index) => (
+          <Box flex="1 1 200px" key={index}>
+            <Box
+              sx={{
+                p: 2,
+                borderRadius: 1.5,
+                bgcolor: alpha(
+                  metric.status === 'delayed' ? theme.palette.error.main : 
+                  metric.status === 'good' ? theme.palette.success.main : 
+                  theme.palette.primary.main, 
+                  0.05
+                ),
+                border: `1px solid ${alpha(
+                  metric.status === 'delayed' ? theme.palette.error.main : 
+                  metric.status === 'good' ? theme.palette.success.main : 
+                  theme.palette.primary.main, 
+                  0.2
+                )}`,
+                textAlign: 'center'
+              }}
+            >
+              <Box
+                sx={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: '50%',
+                  bgcolor: alpha(
+                    metric.status === 'delayed' ? theme.palette.error.main : 
+                    metric.status === 'good' ? theme.palette.success.main : 
+                    theme.palette.primary.main, 
+                    0.1
+                  ),
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  mx: 'auto',
+                  mb: 1,
+                  color: metric.status === 'delayed' ? 'error.main' : 
+                         metric.status === 'good' ? 'success.main' : 
+                         'primary.main'
+                }}
+              >
+                {metric.icon}
+              </Box>
+              
+              <Typography variant="overline" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
+                {metric.label}
+              </Typography>
+              
+              <Typography variant="h5" fontWeight={800} color={
+                metric.status === 'delayed' ? 'error.main' : 
+                metric.status === 'good' ? 'success.main' : 
+                'primary.main'
+              }>
+                {metric.value}
+              </Typography>
+              
+              {metric.subtitle && (
+                <Typography variant="caption" color="text.secondary">
+                  {metric.subtitle}
+                </Typography>
+              )}
+              
+              {metric.change && (
+                <Stack direction="row" alignItems="center" justifyContent="center" spacing={0.5} mt={0.5}>
+                  <TrendingUp 
+                    sx={{ 
+                      fontSize: 14, 
+                      color: metric.change > 0 ? 'success.main' : 'error.main',
+                      transform: metric.change < 0 ? 'rotate(180deg)' : 'none'
+                    }} 
+                  />
+                  <Typography variant="caption" fontWeight={600} color={metric.change > 0 ? 'success.main' : 'error.main'}>
+                    {Math.abs(metric.change)}%
+                  </Typography>
+                </Stack>
+              )}
+            </Box>
+          </Box>
+        ))}
+      </Box>
+    </Card>
+  );
+};
+
+const ConceptualizationStage: React.FC<ConceptualizationStageProps> = ({ 
+  project, 
+  compactMode = false,
+  onUpdate 
+}) => {
+  const theme = useTheme();
+  const [activeTab, setActiveTab] = useState(0);
+
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setActiveTab(newValue);
+  };
+
+  const handleProjectUpdate = (updates: Partial<HMDAProject>) => {
+    if (onUpdate) {
+      onUpdate(updates);
+    }
+  };
+
+  // Stage 1 tabs configuration
+  const tabs = [
+    { label: 'Need Identification', icon: <Lightbulb />, badge: 0 },
+    { label: 'Site Assessment', icon: <LocationOn />, badge: 0 },
+    { label: 'Cost Estimate', icon: <AttachMoney />, badge: 0 },
+    { label: 'Budget Check', icon: <AccountBalance />, badge: 1 },
+    { label: 'Feasibility Study', icon: <Assignment />, badge: 0 },
+    { label: 'Concept Note', icon: <Description />, badge: 0 },
+    { label: 'Approvals', icon: <Approval />, badge: 3 },
+    { label: 'Dashboard', icon: <Analytics />, badge: 0 }
+  ];
+
+  // Stage 1 specific compliance items
+  const stage1Compliance: ComplianceItem[] = [
+    {
+      id: 'master-plan-check',
+      title: 'Master Plan Compliance',
+      description: 'Verify project aligns with HMDA Master Plan 2031',
+      status: 'completed',
+      priority: 'high',
+      completedDate: '12-Jan-2024'
+    },
+    {
+      id: 'environmental-clearance',
+      title: 'Environmental Pre-Clearance',
+      description: 'Initial environmental impact assessment',
+      status: 'in_progress',
+      priority: 'high'
+    },
+    {
+      id: 'budget-allocation',
+      title: 'Budget Availability Check',
+      description: 'Confirm fund availability for project execution',
+      status: 'pending',
+      priority: 'medium'
+    }
+  ];
+
+  // Stage 1 specific insights
+  const stage1Insights: InsightItem[] = [
+    {
+      id: '1',
+      type: 'info',
+      message: 'Similar projects in this area completed 15% under budget on average',
+      priority: 'medium',
+      category: 'cost'
+    },
+    {
+      id: '2', 
+      type: 'warning',
+      message: 'Monsoon season approaching - expedite site survey activities',
+      priority: 'high',
+      category: 'time'
+    },
+    {
+      id: '3',
+      type: 'success',
+      message: 'Public support rating 89% based on citizen feedback portal',
+      priority: 'low',
+      category: 'general'
+    }
+  ];
+
+  return (
+    <Box>
+      {/* Stage Header */}
+      <Box
+        sx={{
+          p: 2,
+          mb: 3,
+          borderRadius: 2,
+          bgcolor: alpha(theme.palette.primary.main, 0.05),
+          border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`
+        }}
+      >
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Box>
+            <Typography variant="h5" fontWeight={700}>
+              STAGE 1: PROJECT CONCEPTUALIZATION & FEASIBILITY
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Duration: 45-90 days • Day 23 of 60 • Progress: 78%
+            </Typography>
+          </Box>
+          <Stack direction="row" spacing={1}>
+            <Chip label="IN PROGRESS" color="primary" />
+            <Chip label="ON TRACK" color="success" />
+          </Stack>
+        </Stack>
+      </Box>
+
+      {/* Executive Summary */}
+      <Box mb={3}>
+        <ConceptualizationSummary project={project} />
+      </Box>
+
+      {/* Main Content Tabs */}
+      <Paper sx={{ overflow: 'hidden' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs 
+            value={activeTab} 
+            onChange={handleTabChange} 
+            variant="scrollable"
+            scrollButtons="auto"
+            aria-label="Stage 1 screens"
+            sx={{
+              '& .MuiTab-root': {
+                minWidth: 140,
+                textTransform: 'none',
+                fontWeight: 600
+              }
+            }}
+          >
+            {tabs.map((tab, index) => (
+              <Tab
+                key={index}
+                icon={
+                  tab.badge > 0 ? (
+                    <Badge badgeContent={tab.badge} color="error">
+                      {tab.icon}
+                    </Badge>
+                  ) : tab.icon
+                }
+                iconPosition="start"
+                label={tab.label}
+                id={`stage1-tab-${index}`}
+                aria-controls={`stage1-tabpanel-${index}`}
+              />
+            ))}
+          </Tabs>
+        </Box>
+
+        {/* Tab Panels */}
+        <TabPanel value={activeTab} index={0}>
+          <NeedIdentificationScreen 
+            project={project} 
+            onUpdate={handleProjectUpdate}
+            compactMode={compactMode}
+          />
+        </TabPanel>
+
+        <TabPanel value={activeTab} index={1}>
+          <SiteVisitAssessmentScreen 
+            project={project} 
+            onUpdate={handleProjectUpdate}
+            compactMode={compactMode}
+          />
+        </TabPanel>
+
+        <TabPanel value={activeTab} index={2}>
+          <PreliminaryCostEstimateScreen 
+            project={project} 
+            onUpdate={handleProjectUpdate}
+            compactMode={compactMode}
+          />
+        </TabPanel>
+
+        <TabPanel value={activeTab} index={3}>
+          <BudgetVerificationScreen 
+            project={project} 
+            onUpdate={handleProjectUpdate}
+            compactMode={compactMode}
+          />
+        </TabPanel>
+
+        <TabPanel value={activeTab} index={4}>
+          <FeasibilityStudyScreen 
+            project={project} 
+            onUpdate={handleProjectUpdate}
+            compactMode={compactMode}
+          />
+        </TabPanel>
+
+        <TabPanel value={activeTab} index={5}>
+          <ConceptNotePreparationScreen 
+            project={project} 
+            onUpdate={handleProjectUpdate}
+            compactMode={compactMode}
+          />
+        </TabPanel>
+
+        <TabPanel value={activeTab} index={6}>
+          <ApprovalWorkflowScreen 
+            project={project} 
+            onUpdate={handleProjectUpdate}
+            compactMode={compactMode}
+          />
+        </TabPanel>
+
+        <TabPanel value={activeTab} index={7}>
+          <Stage1DashboardScreen 
+            project={project} 
+            onUpdate={handleProjectUpdate}
+            compactMode={compactMode}
+          />
+        </TabPanel>
+      </Paper>
+
+      {/* Additional Insights Section */}
+      <Box mt={3}>
+        <Paper sx={{ p: 3 }}>
+          <Typography variant="h6" fontWeight={700} mb={2}>
+            Stage 1 Insights & Recommendations
+          </Typography>
+          <StageInsights
+            insights={stage1Insights}
+            compactMode={compactMode}
+          />
+        </Paper>
+      </Box>
+    </Box>
+  );
+};
+
+export default ConceptualizationStage;

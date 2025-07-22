@@ -1,0 +1,670 @@
+import React, { useState } from 'react';
+import {
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  Button,
+  Chip,
+  Stack,
+  Paper,
+  Avatar,
+  IconButton,
+  Alert,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Badge,
+  useTheme,
+  alpha,
+  LinearProgress
+} from '@mui/material';
+import {
+  LocationOn,
+  CalendarToday,
+  Camera,
+  Assignment,
+  Group,
+  CheckCircle,
+  Schedule,
+  Warning,
+  Add,
+  Edit,
+  Visibility,
+  Upload,
+  Map,
+  Engineering,
+  Terrain,
+  WaterDrop,
+  ElectricalServices,
+  Traffic,
+  Home,
+  Delete,
+  Phone
+} from '@mui/icons-material';
+import { HMDAProject } from '../../../../../types/Project';
+
+interface SiteVisitAssessmentScreenProps {
+  project: HMDAProject;
+  onUpdate: (updates: Partial<HMDAProject>) => void;
+  compactMode?: boolean;
+}
+
+interface SiteVisit {
+  id: string;
+  visitDate: string;
+  visitTime: string;
+  status: 'scheduled' | 'in_progress' | 'completed' | 'cancelled';
+  team: Array<{
+    name: string;
+    role: string;
+    department: string;
+    contact: string;
+  }>;
+  purpose: string;
+  location: {
+    address: string;
+    coordinates: [number, number];
+    accessibility: 'easy' | 'moderate' | 'difficult';
+  };
+  weather: string;
+  findings: {
+    terrain: 'flat' | 'hilly' | 'mixed';
+    soilCondition: 'good' | 'average' | 'poor';
+    drainage: 'adequate' | 'needs_improvement' | 'poor';
+    utilities: {
+      electricity: boolean;
+      water: boolean;
+      telecom: boolean;
+    };
+    traffic: 'light' | 'moderate' | 'heavy';
+    structures: Array<{
+      type: string;
+      condition: 'good' | 'fair' | 'poor';
+      impact: 'none' | 'minor' | 'major';
+    }>;
+  };
+  photos: string[];
+  documents: string[];
+  nextActions: string[];
+}
+
+const SiteVisitAssessmentScreen: React.FC<SiteVisitAssessmentScreenProps> = ({
+  project,
+  onUpdate,
+  compactMode = false
+}) => {
+  const theme = useTheme();
+  const [selectedVisit, setSelectedVisit] = useState<string | null>(null);
+  const [showScheduleDialog, setShowScheduleDialog] = useState(false);
+
+  // Mock site visit data
+  const siteVisits: SiteVisit[] = [
+    {
+      id: 'SV001',
+      visitDate: '2024-01-20',
+      visitTime: '09:00 AM',
+      status: 'completed',
+      team: [
+        {
+          name: 'Rajesh Kumar',
+          role: 'Assistant Engineer',
+          department: 'HMDA Technical',
+          contact: '+91 98765 43210'
+        },
+        {
+          name: 'Priya Singh',
+          role: 'Site Surveyor',
+          department: 'Survey Department',
+          contact: '+91 98765 43211'
+        },
+        {
+          name: 'Mohammed Ali',
+          role: 'Environmental Specialist',
+          department: 'Environment Cell',
+          contact: '+91 98765 43212'
+        }
+      ],
+      purpose: 'Initial site reconnaissance and feasibility assessment',
+      location: {
+        address: 'Gachibowli IT Corridor, Survey No. 123/A, Serilingampally',
+        coordinates: [17.4569, 78.3677],
+        accessibility: 'easy'
+      },
+      weather: 'Sunny, 28°C',
+      findings: {
+        terrain: 'mixed',
+        soilCondition: 'good',
+        drainage: 'needs_improvement',
+        utilities: {
+          electricity: true,
+          water: true,
+          telecom: true
+        },
+        traffic: 'heavy',
+        structures: [
+          {
+            type: 'Residential buildings',
+            condition: 'good',
+            impact: 'minor'
+          },
+          {
+            type: 'Existing road',
+            condition: 'fair',
+            impact: 'major'
+          }
+        ]
+      },
+      photos: ['site_overview.jpg', 'terrain_analysis.jpg', 'existing_road.jpg', 'drainage_system.jpg'],
+      documents: ['site_survey_report.pdf', 'soil_test_results.pdf'],
+      nextActions: [
+        'Conduct detailed soil testing',
+        'Survey existing utilities',
+        'Traffic impact assessment',
+        'Stakeholder consultation'
+      ]
+    },
+    {
+      id: 'SV002',
+      visitDate: '2024-01-25',
+      visitTime: '10:30 AM',
+      status: 'scheduled',
+      team: [
+        {
+          name: 'Suresh Reddy',
+          role: 'Executive Engineer',
+          department: 'HMDA Technical',
+          contact: '+91 98765 43213'
+        },
+        {
+          name: 'Anjali Sharma',
+          role: 'Traffic Engineer',
+          department: 'Traffic Department',
+          contact: '+91 98765 43214'
+        }
+      ],
+      purpose: 'Traffic pattern analysis and intersection design review',
+      location: {
+        address: 'Gachibowli Junction, Near Financial District',
+        coordinates: [17.4569, 78.3677],
+        accessibility: 'moderate'
+      },
+      weather: 'Expected: Partly cloudy',
+      findings: {
+        terrain: 'flat',
+        soilCondition: 'average',
+        drainage: 'adequate',
+        utilities: {
+          electricity: true,
+          water: false,
+          telecom: true
+        },
+        traffic: 'heavy',
+        structures: []
+      },
+      photos: [],
+      documents: [],
+      nextActions: []
+    }
+  ];
+
+  const getStatusColor = (status: string) => {
+    const colors = {
+      'scheduled': 'info',
+      'in_progress': 'warning',
+      'completed': 'success',
+      'cancelled': 'error'
+    };
+    return colors[status as keyof typeof colors] || 'default';
+  };
+
+  const getAccessibilityIcon = (accessibility: string) => {
+    switch (accessibility) {
+      case 'easy': return <CheckCircle color="success" />;
+      case 'moderate': return <Warning color="warning" />;
+      case 'difficult': return <Warning color="error" />;
+      default: return <LocationOn />;
+    }
+  };
+
+  const getConditionColor = (condition: string) => {
+    const colors = {
+      'good': 'success',
+      'fair': 'warning',
+      'average': 'warning',
+      'poor': 'error'
+    };
+    return colors[condition as keyof typeof colors] || 'default';
+  };
+
+  return (
+    <Box>
+      {/* Header Section */}
+      <Box mb={3}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
+          <Typography variant="h5" fontWeight={700}>
+            Site Visit & Assessment Management
+          </Typography>
+          <Button
+            variant="contained"
+            startIcon={<Add />}
+            onClick={() => setShowScheduleDialog(true)}
+          >
+            Schedule Visit
+          </Button>
+        </Stack>
+        
+        <Alert severity="info" sx={{ mb: 2 }}>
+          Site visits are crucial for accurate project planning. All visits must be documented with photos, measurements, and detailed assessments.
+        </Alert>
+      </Box>
+
+      {/* Progress Summary */}
+      <Box display="flex" flexWrap="wrap" gap={3} mb={4}>
+        <Box flex="1 1 250px">
+          <Card>
+            <CardContent>
+              <Typography variant="h6" fontWeight={600} mb={2}>
+                Site Assessment Progress
+              </Typography>
+              <Box display="flex" flexWrap="wrap" gap={3}>
+                <Box flex="1 1 250px">
+                  <Box textAlign="center">
+                    <Avatar sx={{ bgcolor: 'success.main', mx: 'auto', mb: 1 }}>
+                      <CheckCircle />
+                    </Avatar>
+                    <Typography variant="h4" fontWeight={700} color="success.main">
+                      {siteVisits.filter(v => v.status === 'completed').length}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Completed
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box flex="1 1 250px">
+                  <Box textAlign="center">
+                    <Avatar sx={{ bgcolor: 'info.main', mx: 'auto', mb: 1 }}>
+                      <Schedule />
+                    </Avatar>
+                    <Typography variant="h4" fontWeight={700} color="info.main">
+                      {siteVisits.filter(v => v.status === 'scheduled').length}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Scheduled
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box flex="1 1 250px">
+                  <Box textAlign="center">
+                    <Avatar sx={{ bgcolor: 'primary.main', mx: 'auto', mb: 1 }}>
+                      <Camera />
+                    </Avatar>
+                    <Typography variant="h4" fontWeight={700} color="primary.main">
+                      {siteVisits.reduce((acc, visit) => acc + visit.photos.length, 0)}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Photos
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box flex="1 1 250px">
+                  <Box textAlign="center">
+                    <Avatar sx={{ bgcolor: 'secondary.main', mx: 'auto', mb: 1 }}>
+                      <Assignment />
+                    </Avatar>
+                    <Typography variant="h4" fontWeight={700} color="secondary.main">
+                      {siteVisits.reduce((acc, visit) => acc + visit.documents.length, 0)}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Reports
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
+        </Box>
+        
+        <Box flex="1 1 250px">
+          <Card sx={{ height: '100%' }}>
+            <CardContent>
+              <Typography variant="h6" fontWeight={600} mb={2}>
+                Next Scheduled Visit
+              </Typography>
+              {siteVisits.filter(v => v.status === 'scheduled').length > 0 ? (
+                <Box>
+                  <Stack direction="row" alignItems="center" spacing={1} mb={1}>
+                    <CalendarToday sx={{ fontSize: 16, color: 'text.secondary' }} />
+                    <Typography variant="body2">
+                      {siteVisits.find(v => v.status === 'scheduled')?.visitDate} at{' '}
+                      {siteVisits.find(v => v.status === 'scheduled')?.visitTime}
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row" alignItems="center" spacing={1} mb={1}>
+                    <Group sx={{ fontSize: 16, color: 'text.secondary' }} />
+                    <Typography variant="body2">
+                      {siteVisits.find(v => v.status === 'scheduled')?.team.length} team members
+                    </Typography>
+                  </Stack>
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                    {siteVisits.find(v => v.status === 'scheduled')?.purpose}
+                  </Typography>
+                </Box>
+              ) : (
+                <Typography variant="body2" color="text.secondary">
+                  No visits scheduled
+                </Typography>
+              )}
+            </CardContent>
+          </Card>
+        </Box>
+      </Box>
+
+      {/* Site Visits List */}
+      <Typography variant="h6" fontWeight={700} mb={2}>
+        Site Visit History
+      </Typography>
+      
+      <Box display="flex" flexWrap="wrap" gap={3}>
+        {siteVisits.map((visit) => (
+          <Box flex="1 1 250px">
+            <Card 
+              sx={{ 
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                '&:hover': {
+                  transform: 'translateY(-2px)',
+                  boxShadow: theme.shadows[8]
+                },
+                border: selectedVisit === visit.id ? `2px solid ${theme.palette.primary.main}` : '1px solid #e0e0e0'
+              }}
+              onClick={() => setSelectedVisit(selectedVisit === visit.id ? null : visit.id)}
+            >
+              <CardContent>
+                <Box display="flex" flexWrap="wrap" gap={3}>
+                  {/* Visit Info */}
+                  <Box flex="1 1 250px">
+                    <Stack gap={2}>
+                      <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
+                        <Box>
+                          <Typography variant="h6" fontWeight={600} mb={1}>
+                            Site Visit - {visit.id}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {visit.purpose}
+                          </Typography>
+                        </Box>
+                        <Chip 
+                          label={visit.status.replace('_', ' ').toUpperCase()}
+                          color={getStatusColor(visit.status) as any}
+                          size="small"
+                        />
+                      </Stack>
+                      
+                      <Stack direction="row" alignItems="center" spacing={1}>
+                        <CalendarToday sx={{ fontSize: 16, color: 'text.secondary' }} />
+                        <Typography variant="body2">
+                          {visit.visitDate} at {visit.visitTime}
+                        </Typography>
+                      </Stack>
+                      
+                      <Stack direction="row" alignItems="center" spacing={1}>
+                        <LocationOn sx={{ fontSize: 16, color: 'text.secondary' }} />
+                        <Typography variant="body2" sx={{ flex: 1 }}>
+                          {visit.location.address}
+                        </Typography>
+                        {getAccessibilityIcon(visit.location.accessibility)}
+                      </Stack>
+                      
+                      <Stack direction="row" alignItems="center" spacing={1}>
+                        <Group sx={{ fontSize: 16, color: 'text.secondary' }} />
+                        <Typography variant="body2">
+                          {visit.team.length} team members
+                        </Typography>
+                      </Stack>
+                    </Stack>
+                  </Box>
+                  
+                  {/* Assessment Summary */}
+                  {visit.status === 'completed' && (
+                    <Box flex="1 1 250px">
+                      <Typography variant="subtitle2" fontWeight={600} mb={1}>
+                        Assessment Summary
+                      </Typography>
+                      <Box display="flex" flexWrap="wrap" gap={2}>
+                        <Box flex="1 1 250px">
+                          <Stack direction="row" alignItems="center" spacing={1}>
+                            <Terrain sx={{ fontSize: 16 }} />
+                            <Typography variant="body2">
+                              Terrain: {visit.findings.terrain}
+                            </Typography>
+                          </Stack>
+                        </Box>
+                        <Box flex="1 1 250px">
+                          <Stack direction="row" alignItems="center" spacing={1}>
+                            <Engineering sx={{ fontSize: 16 }} />
+                            <Typography variant="body2">
+                              Soil: {visit.findings.soilCondition}
+                            </Typography>
+                          </Stack>
+                        </Box>
+                        <Box flex="1 1 250px">
+                          <Stack direction="row" alignItems="center" spacing={1}>
+                            <WaterDrop sx={{ fontSize: 16 }} />
+                            <Typography variant="body2">
+                              Drainage: {visit.findings.drainage.replace('_', ' ')}
+                            </Typography>
+                          </Stack>
+                        </Box>
+                        <Box flex="1 1 250px">
+                          <Stack direction="row" alignItems="center" spacing={1}>
+                            <Traffic sx={{ fontSize: 16 }} />
+                            <Typography variant="body2">
+                              Traffic: {visit.findings.traffic}
+                            </Typography>
+                          </Stack>
+                        </Box>
+                      </Box>
+                      
+                      <Stack direction="row" spacing={1} mt={2}>
+                        {visit.photos.length > 0 && (
+                          <Chip
+                            label={`${visit.photos.length} Photos`}
+                            size="small"
+                            icon={<Camera />}
+                            variant="outlined"
+                          />
+                        )}
+                        {visit.documents.length > 0 && (
+                          <Chip
+                            label={`${visit.documents.length} Reports`}
+                            size="small"
+                            icon={<Assignment />}
+                            variant="outlined"
+                          />
+                        )}
+                      </Stack>
+                    </Box>
+                  )}
+                </Box>
+                
+                {/* Action Buttons */}
+                <Stack direction="row" spacing={1} mt={2}>
+                  <Button size="small" startIcon={<Visibility />}>
+                    View Details
+                  </Button>
+                  <Button size="small" startIcon={<Edit />}>
+                    Edit
+                  </Button>
+                  {visit.status === 'completed' && (
+                    <Button size="small" startIcon={<Upload />}>
+                      Add Photos
+                    </Button>
+                  )}
+                  {visit.status === 'scheduled' && (
+                    <Button size="small" variant="contained" color="success">
+                      Start Visit
+                    </Button>
+                  )}
+                </Stack>
+              </CardContent>
+            </Card>
+          </Box>
+        ))}
+      </Box>
+
+      {/* Selected Visit Details */}
+      {selectedVisit && (
+        <Paper sx={{ mt: 4, p: 3 }}>
+          <Typography variant="h6" fontWeight={700} mb={2}>
+            Visit Details - {selectedVisit}
+          </Typography>
+          
+          {(() => {
+            const visit = siteVisits.find(v => v.id === selectedVisit);
+            if (!visit || visit.status !== 'completed') {
+              return (
+                <Alert severity="info">
+                  Detailed assessment data will be available after visit completion.
+                </Alert>
+              );
+            }
+            
+            return (
+              <Box display="flex" flexWrap="wrap" gap={3}>
+                <Box flex="1 1 250px">
+                  <Typography variant="subtitle1" fontWeight={600} mb={2}>
+                    Team Members
+                  </Typography>
+                  <TableContainer>
+                    <Table size="small">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Name</TableCell>
+                          <TableCell>Role</TableCell>
+                          <TableCell>Contact</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {visit.team.map((member, index) => (
+                          <TableRow key={index}>
+                            <TableCell>{member.name}</TableCell>
+                            <TableCell>{member.role}</TableCell>
+                            <TableCell>{member.contact}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Box>
+                
+                <Box flex="1 1 250px">
+                  <Typography variant="subtitle1" fontWeight={600} mb={2}>
+                    Utility Availability
+                  </Typography>
+                  <Stack spacing={1}>
+                    <Stack direction="row" alignItems="center" gap={2}>
+                      <ElectricalServices />
+                      <Typography variant="body2">Electricity:</Typography>
+                      <Chip 
+                        label={visit.findings.utilities.electricity ? 'Available' : 'Not Available'}
+                        color={visit.findings.utilities.electricity ? 'success' : 'error'}
+                        size="small"
+                      />
+                    </Stack>
+                    <Stack direction="row" alignItems="center" gap={2}>
+                      <WaterDrop />
+                      <Typography variant="body2">Water Supply:</Typography>
+                      <Chip 
+                        label={visit.findings.utilities.water ? 'Available' : 'Not Available'}
+                        color={visit.findings.utilities.water ? 'success' : 'error'}
+                        size="small"
+                      />
+                    </Stack>
+                    <Stack direction="row" alignItems="center" gap={2}>
+                      <Phone />
+                      <Typography variant="body2">Telecom:</Typography>
+                      <Chip 
+                        label={visit.findings.utilities.telecom ? 'Available' : 'Not Available'}
+                        color={visit.findings.utilities.telecom ? 'success' : 'error'}
+                        size="small"
+                      />
+                    </Stack>
+                  </Stack>
+                </Box>
+              </Box>
+            );
+          })()}
+        </Paper>
+      )}
+
+      {/* Schedule Visit Dialog */}
+      <Dialog 
+        open={showScheduleDialog} 
+        onClose={() => setShowScheduleDialog(false)}
+        maxWidth="md"
+        fullWidth
+      >
+        <DialogTitle>Schedule New Site Visit</DialogTitle>
+        <DialogContent>
+          <Alert severity="info" sx={{ mb: 3 }}>
+            Schedule dialog would include date/time picker, team selection, purpose definition, and location details.
+          </Alert>
+          <Box display="flex" flexWrap="wrap" gap={2}>
+            <Box flex="1 1 250px">
+              <TextField
+                fullWidth
+                label="Visit Date"
+                type="date"
+                InputLabelProps={{ shrink: true }}
+              />
+            </Box>
+            <Box flex="1 1 250px">
+              <TextField
+                fullWidth
+                label="Visit Time"
+                type="time"
+                InputLabelProps={{ shrink: true }}
+              />
+            </Box>
+            <Box flex="1 1 250px">
+              <TextField
+                fullWidth
+                label="Purpose"
+                multiline
+                rows={3}
+                placeholder="Describe the purpose and objectives of this site visit..."
+              />
+            </Box>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShowScheduleDialog(false)}>Cancel</Button>
+          <Button 
+            variant="contained" 
+            onClick={() => {
+              setShowScheduleDialog(false);
+              // Handle schedule logic here
+            }}
+          >
+            Schedule Visit
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
+  );
+};
+
+export default SiteVisitAssessmentScreen;

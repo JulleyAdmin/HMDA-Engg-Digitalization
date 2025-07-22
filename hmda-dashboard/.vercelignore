@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Testing
+coverage/
+*.test.tsx
+*.test.ts
+__tests__/
+
+# Development files
+*.bak
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor directories
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Documentation
+README.md
+*.md
+
+# Source control
+.git/
+.gitignore
+
+# Build cache
+.cache/
+*.log

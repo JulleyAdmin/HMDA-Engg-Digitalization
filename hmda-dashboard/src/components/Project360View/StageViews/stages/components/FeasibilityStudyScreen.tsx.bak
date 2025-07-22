@@ -1,0 +1,113 @@
+import React from 'react';
+import {
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  Alert,
+  Stack,
+  Chip,
+  Paper
+} from '@mui/material';
+import {
+  Assignment,
+  Engineering,
+  Nature
+} from '@mui/icons-material';
+import { HMDAProject } from '../../../../../types/Project';
+
+interface FeasibilityStudyScreenProps {
+  project: HMDAProject;
+  onUpdate: (updates: Partial<HMDAProject>) => void;
+  compactMode?: boolean;
+}
+
+const FeasibilityStudyScreen: React.FC<FeasibilityStudyScreenProps> = ({
+  project,
+  onUpdate,
+  compactMode = false
+}) => {
+  return (
+    <Box>
+      <Typography variant="h5" fontWeight={700} mb={3}>
+        Feasibility Study Management
+      </Typography>
+      
+      <Alert severity="success" sx={{ mb: 3 }}>
+        Technical feasibility confirmed. Environmental and social impact studies in progress.
+      </Alert>
+
+      <Box display="flex" flexWrap="wrap" gap={3}>
+        <Box flex="1 1 250px">
+          <Card>
+            <CardContent sx={{ textAlign: 'center' }}>
+              <Engineering sx={{ fontSize: 48, color: 'success.main', mb: 1 }} />
+              <Typography variant="h4" fontWeight={700} color="success.main">
+                Approved
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Technical Feasibility
+              </Typography>
+            </CardContent>
+          </Card>
+        </Box>
+        
+        <Box flex="1 1 250px">
+          <Card>
+            <CardContent sx={{ textAlign: 'center' }}>
+              <Nature sx={{ fontSize: 48, color: 'warning.main', mb: 1 }} />
+              <Typography variant="h4" fontWeight={700} color="warning.main">
+                70%
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Environmental Study
+              </Typography>
+            </CardContent>
+          </Card>
+        </Box>
+        
+        <Box flex="1 1 250px">
+          <Card>
+            <CardContent sx={{ textAlign: 'center' }}>
+              <Assignment sx={{ fontSize: 48, color: 'info.main', mb: 1 }} />
+              <Typography variant="h4" fontWeight={700} color="info.main">
+                85%
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Overall Progress
+              </Typography>
+            </CardContent>
+          </Card>
+        </Box>
+
+        <Box flex="1 1 250px">
+          <Paper sx={{ p: 3 }}>
+            <Typography variant="h6" fontWeight={600} mb={2}>
+              Study Components Status
+            </Typography>
+            <Stack spacing={2}>
+              <Stack direction="row" justifyContent="space-between" alignItems="center">
+                <Typography variant="body2">Technical Feasibility Report</Typography>
+                <Chip label="Completed" color="success" size="small" />
+              </Stack>
+              <Stack direction="row" justifyContent="space-between" alignItems="center">
+                <Typography variant="body2">Environmental Impact Assessment</Typography>
+                <Chip label="In Progress" color="warning" size="small" />
+              </Stack>
+              <Stack direction="row" justifyContent="space-between" alignItems="center">
+                <Typography variant="body2">Social Impact Study</Typography>
+                <Chip label="In Progress" color="warning" size="small" />
+              </Stack>
+              <Stack direction="row" justifyContent="space-between" alignItems="center">
+                <Typography variant="body2">Traffic Impact Analysis</Typography>
+                <Chip label="Completed" color="success" size="small" />
+              </Stack>
+            </Stack>
+          </Paper>
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
+export default FeasibilityStudyScreen;

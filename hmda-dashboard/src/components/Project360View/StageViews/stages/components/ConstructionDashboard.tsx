@@ -1,0 +1,545 @@
+import React from 'react';
+import {
+  Box,
+  Typography,
+  Stack,
+  Card,
+  LinearProgress,
+  Chip,
+  useTheme,
+  alpha,
+  Divider
+} from '@mui/material';
+import {
+  TrendingUp,
+  Schedule,
+  AccountBalance,
+  Engineering,
+  Warning,
+  CheckCircle
+} from '@mui/icons-material';
+import { HMDAProject } from '../../../../../types/Project';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, LabelList, Legend, Tooltip } from 'recharts';
+
+interface ConstructionDashboardProps {
+  project: HMDAProject;
+  compactMode?: boolean;
+}
+
+interface MetricCardProps {
+  title: string;
+  value: string | number;
+  change?: number;
+  icon: React.ReactNode;
+  color: 'primary' | 'success' | 'warning' | 'error';
+  subtitle?: string;
+}
+
+const MetricCard: React.FC<MetricCardProps> = ({ title, value, change, icon, color, subtitle }) => {
+  const theme = useTheme();
+  return (
+    <Card
+      sx={{
+        p: 2.5,
+        height: '100%',
+        position: 'relative',
+        overflow: 'hidden',
+        background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+        border: '1px solid #e2e8f0',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 4,
+          background: `linear-gradient(90deg, ${theme.palette[color].main} 0%, ${alpha(theme.palette[color].main, 0.7)} 100%)`
+        }
+      }}
+    >
+      <Stack direction="row" justifyContent="space-between" alignItems="flex-start" mb={1}>
+        <Box flex={1}>
+          <Typography 
+            variant="overline" 
+            sx={{ 
+              color: 'text.secondary', 
+              fontSize: '0.7rem',
+              fontWeight: 700,
+              letterSpacing: '0.1em'
+            }}
+          >
+            {title}
+          </Typography>
+          <Typography 
+            variant="h4" 
+            fontWeight={800}
+            sx={{ 
+              color: `${color}.main`,
+              fontSize: '1.6rem',
+              lineHeight: 1.1,
+              mb: 0.5
+            }}
+          >
+            {value}
+          </Typography>
+          {subtitle && (
+            <Typography variant="body2" color="text.secondary" fontSize="0.8rem">
+              {subtitle}
+            </Typography>
+          )}
+          {change !== undefined && (
+            <Stack direction="row" alignItems="center" spacing={0.5} mt={0.5}>
+              <TrendingUp 
+                sx={{ 
+                  fontSize: 14, 
+                  color: change > 0 ? 'success.main' : 'error.main',
+                  transform: change < 0 ? 'rotate(180deg)' : 'none'
+                }} 
+              />
+              <Typography 
+                variant="caption" 
+                sx={{ 
+                  color: change > 0 ? 'success.main' : 'error.main',
+                  fontWeight: 700
+                }}
+              >
+                {Math.abs(change)}% vs last month
+              </Typography>
+            </Stack>
+          )}
+        </Box>
+        
+        <Box 
+          sx={{ 
+            width: 48, 
+            height: 48, 
+            borderRadius: '12px',
+            backgroundColor: alpha(theme.palette[color].main, 0.1),
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: `${color}.main`
+          }}
+        >
+          {icon}
+        </Box>
+      </Stack>
+    </Card>
+  );
+};
+
+const ConstructionDashboard: React.FC<ConstructionDashboardProps> = ({ project, compactMode = false }) => {
+  const theme = useTheme();
+
+  // Mock construction progress data
+  const progressData = [
+    { name: 'Foundation', planned: 100, actual: 100, quality: 95 },
+    { name: 'Structure', planned: 80, actual: 75, quality: 92 },
+    { name: 'Utilities', planned: 60, actual: 45, quality: 88 },
+    { name: 'Finishing', planned: 30, actual: 15, quality: 90 },
+    { name: 'Testing', planned: 10, actual: 0, quality: 0 }
+  ];
+
+  // Mock monthly progress trend
+  const monthlyProgress = [
+    { month: 'Oct', physical: 15, financial: 12 },
+    { month: 'Nov', physical: 28, financial: 25 },
+    { month: 'Dec', physical: 42, financial: 38 },
+    { month: 'Jan', physical: 58, financial: 52 },
+    { month: 'Feb', physical: 65, financial: 62 }
+  ];
+
+  // Mock resource utilization
+  const resourceData = [
+    { name: 'Manpower', value: 85, color: theme.palette.primary.main },
+    { name: 'Equipment', value: 78, color: theme.palette.secondary.main },
+    { name: 'Materials', value: 92, color: theme.palette.success.main },
+    { name: 'Budget', value: 88, color: theme.palette.warning.main }
+  ];
+
+  return (
+    <Box>
+      {/* Key Metrics */}
+      <Box display="flex" flexWrap="wrap" gap={2} mb={4}>
+        <Box flex="1 1 300px">
+          <MetricCard
+            title="Physical Progress"
+            value="65%"
+            change={5.2}
+            icon={<Engineering />}
+            color="primary"
+            subtitle="vs planned 70%"
+          />
+        </Box>
+        
+        <Box flex="1 1 300px">
+          <MetricCard
+            title="Financial Progress"
+            value="62%"
+            change={3.8}
+            icon={<AccountBalance />}
+            color="success"
+            subtitle="₹38.5 Cr utilized"
+          />
+        </Box>
+        
+        <Box flex="1 1 300px">
+          <MetricCard
+            title="Quality Score"
+            value="92%"
+            change={2.1}
+            icon={<CheckCircle />}
+            color="warning"
+            subtitle="Last inspection: 94%"
+          />
+        </Box>
+        
+        <Box flex="1 1 300px">
+          <MetricCard
+            title="Days Behind"
+            value="5"
+            change={-15}
+            icon={<Schedule />}
+            color="error"
+            subtitle="Catch-up plan active"
+          />
+        </Box>
+      </Box>
+
+      {/* Charts Section */}
+      <Box display="flex" flexWrap="wrap" gap={3}>
+        {/* Work Package Progress */}
+        <Box flex="1 1 500px">
+          <Card
+            sx={{
+              p: 3,
+              height: 400,
+              background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+              border: '1px solid #e2e8f0',
+              position: 'relative',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 4,
+                background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${alpha(theme.palette.primary.main, 0.7)} 100%)`
+              }
+            }}
+          >
+            <Typography variant="h6" fontWeight={600} mb={3}>
+              Work Package Progress
+            </Typography>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={progressData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis label={{ value: 'Progress (%)', angle: -90, position: 'insideLeft' }} />
+                <Tooltip 
+                  formatter={(value, name) => [`${value}%`, name]}
+                  labelFormatter={(label) => `Work Package: ${label}`}
+                />
+                <Legend />
+                <Bar dataKey="planned" fill={alpha(theme.palette.grey[400], 0.5)} name="Planned %" radius={[2, 2, 0, 0]}>
+                  <LabelList dataKey="planned" position="top" style={{ fontSize: '12px', fontWeight: 600 }} />
+                </Bar>
+                <Bar dataKey="actual" fill={theme.palette.primary.main} name="Actual %" radius={[2, 2, 0, 0]}>
+                  <LabelList dataKey="actual" position="top" style={{ fontSize: '12px', fontWeight: 600, fill: theme.palette.primary.main }} />
+                </Bar>
+                <Bar dataKey="quality" fill={theme.palette.success.main} name="Quality Score" radius={[2, 2, 0, 0]}>
+                  <LabelList dataKey="quality" position="top" style={{ fontSize: '12px', fontWeight: 600, fill: theme.palette.success.main }} />
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </Card>
+        </Box>
+
+        {/* Monthly Progress Trend */}
+        <Box flex="1 1 400px">
+          <Card
+            sx={{
+              p: 3,
+              height: 400,
+              background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+              border: '1px solid #e2e8f0',
+              position: 'relative',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 4,
+                background: `linear-gradient(90deg, ${theme.palette.success.main} 0%, ${alpha(theme.palette.success.main, 0.7)} 100%)`
+              }
+            }}
+          >
+            <Typography variant="h6" fontWeight={600} mb={3}>
+              Monthly Progress Trend
+            </Typography>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={monthlyProgress} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis label={{ value: 'Progress (%)', angle: -90, position: 'insideLeft' }} />
+                <Tooltip 
+                  formatter={(value, name) => [`${value}%`, name]}
+                  labelFormatter={(label) => `Month: ${label}`}
+                />
+                <Legend />
+                <Line 
+                  type="monotone" 
+                  dataKey="physical" 
+                  stroke={theme.palette.primary.main} 
+                  strokeWidth={3}
+                  name="Physical Progress"
+                  dot={{ fill: theme.palette.primary.main, strokeWidth: 2, r: 6 }}
+                  activeDot={{ r: 8, stroke: theme.palette.primary.main, strokeWidth: 2 }}
+                >
+                  <LabelList 
+                    dataKey="physical" 
+                    position="top" 
+                    style={{ 
+                      fontSize: '12px', 
+                      fontWeight: 600, 
+                      fill: theme.palette.primary.main 
+                    }} 
+                    formatter={(value) => `${value}%`}
+                  />
+                </Line>
+                <Line 
+                  type="monotone" 
+                  dataKey="financial" 
+                  stroke={theme.palette.success.main}
+                  strokeWidth={3}
+                  name="Financial Progress"
+                  dot={{ fill: theme.palette.success.main, strokeWidth: 2, r: 6 }}
+                  activeDot={{ r: 8, stroke: theme.palette.success.main, strokeWidth: 2 }}
+                >
+                  <LabelList 
+                    dataKey="financial" 
+                    position="bottom" 
+                    style={{ 
+                      fontSize: '12px', 
+                      fontWeight: 600, 
+                      fill: theme.palette.success.main 
+                    }} 
+                    formatter={(value) => `${value}%`}
+                  />
+                </Line>
+              </LineChart>
+            </ResponsiveContainer>
+          </Card>
+        </Box>
+      </Box>
+
+      {/* Resource Utilization & Critical Path */}
+      <Box display="flex" flexWrap="wrap" gap={3} mt={3}>
+        {/* Resource Utilization */}
+        <Box flex="1 1 400px">
+          <Card
+            sx={{
+              p: 3,
+              background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+              border: '1px solid #e2e8f0',
+              position: 'relative',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 4,
+                background: `linear-gradient(90deg, ${theme.palette.secondary.main} 0%, ${alpha(theme.palette.secondary.main, 0.7)} 100%)`
+              }
+            }}
+          >
+            <Typography variant="h6" fontWeight={600} mb={3}>
+              Resource Utilization
+            </Typography>
+            <Stack gap={2}>
+              {resourceData.map((resource) => (
+                <Box key={resource.name}>
+                  <Stack direction="row" justifyContent="space-between" alignItems="center" mb={0.5}>
+                    <Typography variant="body2" fontWeight={600}>
+                      {resource.name}
+                    </Typography>
+                    <Typography variant="body2" color={resource.color} fontWeight={700}>
+                      {resource.value}%
+                    </Typography>
+                  </Stack>
+                  <LinearProgress
+                    variant="determinate"
+                    value={resource.value}
+                    sx={{
+                      height: 8,
+                      borderRadius: 4,
+                      bgcolor: alpha(resource.color, 0.1),
+                      '& .MuiLinearProgress-bar': {
+                        borderRadius: 4,
+                        bgcolor: resource.color
+                      }
+                    }}
+                  />
+                </Box>
+              ))}
+            </Stack>
+          </Card>
+        </Box>
+
+        {/* Critical Issues Summary */}
+        <Box flex="1 1 500px">
+          <Card
+            sx={{
+              p: 3,
+              background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+              border: '1px solid #e2e8f0',
+              position: 'relative',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 4,
+                background: `linear-gradient(90deg, ${theme.palette.warning.main} 0%, ${alpha(theme.palette.warning.main, 0.7)} 100%)`
+              }
+            }}
+          >
+            <Typography variant="h6" fontWeight={600} mb={3}>
+              Critical Path & Issues
+            </Typography>
+            
+            <Stack gap={2}>
+              {/* Critical Path Item */}
+              <Box
+                sx={{
+                  p: 2,
+                  border: `1px solid ${alpha(theme.palette.error.main, 0.3)}`,
+                  borderRadius: 1,
+                  bgcolor: alpha(theme.palette.error.main, 0.05)
+                }}
+              >
+                <Stack direction="row" alignItems="center" gap={2}>
+                  <Warning sx={{ color: 'error.main', fontSize: 20 }} />
+                  <Box flex={1}>
+                    <Typography variant="subtitle2" fontWeight={600} color="error.main">
+                      Land Dispute at Ch 2+300
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" fontSize="0.8rem">
+                      Court case affecting foundation work. Revenue dept coordination pending.
+                    </Typography>
+                  </Box>
+                  <Chip label="5 days delay" size="small" color="error" />
+                </Stack>
+              </Box>
+
+              {/* On Track Item */}
+              <Box
+                sx={{
+                  p: 2,
+                  border: `1px solid ${alpha(theme.palette.success.main, 0.3)}`,
+                  borderRadius: 1,
+                  bgcolor: alpha(theme.palette.success.main, 0.05)
+                }}
+              >
+                <Stack direction="row" alignItems="center" gap={2}>
+                  <CheckCircle sx={{ color: 'success.main', fontSize: 20 }} />
+                  <Box flex={1}>
+                    <Typography variant="subtitle2" fontWeight={600} color="success.main">
+                      Utility Shifting 40% Complete
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" fontSize="0.8rem">
+                      TSSPDCL and HMWSSB coordination on track. Water line shifting next week.
+                    </Typography>
+                  </Box>
+                  <Chip label="On Schedule" size="small" color="success" />
+                </Stack>
+              </Box>
+
+              {/* Action Required Item */}
+              <Box
+                sx={{
+                  p: 2,
+                  border: `1px solid ${alpha(theme.palette.warning.main, 0.3)}`,
+                  borderRadius: 1,
+                  bgcolor: alpha(theme.palette.warning.main, 0.05)
+                }}
+              >
+                <Stack direction="row" alignItems="center" gap={2}>
+                  <Schedule sx={{ color: 'warning.main', fontSize: 20 }} />
+                  <Box flex={1}>
+                    <Typography variant="subtitle2" fontWeight={600} color="warning.main">
+                      Material Testing Backlog
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" fontSize="0.8rem">
+                      Concrete cube test results pending from lab. May impact next phase approval.
+                    </Typography>
+                  </Box>
+                  <Chip label="Action Req" size="small" color="warning" />
+                </Stack>
+              </Box>
+            </Stack>
+          </Card>
+        </Box>
+      </Box>
+
+      {/* Weather & External Factors */}
+      {!compactMode && (
+        <Box mt={3}>
+          <Card
+            sx={{
+              p: 3,
+              background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+              border: '1px solid #e2e8f0'
+            }}
+          >
+            <Typography variant="h6" fontWeight={600} mb={2}>
+              🌦️ Weather Impact & Planning
+            </Typography>
+            <Stack direction="row" spacing={4} flexWrap="wrap">
+              <Box>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  Current Weather Impact
+                </Typography>
+                <Typography variant="h6" color="success.main" fontWeight={700}>
+                  Favorable
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Clear skies for next 7 days
+                </Typography>
+              </Box>
+              
+              <Box>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  Monsoon Preparation
+                </Typography>
+                <Typography variant="h6" color="warning.main" fontWeight={700}>
+                  85% Ready
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Drainage systems, equipment shelter
+                </Typography>
+              </Box>
+              
+              <Box>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  Critical Activities Buffer
+                </Typography>
+                <Typography variant="h6" color="primary.main" fontWeight={700}>
+                  12 days
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Before monsoon season
+                </Typography>
+              </Box>
+            </Stack>
+          </Card>
+        </Box>
+      )}
+    </Box>
+  );
+};
+
+export default ConstructionDashboard;

@@ -5,7 +5,8 @@ import {
   Paper,
   useTheme,
   useMediaQuery,
-  Divider
+  Divider,
+  Typography
 } from '@mui/material';
 import { HMDAProject } from '../../types/Project';
 import ProjectHeader from './ProjectHeader';
@@ -13,6 +14,7 @@ import SmartTimeline from './SmartTimeline';
 import DynamicContentArea from './DynamicContentArea';
 import SmartSidebar from './SmartSidebar';
 import PredictiveInsights from './PredictiveInsights';
+import { FullscreenableCard } from '../FullscreenableCard';
 
 interface Project360ViewProps {
   project: HMDAProject;
@@ -99,9 +101,13 @@ const Project360View: React.FC<Project360ViewProps> = ({ project, onBack }) => {
             flex: 1,
             minWidth: 0 // Prevent overflow
           }}>
-            <Box 
+            <FullscreenableCard
+              title={
+                <Typography variant="h6" fontWeight={600}>
+                  Project Dashboard - {project.projectName}
+                </Typography>
+              }
               sx={{ 
-                p: { xs: 2, sm: 3 },
                 borderRadius: 2,
                 border: 1,
                 borderColor: 'divider',
@@ -120,13 +126,16 @@ const Project360View: React.FC<Project360ViewProps> = ({ project, onBack }) => {
                   background: 'linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%)'
                 }
               }}
+              contentSx={{
+                p: { xs: 2, sm: 3 },
+              }}
             >
               <DynamicContentArea 
                 project={project}
                 selectedTab={selectedTab}
                 onTabChange={setSelectedTab}
               />
-            </Box>
+            </FullscreenableCard>
           </Box>
 
           {/* Smart Sidebar - Hidden on mobile */}

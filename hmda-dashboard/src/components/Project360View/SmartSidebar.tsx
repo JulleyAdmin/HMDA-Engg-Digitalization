@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Card,
@@ -14,7 +14,10 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   useTheme,
-  alpha
+  alpha,
+  Tooltip,
+  Collapse,
+  Fade
 } from '@mui/material';
 import {
   Warning,
@@ -28,7 +31,11 @@ import {
   Engineering,
   HighQuality,
   Security,
-  People
+  People,
+  ChevronLeft,
+  ChevronRight,
+  Notifications,
+  Assessment
 } from '@mui/icons-material';
 import { HMDAProject, ProjectStage } from '../../types/Project';
 import dataService from '../../services/dataService';
@@ -56,6 +63,10 @@ interface RiskItem {
 
 const SmartSidebar: React.FC<SmartSidebarProps> = ({ project, currentStage }) => {
   const theme = useTheme();
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    const saved = localStorage.getItem('sidebar-collapsed');
+    return saved === 'true';
+  });
 
   // Mock data for pending approvals
   const pendingApprovals: ApprovalItem[] = [
@@ -141,8 +152,117 @@ const SmartSidebar: React.FC<SmartSidebarProps> = ({ project, currentStage }) =>
   const safetyDays = 142; // Mock data
   const complaints = 2; // Mock data
 
+  // Save collapsed state
+  useEffect(() => {
+    localStorage.setItem('sidebar-collapsed', String(isCollapsed));
+  }, [isCollapsed]);
+
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
+  // Minimized view
+  if (isCollapsed) {
+    return (
+      <Box
+        sx={{
+          width: 56,
+          position: 'sticky',
+          top: 80,
+          height: 'fit-content'
+        }}
+      >
+        <Stack spacing={2}>
+          {/* Expand button */}
+          <Tooltip title="Expand sidebar" placement="left">
+            <IconButton
+              onClick={toggleCollapse}
+              sx={{
+                bgcolor: 'background.paper',
+                border: 1,
+                borderColor: 'divider',
+                '&:hover': {
+                  bgcolor: 'action.hover'
+                }
+              }}
+            >
+              <ChevronRight />
+            </IconButton>
+          </Tooltip>
+
+          {/* CE Attention indicator */}
+          <Tooltip title={`${pendingApprovals.length} pending approvals`} placement="left">
+            <Badge badgeContent={pendingApprovals.length} color="error">
+              <IconButton
+                sx={{
+                  bgcolor: 'background.paper',
+                  border: 1,
+                  borderColor: 'divider',
+                  color: 'error.main'
+                }}
+              >
+                <Schedule />
+              </IconButton>
+            </Badge>
+          </Tooltip>
+
+          {/* Risk indicator */}
+          <Tooltip title={`${risks.filter(r => r.severity === 'high').length} high risks`} placement="left">
+            <Badge badgeContent={risks.filter(r => r.severity === 'high').length} color="warning">
+              <IconButton
+                sx={{
+                  bgcolor: 'background.paper',
+                  border: 1,
+                  borderColor: 'divider',
+                  color: 'warning.main'
+                }}
+              >
+                <Warning />
+              </IconButton>
+            </Badge>
+          </Tooltip>
+
+          {/* Stats indicator */}
+          <Tooltip title="View stats" placement="left">
+            <IconButton
+              sx={{
+                bgcolor: 'background.paper',
+                border: 1,
+                borderColor: 'divider',
+                color: 'primary.main'
+              }}
+            >
+              <Assessment />
+            </IconButton>
+          </Tooltip>
+        </Stack>
+      </Box>
+    );
+  }
+
+  // Expanded view
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} sx={{ position: 'sticky', top: 80 }}>
+      {/* Collapse button */}
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: -1 }}>
+        <Tooltip title="Collapse sidebar">
+          <IconButton
+            onClick={toggleCollapse}
+            size="small"
+            sx={{
+              bgcolor: 'background.paper',
+              border: 1,
+              borderColor: 'divider',
+              '&:hover': {
+                bgcolor: 'action.hover'
+              }
+            }}
+          >
+            <ChevronLeft />
+          </IconButton>
+        </Tooltip>
+      </Box>
+
       {/* CE Attention Section */}
       <Card 
         sx={{ 

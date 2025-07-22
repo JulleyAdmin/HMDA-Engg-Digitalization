@@ -9,7 +9,12 @@ import {
   Button,
   useTheme,
   alpha,
-  Collapse
+  Collapse,
+  Fab,
+  Badge,
+  Tooltip,
+  Zoom,
+  Fade
 } from '@mui/material';
 import {
   SmartToy,
@@ -22,7 +27,9 @@ import {
   Cloud,
   Speed,
   AttachMoney,
-  Engineering
+  Engineering,
+  Minimize,
+  Close
 } from '@mui/icons-material';
 import { HMDAProject, ProjectStage } from '../../types/Project';
 
@@ -47,6 +54,10 @@ interface Insight {
 const PredictiveInsights: React.FC<PredictiveInsightsProps> = ({ project }) => {
   const theme = useTheme();
   const [expanded, setExpanded] = React.useState(true);
+  const [minimized, setMinimized] = React.useState(() => {
+    const saved = localStorage.getItem('predictive-insights-minimized');
+    return saved === 'true';
+  });
 
   // Helper functions
   const getCompletionDate = (): string => {
@@ -157,6 +168,21 @@ const PredictiveInsights: React.FC<PredictiveInsightsProps> = ({ project }) => {
 
   const insights = generateInsights();
 
+  // Save minimized state
+  React.useEffect(() => {
+    localStorage.setItem('predictive-insights-minimized', String(minimized));
+  }, [minimized]);
+
+  const handleMinimize = () => {
+    setMinimized(true);
+    setExpanded(false);
+  };
+
+  const handleRestore = () => {
+    setMinimized(false);
+    setExpanded(true);
+  };
+
   const getInsightColor = (type: string) => {
     switch (type) {
       case 'warning': return theme.palette.warning.main;
@@ -167,8 +193,52 @@ const PredictiveInsights: React.FC<PredictiveInsightsProps> = ({ project }) => {
     }
   };
 
+  // Floating badge view when minimized
+  if (minimized) {
+    const highPriorityCount = insights.filter(i => 
+      i.type === 'warning' || i.type === 'recommendation'
+    ).length;
+
+    return (
+      <Zoom in={minimized}>
+        <Fab
+          onClick={handleRestore}
+          sx={{
+            position: 'fixed',
+            bottom: 24,
+            right: 24,
+            zIndex: 1200,
+            background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
+            color: 'white',
+            '&:hover': {
+              background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
+              transform: 'scale(1.05)'
+            }
+          }}
+          color="primary"
+        >
+          <Badge 
+            badgeContent={insights.length} 
+            color="error"
+            sx={{
+              '& .MuiBadge-badge': {
+                right: -3,
+                top: -3,
+                border: `2px solid ${theme.palette.background.paper}`,
+              }
+            }}
+          >
+            <SmartToy />
+          </Badge>
+        </Fab>
+      </Zoom>
+    );
+  }
+
+  // Regular card view
   return (
-    <Card 
+    <Fade in={!minimized}>
+      <Card 
       sx={{ 
         overflow: 'hidden',
         boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
@@ -211,16 +281,26 @@ const PredictiveInsights: React.FC<PredictiveInsightsProps> = ({ project }) => {
           />
         </Stack>
         
-        <IconButton 
-          size="small" 
-          onClick={() => setExpanded(!expanded)}
-          sx={{ 
-            transform: expanded ? 'rotate(0deg)' : 'rotate(180deg)',
-            transition: 'transform 0.3s'
-          }}
-        >
-          <ExpandMore />
-        </IconButton>
+        <Stack direction="row" spacing={0.5}>
+          <Tooltip title="Minimize to floating badge">
+            <IconButton
+              size="small"
+              onClick={handleMinimize}
+            >
+              <Minimize />
+            </IconButton>
+          </Tooltip>
+          <IconButton 
+            size="small" 
+            onClick={() => setExpanded(!expanded)}
+            sx={{ 
+              transform: expanded ? 'rotate(0deg)' : 'rotate(180deg)',
+              transition: 'transform 0.3s'
+            }}
+          >
+            <ExpandMore />
+          </IconButton>
+        </Stack>
       </Stack>
 
       {/* Insights Content */}
@@ -322,7 +402,8 @@ const PredictiveInsights: React.FC<PredictiveInsightsProps> = ({ project }) => {
           </Stack>
         </Box>
       </Collapse>
-    </Card>
+      </Card>
+    </Fade>
   );
 };
 

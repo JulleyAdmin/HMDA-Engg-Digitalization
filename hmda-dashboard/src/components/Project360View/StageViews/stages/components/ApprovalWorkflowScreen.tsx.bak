@@ -1,0 +1,257 @@
+import React from 'react';
+import {
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  Alert,
+  Stack,
+  Stepper,
+  Step,
+  StepLabel,
+  StepContent,
+  Button,
+  Chip,
+  Avatar,
+  Paper
+} from '@mui/material';
+import {
+  CheckCircle,
+  Schedule,
+  Person,
+  Warning
+} from '@mui/icons-material';
+import { HMDAProject } from '../../../../../types/Project';
+
+interface ApprovalWorkflowScreenProps {
+  project: HMDAProject;
+  onUpdate: (updates: Partial<HMDAProject>) => void;
+  compactMode?: boolean;
+}
+
+const ApprovalWorkflowScreen: React.FC<ApprovalWorkflowScreenProps> = ({
+  project,
+  onUpdate,
+  compactMode = false
+}) => {
+  const approvalSteps = [
+    {
+      label: 'Junior Engineer Review',
+      description: 'Technical specification review and initial assessment',
+      status: 'completed',
+      approver: 'Rajesh Kumar',
+      date: '2024-01-18',
+      comments: 'All technical specifications verified and approved'
+    },
+    {
+      label: 'Assistant Engineer Approval',
+      description: 'Detailed technical review and cost validation',
+      status: 'completed',
+      approver: 'Priya Singh',
+      date: '2024-01-20',
+      comments: 'Cost estimates reviewed and found reasonable'
+    },
+    {
+      label: 'Executive Engineer Review',
+      description: 'Project feasibility and resource allocation review',
+      status: 'in_progress',
+      approver: 'Suresh Reddy',
+      date: 'Pending',
+      comments: 'Under review - additional documentation requested'
+    },
+    {
+      label: 'Deputy Chief Engineer Approval',
+      description: 'Strategic alignment and budget approval',
+      status: 'pending',
+      approver: 'Dr. Anjali Sharma',
+      date: 'Pending',
+      comments: 'Awaiting previous stage completion'
+    },
+    {
+      label: 'Chief Engineer Final Approval',
+      description: 'Final project authorization and go-ahead',
+      status: 'pending',
+      approver: 'B. Ravinder',
+      date: 'Pending',
+      comments: 'Final review pending'
+    }
+  ];
+
+  const getStepIcon = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return <CheckCircle color="success" />;
+      case 'in_progress':
+        return <Schedule color="warning" />;
+      case 'pending':
+        return <Person color="disabled" />;
+      default:
+        return <Person color="disabled" />;
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return 'success';
+      case 'in_progress':
+        return 'warning';
+      case 'pending':
+        return 'default';
+      default:
+        return 'default';
+    }
+  };
+
+  return (
+    <Box>
+      <Typography variant="h5" fontWeight={700} mb={3}>
+        Review & Approval Workflow
+      </Typography>
+      
+      <Alert severity="warning" sx={{ mb: 3 }}>
+        Approval pending at Executive Engineer level. 3 days remaining for stage completion.
+      </Alert>
+
+      <Box display="flex" flexWrap="wrap" gap={3}>
+        <Box flex="2 1 400px">
+          <Paper sx={{ p: 3 }}>
+            <Typography variant="h6" fontWeight={600} mb={3}>
+              Approval Progress
+            </Typography>
+            <Stepper orientation="vertical">
+              {approvalSteps.map((step, index) => (
+                <Step key={index} active={true} completed={step.status === 'completed'}>
+                  <StepLabel
+                    icon={getStepIcon(step.status)}
+                    optional={
+                      <Stack direction="row" spacing={1} mt={1}>
+                        <Chip 
+                          label={step.status.replace('_', ' ').toUpperCase()} 
+                          size="small"
+                          color={getStatusColor(step.status) as any}
+                        />
+                      </Stack>
+                    }
+                  >
+                    <Typography variant="subtitle1" fontWeight={600}>
+                      {step.label}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {step.description}
+                    </Typography>
+                  </StepLabel>
+                  <StepContent>
+                    <Box sx={{ ml: 2, mt: 1 }}>
+                      <Stack spacing={1}>
+                        <Stack direction="row" alignItems="center" spacing={1}>
+                          <Avatar sx={{ width: 24, height: 24, fontSize: '0.75rem' }}>
+                            {step.approver.split(' ').map(n => n[0]).join('')}
+                          </Avatar>
+                          <Typography variant="body2" fontWeight={600}>
+                            {step.approver}
+                          </Typography>
+                        </Stack>
+                        <Typography variant="body2" color="text.secondary">
+                          Date: {step.date}
+                        </Typography>
+                        {step.comments && (
+                          <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
+                            "{step.comments}"
+                          </Typography>
+                        )}
+                        {step.status === 'in_progress' && (
+                          <Stack direction="row" spacing={1} mt={1}>
+                            <Button size="small" variant="outlined">
+                              View Details
+                            </Button>
+                            <Button size="small" variant="outlined">
+                              Add Comments
+                            </Button>
+                          </Stack>
+                        )}
+                      </Stack>
+                    </Box>
+                  </StepContent>
+                </Step>
+              ))}
+            </Stepper>
+          </Paper>
+        </Box>
+        
+        <Box flex="1 1 300px">
+          <Stack gap={3}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" fontWeight={600} mb={2}>
+                  Workflow Summary
+                </Typography>
+                <Stack spacing={2}>
+                  <Stack direction="row" justifyContent="space-between" alignItems="center">
+                    <Typography variant="body2">Total Steps</Typography>
+                    <Typography variant="h6" fontWeight={700}>{approvalSteps.length}</Typography>
+                  </Stack>
+                  <Stack direction="row" justifyContent="space-between" alignItems="center">
+                    <Typography variant="body2">Completed</Typography>
+                    <Typography variant="h6" fontWeight={700} color="success.main">
+                      {approvalSteps.filter(s => s.status === 'completed').length}
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row" justifyContent="space-between" alignItems="center">
+                    <Typography variant="body2">In Progress</Typography>
+                    <Typography variant="h6" fontWeight={700} color="warning.main">
+                      {approvalSteps.filter(s => s.status === 'in_progress').length}
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row" justifyContent="space-between" alignItems="center">
+                    <Typography variant="body2">Pending</Typography>
+                    <Typography variant="h6" fontWeight={700} color="text.secondary">
+                      {approvalSteps.filter(s => s.status === 'pending').length}
+                    </Typography>
+                  </Stack>
+                </Stack>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent>
+                <Typography variant="h6" fontWeight={600} mb={2}>
+                  Current Status
+                </Typography>
+                <Alert severity="warning" icon={<Warning />}>
+                  Pending with Executive Engineer Suresh Reddy for technical review and budget validation.
+                </Alert>
+                <Box mt={2}>
+                  <Button fullWidth variant="contained" color="primary">
+                    Send Reminder
+                  </Button>
+                </Box>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent>
+                <Typography variant="h6" fontWeight={600} mb={2}>
+                  Timeline
+                </Typography>
+                <Stack spacing={1}>
+                  <Typography variant="body2" color="text.secondary">
+                    Started: January 18, 2024
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Target Completion: January 30, 2024
+                  </Typography>
+                  <Typography variant="body2" color="warning.main" fontWeight={600}>
+                    Days Remaining: 3
+                  </Typography>
+                </Stack>
+              </CardContent>
+            </Card>
+          </Stack>
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
+export default ApprovalWorkflowScreen;

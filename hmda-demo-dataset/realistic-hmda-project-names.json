@@ -1,0 +1,193 @@
+{
+  "layoutProjects": [
+    {
+      "nameOfProject": "Inmulnarva Layout",
+      "nameOfWork": "Development of layout with infrastructure facilities including BT Roads, CC Roads, Street Lights, Storm water drains etc at Inmulnarva (V), R.R District",
+      "typeOfWork": "Layout",
+      "estimateAmount": 75.50,
+      "nameOfAgency": "M/s NCC Limited"
+    },
+    {
+      "nameOfProject": "Lemoor Layout", 
+      "nameOfWork": "Infrastructure development with BT Roads, CC Roads, Street Lights at Lemoor (V), Kandukur (M)",
+      "typeOfWork": "Layout",
+      "estimateAmount": 82.30,
+      "nameOfAgency": "M/s L&T Construction"
+    },
+    {
+      "nameOfProject": "Thorrur Layout",
+      "nameOfWork": "Development of layout facilities at Thorrur (V), Abdullapurmet (M)",
+      "typeOfWork": "Layout", 
+      "estimateAmount": 67.45,
+      "nameOfAgency": "M/s Shapoorji Pallonji"
+    },
+    {
+      "nameOfProject": "Kurmalguda Layout",
+      "nameOfWork": "Layout development with all amenities at Kurmalguda (V), Balapur Dist",
+      "typeOfWork": "Layout",
+      "estimateAmount": 91.20,
+      "nameOfAgency": "M/s AFCONS Infrastructure"
+    },
+    {
+      "nameOfProject": "Neopolis Layout",
+      "nameOfWork": "Kokapet Layout development at Narsingi with modern infrastructure",
+      "typeOfWork": "Layout",
+      "estimateAmount": 125.75,
+      "nameOfAgency": "M/s Ramky Infrastructure"
+    }
+  ],
+  "roadProjects": [
+    {
+      "nameOfProject": "Bommalaramaram Road",
+      "nameOfWork": "Road widening and beautification from Bommalaramaram to Yacharam",
+      "typeOfWork": "Roads",
+      "estimateAmount": 45.60,
+      "nameOfAgency": "M/s KNR Constructions"
+    },
+    {
+      "nameOfProject": "Sangareddy Bypass",
+      "nameOfWork": "Construction of bypass road at Sangareddy with service roads",
+      "typeOfWork": "Roads",
+      "estimateAmount": 156.80,
+      "nameOfAgency": "M/s GMR Infrastructure"
+    },
+    {
+      "nameOfProject": "Ibrahimpatnam Bypass",
+      "nameOfWork": "4-lane bypass road construction at Ibrahimpatnam",
+      "typeOfWork": "Roads",
+      "estimateAmount": 234.50,
+      "nameOfAgency": "M/s IRB Infrastructure"
+    },
+    {
+      "nameOfProject": "ORR Service Roads",
+      "nameOfWork": "Construction of service roads along ORR from Exit 14 to Exit 17",
+      "typeOfWork": "Roads",
+      "estimateAmount": 89.30,
+      "nameOfAgency": "M/s Megha Engineering"
+    },
+    {
+      "nameOfProject": "Medchal-Kompally Road",
+      "nameOfWork": "6-lane road development from Medchal to Kompally with central median",
+      "typeOfWork": "Roads",
+      "estimateAmount": 178.90,
+      "nameOfAgency": "M/s Tata Projects"
+    }
+  ],
+  "lakeAndParkProjects": [
+    {
+      "nameOfProject": "Bhongir Bund",
+      "nameOfWork": "Tank Bund development with walkway and beautification at Bhongir",
+      "typeOfWork": "parks/lakes",
+      "estimateAmount": 28.75,
+      "nameOfAgency": "M/s IVRCL"
+    },
+    {
+      "nameOfProject": "Pochampally Lake",
+      "nameOfWork": "Pedda Cheruvu Lake rejuvenation and beautification",
+      "typeOfWork": "parks/lakes",
+      "estimateAmount": 35.40,
+      "nameOfAgency": "M/s Simplex Infrastructure"
+    },
+    {
+      "nameOfProject": "Shamirpet Lake",
+      "nameOfWork": "Lake development with boating facilities and parks",
+      "typeOfWork": "parks/lakes",
+      "estimateAmount": 42.60,
+      "nameOfAgency": "M/s NCC Limited"
+    },
+    {
+      "nameOfProject": "Uppal Cheruvu",
+      "nameOfWork": "Lake restoration and development of recreational facilities",
+      "typeOfWork": "parks/lakes",
+      "estimateAmount": 31.25,
+      "nameOfAgency": "M/s Progressive Constructions"
+    },
+    {
+      "nameOfProject": "Nagole Lake Park",
+      "nameOfWork": "Integrated lake and park development at Nagole",
+      "typeOfWork": "parks/lakes",
+      "estimateAmount": 48.90,
+      "nameOfAgency": "M/s Nagarjuna Construction"
+    }
+  ],
+  "hudaHeightsProjects": [
+    {
+      "nameOfProject": "HUDA Heights H1",
+      "nameOfWork": "Construction of residential towers H1 block with amenities",
+      "typeOfWork": "others",
+      "estimateAmount": 145.60,
+      "nameOfAgency": "M/s Prestige Constructions"
+    },
+    {
+      "nameOfProject": "HUDA Heights H2", 
+      "nameOfWork": "Development of H2 block with commercial complex",
+      "typeOfWork": "others",
+      "estimateAmount": 167.80,
+      "nameOfAgency": "M/s Sobha Developers"
+    },
+    {
+      "nameOfProject": "HUDA Heights H3",
+      "nameOfWork": "H3 block construction with recreational facilities",
+      "typeOfWork": "others",
+      "estimateAmount": 132.45,
+      "nameOfAgency": "M/s Brigade Enterprises"
+    }
+  ],
+  "documentNumberFormats": {
+    "goNumbers": [
+      "G.O.Ms.No.127",
+      "G.O.Ms.No.125", 
+      "G.O.Ms.No.183",
+      "G.O.Rt.No.427",
+      "G.O.Rt.No.528",
+      "G.O.Rt.No.639"
+    ],
+    "tenderNoticeFormats": [
+      "HMDA/DEV/CE/23/2022-23",
+      "HMDA/DEV/CE/45/2023-24",
+      "HMDA/DEV/CE/67/2023-24",
+      "HMDA/DEV/CE/89/2024-25"
+    ],
+    "loaFormats": [
+      "14572/HMDA/DEV/CE/Inmulnarva/2022-23",
+      "15893/HMDA/DEV/CE/Lemoor/2023-24",
+      "16234/HMDA/DEV/CE/Thorrur/2023-24",
+      "17456/HMDA/DEV/CE/Roads/2024-25"
+    ],
+    "agreementFormats": [
+      "HMDA/DEV/CE/37/2022-23",
+      "HMDA/DEV/CE/48/2023-24",
+      "HMDA/DEV/CE/59/2023-24",
+      "HMDA/DEV/CE/71/2024-25"
+    ]
+  },
+  "realContractors": [
+    "M/s NCC Limited",
+    "M/s L&T Construction", 
+    "M/s Shapoorji Pallonji & Co",
+    "M/s AFCONS Infrastructure",
+    "M/s Ramky Infrastructure",
+    "M/s KNR Constructions",
+    "M/s GMR Infrastructure",
+    "M/s IRB Infrastructure", 
+    "M/s Megha Engineering & Infrastructure",
+    "M/s Tata Projects Limited",
+    "M/s IVRCL",
+    "M/s Simplex Infrastructure",
+    "M/s Progressive Constructions",
+    "M/s Nagarjuna Construction Company",
+    "M/s Prestige Constructions",
+    "M/s Sobha Developers",
+    "M/s Brigade Enterprises",
+    "M/s Gayatri Projects",
+    "M/s Patel Engineering",
+    "M/s SEW Infrastructure"
+  ],
+  "approvalAuthorities": [
+    "Metropolitan Commissioner",
+    "Govt"
+  ],
+  "divisionNumbers": [
+    "I", "II", "III", "IV", "V", "VI"
+  ]
+}
