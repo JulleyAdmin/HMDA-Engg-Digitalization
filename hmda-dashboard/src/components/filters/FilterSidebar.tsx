@@ -14,9 +14,7 @@ import {
   TextField,
   InputAdornment,
   Tooltip,
-  Divider,
-  Switch,
-  FormControlLabel
+  Divider
 } from '@mui/material';
 import {
   ExpandMore as ExpandMoreIcon,
@@ -55,8 +53,6 @@ interface FilterSidebarProps {
   onSavePreset: (name: string, description?: string) => void;
   projectCount: number;
   filteredCount: number;
-  compactMode?: boolean;
-  onCompactModeToggle?: () => void;
 }
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({
@@ -68,9 +64,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   onApplyPreset,
   onSavePreset,
   projectCount,
-  filteredCount,
-  compactMode = false,
-  onCompactModeToggle
+  filteredCount
 }) => {
   const theme = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
@@ -142,7 +136,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     onFilterChange(filterId, null);
   };
 
-  const drawerWidth = compactMode ? 280 : 320;
+  const drawerWidth = 320;
 
   return (
     <>
@@ -318,7 +312,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                           filter={filter}
                           onChange={(newFilter) => onFilterChange(config.id, newFilter)}
                           onToggle={() => handleFilterToggle(config.id)}
-                          compact={compactMode}
                         />
                       );
                     })}
@@ -345,31 +338,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           </Button>
         </Box>
       </Drawer>
-
-      {/* Compact Mode Toggle */}
-      {onCompactModeToggle && (
-        <FormControlLabel
-          control={
-            <Switch
-              checked={compactMode}
-              onChange={onCompactModeToggle}
-              size="small"
-            />
-          }
-          label="Compact Mode"
-          sx={{
-            position: 'fixed',
-            bottom: 16,
-            left: open ? drawerWidth + 16 : 16,
-            transition: 'left 0.3s',
-            backgroundColor: theme.palette.background.paper,
-            px: 2,
-            py: 1,
-            borderRadius: 1,
-            boxShadow: theme.shadows[2]
-          }}
-        />
-      )}
     </>
   );
 };

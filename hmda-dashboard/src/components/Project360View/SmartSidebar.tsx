@@ -43,6 +43,7 @@ import dataService from '../../services/dataService';
 interface SmartSidebarProps {
   project: HMDAProject;
   currentStage: ProjectStage;
+  onCollapsedChange?: (collapsed: boolean) => void;
 }
 
 interface ApprovalItem {
@@ -61,7 +62,7 @@ interface RiskItem {
   severity: 'high' | 'medium' | 'low';
 }
 
-const SmartSidebar: React.FC<SmartSidebarProps> = ({ project, currentStage }) => {
+const SmartSidebar: React.FC<SmartSidebarProps> = ({ project, currentStage, onCollapsedChange }) => {
   const theme = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(() => {
     const saved = localStorage.getItem('sidebar-collapsed');
@@ -152,10 +153,11 @@ const SmartSidebar: React.FC<SmartSidebarProps> = ({ project, currentStage }) =>
   const safetyDays = 142; // Mock data
   const complaints = 2; // Mock data
 
-  // Save collapsed state
+  // Save collapsed state and notify parent
   useEffect(() => {
     localStorage.setItem('sidebar-collapsed', String(isCollapsed));
-  }, [isCollapsed]);
+    onCollapsedChange?.(isCollapsed);
+  }, [isCollapsed, onCollapsedChange]);
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -166,13 +168,13 @@ const SmartSidebar: React.FC<SmartSidebarProps> = ({ project, currentStage }) =>
     return (
       <Box
         sx={{
-          width: 56,
+          width: '100%',
           position: 'sticky',
           top: 80,
           height: 'fit-content'
         }}
       >
-        <Stack spacing={2}>
+        <Stack spacing={2} alignItems="center" sx={{ width: '100%' }}>
           {/* Expand button */}
           <Tooltip title="Expand sidebar" placement="left">
             <IconButton
@@ -181,12 +183,16 @@ const SmartSidebar: React.FC<SmartSidebarProps> = ({ project, currentStage }) =>
                 bgcolor: 'background.paper',
                 border: 1,
                 borderColor: 'divider',
+                boxShadow: 1,
                 '&:hover': {
-                  bgcolor: 'action.hover'
-                }
+                  bgcolor: 'action.hover',
+                  transform: 'translateX(-2px)',
+                  boxShadow: 2
+                },
+                transition: 'all 0.2s ease'
               }}
             >
-              <ChevronRight />
+              <ChevronLeft />
             </IconButton>
           </Tooltip>
 
@@ -198,7 +204,14 @@ const SmartSidebar: React.FC<SmartSidebarProps> = ({ project, currentStage }) =>
                   bgcolor: 'background.paper',
                   border: 1,
                   borderColor: 'divider',
-                  color: 'error.main'
+                  color: 'error.main',
+                  boxShadow: 1,
+                  '&:hover': {
+                    bgcolor: alpha(theme.palette.error.main, 0.08),
+                    transform: 'translateX(-2px)',
+                    boxShadow: 2
+                  },
+                  transition: 'all 0.2s ease'
                 }}
               >
                 <Schedule />
@@ -214,7 +227,14 @@ const SmartSidebar: React.FC<SmartSidebarProps> = ({ project, currentStage }) =>
                   bgcolor: 'background.paper',
                   border: 1,
                   borderColor: 'divider',
-                  color: 'warning.main'
+                  color: 'warning.main',
+                  boxShadow: 1,
+                  '&:hover': {
+                    bgcolor: alpha(theme.palette.warning.main, 0.08),
+                    transform: 'translateX(-2px)',
+                    boxShadow: 2
+                  },
+                  transition: 'all 0.2s ease'
                 }}
               >
                 <Warning />
@@ -229,7 +249,14 @@ const SmartSidebar: React.FC<SmartSidebarProps> = ({ project, currentStage }) =>
                 bgcolor: 'background.paper',
                 border: 1,
                 borderColor: 'divider',
-                color: 'primary.main'
+                color: 'primary.main',
+                boxShadow: 1,
+                '&:hover': {
+                  bgcolor: alpha(theme.palette.primary.main, 0.08),
+                  transform: 'translateX(-2px)',
+                  boxShadow: 2
+                },
+                transition: 'all 0.2s ease'
               }}
             >
               <Assessment />
@@ -253,12 +280,16 @@ const SmartSidebar: React.FC<SmartSidebarProps> = ({ project, currentStage }) =>
               bgcolor: 'background.paper',
               border: 1,
               borderColor: 'divider',
+              boxShadow: 1,
               '&:hover': {
-                bgcolor: 'action.hover'
-              }
+                bgcolor: 'action.hover',
+                transform: 'translateX(2px)',
+                boxShadow: 2
+              },
+              transition: 'all 0.2s ease'
             }}
           >
-            <ChevronLeft />
+            <ChevronRight />
           </IconButton>
         </Tooltip>
       </Box>

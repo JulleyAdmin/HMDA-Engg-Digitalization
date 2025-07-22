@@ -267,8 +267,9 @@ const DynamicContentArea: React.FC<DynamicContentAreaProps> = ({
       <TabPanel value={selectedTab} index={0}>
         <FullscreenableCard 
           title={<Typography variant="h6">Live View</Typography>}
-          sx={{ bgcolor: 'transparent', boxShadow: 'none' }}
-          contentSx={{ p: 0 }}
+          sx={{ bgcolor: 'transparent', boxShadow: 'none', border: 'none' }}
+          contentSx={{ p: 0, pt: 0 }}
+          zIndexOffset={10}
         >
           {renderStageSpecificContent()}
         </FullscreenableCard>
@@ -277,8 +278,9 @@ const DynamicContentArea: React.FC<DynamicContentAreaProps> = ({
       <TabPanel value={selectedTab} index={1}>
         <FullscreenableCard 
           title={<Typography variant="h6">Project Metrics & Analytics</Typography>}
-          sx={{ bgcolor: 'transparent', boxShadow: 'none' }}
-          contentSx={{ p: 0 }}
+          sx={{ bgcolor: 'transparent', boxShadow: 'none', border: 'none' }}
+          contentSx={{ p: 0, pt: 0 }}
+          zIndexOffset={10}
         >
           <MetricsView project={project} />
         </FullscreenableCard>
@@ -287,8 +289,9 @@ const DynamicContentArea: React.FC<DynamicContentAreaProps> = ({
       <TabPanel value={selectedTab} index={2}>
         <FullscreenableCard 
           title={<Typography variant="h6">Issues & Risk Management</Typography>}
-          sx={{ bgcolor: 'transparent', boxShadow: 'none' }}
-          contentSx={{ p: 0 }}
+          sx={{ bgcolor: 'transparent', boxShadow: 'none', border: 'none' }}
+          contentSx={{ p: 0, pt: 0 }}
+          zIndexOffset={10}
         >
           <IssuesView project={project} />
         </FullscreenableCard>
@@ -297,8 +300,9 @@ const DynamicContentArea: React.FC<DynamicContentAreaProps> = ({
       <TabPanel value={selectedTab} index={3}>
         <FullscreenableCard 
           title={<Typography variant="h6">Financial Overview</Typography>}
-          sx={{ bgcolor: 'transparent', boxShadow: 'none' }}
-          contentSx={{ p: 0 }}
+          sx={{ bgcolor: 'transparent', boxShadow: 'none', border: 'none' }}
+          contentSx={{ p: 0, pt: 0 }}
+          zIndexOffset={10}
         >
           <FinanceView project={project} />
         </FullscreenableCard>
@@ -307,8 +311,9 @@ const DynamicContentArea: React.FC<DynamicContentAreaProps> = ({
       <TabPanel value={selectedTab} index={4}>
         <FullscreenableCard 
           title={<Typography variant="h6">Quality Control & Compliance</Typography>}
-          sx={{ bgcolor: 'transparent', boxShadow: 'none' }}
-          contentSx={{ p: 0 }}
+          sx={{ bgcolor: 'transparent', boxShadow: 'none', border: 'none' }}
+          contentSx={{ p: 0, pt: 0 }}
+          zIndexOffset={10}
         >
           <QualityView project={project} />
         </FullscreenableCard>
@@ -317,8 +322,9 @@ const DynamicContentArea: React.FC<DynamicContentAreaProps> = ({
       <TabPanel value={selectedTab} index={5}>
         <FullscreenableCard 
           title={<Typography variant="h6">Stakeholder Management</Typography>}
-          sx={{ bgcolor: 'transparent', boxShadow: 'none' }}
-          contentSx={{ p: 0 }}
+          sx={{ bgcolor: 'transparent', boxShadow: 'none', border: 'none' }}
+          contentSx={{ p: 0, pt: 0 }}
+          zIndexOffset={10}
         >
           <StakeholderView project={project} />
         </FullscreenableCard>
@@ -327,8 +333,9 @@ const DynamicContentArea: React.FC<DynamicContentAreaProps> = ({
       <TabPanel value={selectedTab} index={6}>
         <FullscreenableCard 
           title={<Typography variant="h6">Project Documents</Typography>}
-          sx={{ bgcolor: 'transparent', boxShadow: 'none' }}
-          contentSx={{ p: 0 }}
+          sx={{ bgcolor: 'transparent', boxShadow: 'none', border: 'none' }}
+          contentSx={{ p: 0, pt: 0 }}
+          zIndexOffset={10}
         >
           <DocumentsView project={project} />
         </FullscreenableCard>
@@ -337,8 +344,9 @@ const DynamicContentArea: React.FC<DynamicContentAreaProps> = ({
       <TabPanel value={selectedTab} index={7}>
         <FullscreenableCard 
           title={<Typography variant="h6">Project Timeline</Typography>}
-          sx={{ bgcolor: 'transparent', boxShadow: 'none' }}
-          contentSx={{ p: 0 }}
+          sx={{ bgcolor: 'transparent', boxShadow: 'none', border: 'none' }}
+          contentSx={{ p: 0, pt: 0 }}
+          zIndexOffset={10}
         >
           <TimelineView project={project} />
         </FullscreenableCard>

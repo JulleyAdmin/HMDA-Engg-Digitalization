@@ -131,7 +131,6 @@ function App() {
   const [allProjects, setAllProjects] = useState<HMDAProject[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [compactMode, setCompactMode] = useState(false);
 
   // Filter state
   const [filterState, setFilterState] = useState<FilterState>({
@@ -299,10 +298,6 @@ function App() {
     }));
   }, [filterState.filters]);
 
-  // Handle compact mode toggle
-  const handleCompactModeToggle = useCallback(() => {
-    setCompactMode(prev => !prev);
-  }, []);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -445,12 +440,6 @@ function App() {
                 aria-controls="dashboard-tabpanel-2"
                 disabled={!selectedProject}
               />
-              <Tab 
-                icon={<Settings />} 
-                label="Analytics" 
-                id="dashboard-tab-3"
-                aria-controls="dashboard-tabpanel-3"
-              />
             </Tabs>
           </Container>
         </Box>
@@ -497,16 +486,6 @@ function App() {
             )}
           </TabPanel>
 
-          <TabPanel value={tabValue} index={3}>
-            <Box>
-              <Typography variant="h4" gutterBottom>
-                Advanced Analytics
-              </Typography>
-              <Typography variant="body1" color="text.secondary">
-                Advanced analytics and reporting features will be implemented here...
-              </Typography>
-            </Box>
-          </TabPanel>
         </Container>
 
         {/* Footer */}
@@ -541,8 +520,6 @@ function App() {
           onSavePreset={handleSavePreset}
           projectCount={allProjects.length}
           filteredCount={filteredProjects.length}
-          compactMode={compactMode}
-          onCompactModeToggle={handleCompactModeToggle}
         />
 
         {/* Floating Action Button for filters */}

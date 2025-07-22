@@ -12,9 +12,11 @@ import { HMDAProject } from '../../types/Project';
 import ProjectHeader from './ProjectHeader';
 import SmartTimeline from './SmartTimeline';
 import DynamicContentArea from './DynamicContentArea';
-import SmartSidebar from './SmartSidebar';
+import SmartSidebarWrapper from './SmartSidebarWrapper';
 import PredictiveInsights from './PredictiveInsights';
 import { FullscreenableCard } from '../FullscreenableCard';
+import { FocusProvider, FocusableContainer } from '../FocusableContainer';
+import { KeyboardShortcuts } from '../KeyboardShortcuts';
 
 interface Project360ViewProps {
   project: HMDAProject;
@@ -27,6 +29,10 @@ const Project360View: React.FC<Project360ViewProps> = ({ project, onBack }) => {
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
   const [selectedTab, setSelectedTab] = useState(0);
   const [timelineLoading, setTimelineLoading] = useState(true);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    const saved = localStorage.getItem('sidebar-collapsed');
+    return saved === 'true';
+  });
 
   // Simulate initial loading state
   useEffect(() => {
@@ -36,12 +42,32 @@ const Project360View: React.FC<Project360ViewProps> = ({ project, onBack }) => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Add keyboard shortcut for sidebar toggle
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Press 'S' to toggle sidebar
+      if (e.key === 's' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        const activeElement = document.activeElement;
+        // Don't toggle if user is typing in an input
+        if (activeElement?.tagName !== 'INPUT' && activeElement?.tagName !== 'TEXTAREA') {
+          setSidebarCollapsed(prev => !prev);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, []);
+
   return (
-    <Box sx={{ 
-      bgcolor: 'background.default', 
-      minHeight: '100vh',
-      pb: 3 
-    }}>
+    <FocusProvider>
+      <Box sx={{ 
+        bgcolor: 'background.default', 
+        minHeight: '100vh',
+        pb: 3 
+      }}>
+        {/* Keyboard shortcuts handler */}
+        <KeyboardShortcuts />
       {/* Project Header - Always visible */}
       <Box 
         sx={{ 
@@ -93,13 +119,15 @@ const Project360View: React.FC<Project360ViewProps> = ({ project, onBack }) => {
       >
         <Box sx={{ 
           display: 'flex', 
-          gap: 3,
-          flexDirection: isTablet ? 'column' : 'row'
+          gap: sidebarCollapsed ? 2 : 3,
+          flexDirection: isTablet ? 'column' : 'row',
+          transition: 'all 0.3s ease'
         }}>
           {/* Main Dashboard */}
           <Box sx={{ 
             flex: 1,
-            minWidth: 0 // Prevent overflow
+            minWidth: 0, // Prevent overflow
+            transition: 'all 0.3s ease'
           }}>
             <FullscreenableCard
               title={
@@ -129,6 +157,7 @@ const Project360View: React.FC<Project360ViewProps> = ({ project, onBack }) => {
               contentSx={{
                 p: { xs: 2, sm: 3 },
               }}
+              zIndexOffset={0}
             >
               <DynamicContentArea 
                 project={project}
@@ -141,12 +170,15 @@ const Project360View: React.FC<Project360ViewProps> = ({ project, onBack }) => {
           {/* Smart Sidebar - Hidden on mobile */}
           {!isMobile && (
             <Box sx={{ 
-              width: isTablet ? '100%' : 320,
-              flexShrink: 0
+              width: isTablet ? '100%' : (sidebarCollapsed ? 56 : 320),
+              flexShrink: 0,
+              transition: 'width 0.3s ease',
+              position: 'relative'
             }}>
-              <SmartSidebar 
+              <SmartSidebarWrapper 
                 project={project}
                 currentStage={project.currentStage}
+                onCollapsedChange={setSidebarCollapsed}
               />
             </Box>
           )}
@@ -157,7 +189,8 @@ const Project360View: React.FC<Project360ViewProps> = ({ project, onBack }) => {
           <PredictiveInsights project={project} />
         </Box>
       </Container>
-    </Box>
+      </Box>
+    </FocusProvider>
   );
 };
 

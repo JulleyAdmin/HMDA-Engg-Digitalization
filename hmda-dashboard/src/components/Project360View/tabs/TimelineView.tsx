@@ -753,21 +753,8 @@ const TimelineView: React.FC<TimelineViewProps> = ({ project }) => {
             <Typography variant="h6" fontWeight={600} mb={2}>
               Gantt Chart View
             </Typography>
-            <Box height={400}>
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={progressData}
-                  layout="horizontal"
-                  margin={{ top: 20, right: 30, left: 100, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis type="number" domain={[0, 100]} />
-                  <YAxis dataKey="name" type="category" />
-                  <ChartTooltip />
-                  <Bar dataKey="actual" fill={theme.palette.primary.main} name="Actual Progress" />
-                  <Bar dataKey="planned" fill={theme.palette.grey[300]} name="Planned Progress" />
-                </BarChart>
-              </ResponsiveContainer>
+            <Box height={600} sx={{ overflowX: 'auto', overflowY: 'auto' }}>
+              <GanttChart activities={filteredActivities} theme={theme} />
             </Box>
           </CardContent>
         </Card>
@@ -907,6 +894,297 @@ const TimelineView: React.FC<TimelineViewProps> = ({ project }) => {
           </CardContent>
         </Card>
       )}
+    </Box>
+  );
+};
+
+// Gantt Chart Component
+const GanttChart: React.FC<{ activities: TimelineActivity[], theme: any }> = ({ activities, theme }) => {
+  // Calculate date range
+  const startDates = activities.map(a => a.startDate.getTime());
+  const endDates = activities.map(a => (a.actualEndDate || a.endDate).getTime());
+  const minDate = new Date(Math.min(...startDates));
+  const maxDate = new Date(Math.max(...endDates));
+  
+  // Add padding to dates
+  minDate.setMonth(minDate.getMonth() - 1);
+  maxDate.setMonth(maxDate.getMonth() + 1);
+  
+  const totalDays = Math.ceil((maxDate.getTime() - minDate.getTime()) / (1000 * 60 * 60 * 24));
+  
+  // Generate month labels
+  const monthLabels: { label: string; position: number }[] = [];
+  const currentDate = new Date(minDate);
+  while (currentDate <= maxDate) {
+    const position = Math.ceil((currentDate.getTime() - minDate.getTime()) / (1000 * 60 * 60 * 24));
+    monthLabels.push({
+      label: currentDate.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }),
+      position: (position / totalDays) * 100
+    });
+    currentDate.setMonth(currentDate.getMonth() + 1);
+  }
+  
+  const getDatePosition = (date: Date) => {
+    const days = Math.ceil((date.getTime() - minDate.getTime()) / (1000 * 60 * 60 * 24));
+    return (days / totalDays) * 100;
+  };
+  
+  const getBarWidth = (start: Date, end: Date) => {
+    const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+    return (days / totalDays) * 100;
+  };
+  
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'completed': return theme.palette.success.main;
+      case 'in-progress': return theme.palette.primary.main;
+      case 'delayed': return theme.palette.warning.main;
+      case 'not-started': return theme.palette.grey[400];
+      default: return theme.palette.grey[500];
+    }
+  };
+
+  const getCategoryColor = (category: string) => {
+    const colors: Record<string, string> = {
+      planning: '#9c27b0',
+      design: '#2196f3',
+      approval: '#ff9800',
+      procurement: '#00bcd4',
+      construction: theme.palette.success.main,
+      quality: theme.palette.error.main,
+      handover: '#795548'
+    };
+    return colors[category] || theme.palette.grey[500];
+  };
+
+  return (
+    <Box sx={{ minWidth: 1200, position: 'relative' }}>
+      {/* Month headers */}
+      <Box sx={{ 
+        display: 'flex', 
+        height: 40, 
+        borderBottom: 2, 
+        borderColor: 'divider',
+        position: 'sticky',
+        top: 0,
+        bgcolor: 'background.paper',
+        zIndex: 2,
+        ml: '300px'
+      }}>
+        {monthLabels.map((month, index) => (
+          <Box
+            key={index}
+            sx={{
+              position: 'absolute',
+              left: `${month.position}%`,
+              px: 1,
+              borderLeft: 1,
+              borderColor: 'divider',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
+            <Typography variant="caption" fontWeight={600}>
+              {month.label}
+            </Typography>
+          </Box>
+        ))}
+      </Box>
+      
+      {/* Today line */}
+      <Box
+        sx={{
+          position: 'absolute',
+          left: `calc(300px + ${getDatePosition(new Date())}%)`,
+          top: 40,
+          bottom: 0,
+          width: 2,
+          bgcolor: 'error.main',
+          zIndex: 1,
+          '&::before': {
+            content: '"Today"',
+            position: 'absolute',
+            top: -20,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            bgcolor: 'error.main',
+            color: 'white',
+            px: 1,
+            py: 0.5,
+            borderRadius: 1,
+            fontSize: '0.75rem',
+            fontWeight: 600
+          }
+        }}
+      />
+      
+      {/* Activities */}
+      {activities.map((activity, index) => (
+        <Box
+          key={activity.id}
+          sx={{
+            display: 'flex',
+            height: 60,
+            borderBottom: 1,
+            borderColor: 'divider',
+            position: 'relative',
+            '&:hover': {
+              bgcolor: alpha(theme.palette.action.hover, 0.04)
+            }
+          }}
+        >
+          {/* Activity name */}
+          <Box
+            sx={{
+              width: 300,
+              p: 1,
+              display: 'flex',
+              alignItems: 'center',
+              borderRight: 1,
+              borderColor: 'divider',
+              position: 'sticky',
+              left: 0,
+              bgcolor: 'background.paper',
+              zIndex: 1
+            }}
+          >
+            <Stack spacing={0.5} sx={{ width: '100%' }}>
+              <Typography variant="body2" fontWeight={600} noWrap>
+                {activity.title}
+              </Typography>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Chip
+                  label={activity.category}
+                  size="small"
+                  sx={{ 
+                    height: 18,
+                    fontSize: '0.7rem',
+                    bgcolor: alpha(getCategoryColor(activity.category), 0.1)
+                  }}
+                />
+                {activity.isOnCriticalPath && (
+                  <Tooltip title="Critical Path">
+                    <Flag sx={{ fontSize: 14, color: 'error.main' }} />
+                  </Tooltip>
+                )}
+              </Stack>
+            </Stack>
+          </Box>
+          
+          {/* Gantt bar */}
+          <Box sx={{ flex: 1, position: 'relative' }}>
+            {/* Planned bar */}
+            <Box
+              sx={{
+                position: 'absolute',
+                left: `${getDatePosition(activity.startDate)}%`,
+                width: `${getBarWidth(activity.startDate, activity.endDate)}%`,
+                height: 24,
+                top: 10,
+                bgcolor: alpha(getStatusColor(activity.status), 0.3),
+                borderRadius: 1,
+                border: 1,
+                borderColor: alpha(getStatusColor(activity.status), 0.5),
+                display: 'flex',
+                alignItems: 'center',
+                px: 1,
+                overflow: 'hidden'
+              }}
+            >
+              <Typography variant="caption" noWrap sx={{ color: 'text.primary' }}>
+                Planned
+              </Typography>
+            </Box>
+            
+            {/* Actual bar */}
+            {activity.actualStartDate && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  left: `${getDatePosition(activity.actualStartDate)}%`,
+                  width: activity.actualEndDate 
+                    ? `${getBarWidth(activity.actualStartDate, activity.actualEndDate)}%`
+                    : `${getBarWidth(activity.actualStartDate, new Date()) * (activity.progress / 100)}%`,
+                  height: 20,
+                  bottom: 10,
+                  bgcolor: getStatusColor(activity.status),
+                  borderRadius: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  px: 1,
+                  overflow: 'hidden',
+                  boxShadow: 1
+                }}
+              >
+                <Typography 
+                  variant="caption" 
+                  noWrap 
+                  sx={{ 
+                    color: 'white',
+                    fontWeight: 600,
+                    fontSize: '0.7rem'
+                  }}
+                >
+                  {activity.progress}%
+                </Typography>
+              </Box>
+            )}
+            
+            {/* Dependencies lines */}
+            {activity.dependencies.length > 0 && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  left: 0,
+                  top: '50%',
+                  width: `${getDatePosition(activity.startDate)}%`,
+                  height: 1,
+                  bgcolor: 'grey.400',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    left: 0,
+                    top: -3,
+                    width: 8,
+                    height: 8,
+                    borderRadius: '50%',
+                    bgcolor: 'grey.400'
+                  }
+                }}
+              />
+            )}
+          </Box>
+        </Box>
+      ))}
+      
+      {/* Legend */}
+      <Box sx={{ 
+        mt: 3, 
+        p: 2, 
+        bgcolor: 'background.paper',
+        borderRadius: 1,
+        display: 'flex',
+        gap: 3,
+        flexWrap: 'wrap'
+      }}>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Box sx={{ width: 40, height: 12, bgcolor: alpha(theme.palette.primary.main, 0.3), borderRadius: 0.5 }} />
+          <Typography variant="caption">Planned Duration</Typography>
+        </Stack>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Box sx={{ width: 40, height: 12, bgcolor: theme.palette.primary.main, borderRadius: 0.5 }} />
+          <Typography variant="caption">Actual Progress</Typography>
+        </Stack>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Flag sx={{ fontSize: 14, color: 'error.main' }} />
+          <Typography variant="caption">Critical Path</Typography>
+        </Stack>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Box sx={{ width: 2, height: 16, bgcolor: 'error.main' }} />
+          <Typography variant="caption">Today</Typography>
+        </Stack>
+      </Box>
     </Box>
   );
 };
