@@ -141,7 +141,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   return (
     <>
       <Drawer
-        anchor="left"
+        anchor="right"
         open={open}
         onClose={onClose}
         sx={{
@@ -151,7 +151,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             width: drawerWidth,
             boxSizing: 'border-box',
             backgroundColor: theme.palette.background.default,
-            borderRight: `1px solid ${theme.palette.divider}`
+            borderLeft: `1px solid ${theme.palette.divider}`
           }
         }}
       >

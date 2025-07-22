@@ -22,7 +22,6 @@ import {
   Dashboard,
   Assignment,
   Visibility,
-  Settings,
   AccountCircle,
   Engineering,
   FilterList as FilterListIcon,
@@ -33,6 +32,7 @@ import { ProjectsTable } from './components/ProjectsTable';
 import Project360View from './components/Project360View/Project360View';
 import { HMDAProject, Circle } from './types/Project';
 import FilterSidebar from './components/filters/FilterSidebar';
+import GlobalSearchBar from './components/GlobalSearchBar';
 import { FilterState, Filter, FilterPreset } from './filters/filter-types';
 import { FilterUtils } from './filters/filter-engine';
 import { DEFAULT_FILTER_PRESETS } from './filters/filter-config';
@@ -357,6 +357,13 @@ function App() {
             </Box>
             
             <Box sx={{ flexGrow: 1 }} />
+            
+            {/* Global Search Bar */}
+            <GlobalSearchBar 
+              projects={allProjects}
+              onProjectSelect={handleProjectSelect}
+              currentProjectId={selectedProject?.projectId}
+            />
             
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               {/* Filter Button */}
