@@ -20,7 +20,17 @@ import {
   AccordionSummary,
   AccordionDetails,
   Switch,
-  FormControlLabel
+  FormControlLabel,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Slider,
+  ToggleButton,
+  ToggleButtonGroup,
+  Menu,
+  MenuItem,
+  Divider as MuiDivider
 } from '@mui/material';
 import {
   Timeline,
@@ -110,6 +120,19 @@ const TimelineView: React.FC<TimelineViewProps> = ({ project }) => {
   const [timelineZoom, setTimelineZoom] = useState('month');
   const [showCriticalPathOnly, setShowCriticalPathOnly] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  // Helper functions
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString('en-IN', { 
+      day: '2-digit', 
+      month: 'short',
+      year: 'numeric'
+    });
+  };
+
+  const formatCurrency = (amount: number) => {
+    return `₹${(amount / 10000000).toFixed(1)} Cr`;
+  };
 
   // Mock timeline data
   const activities: TimelineActivity[] = [
@@ -437,25 +460,6 @@ const TimelineView: React.FC<TimelineViewProps> = ({ project }) => {
     return colors[category as keyof typeof colors] || theme.palette.grey[500];
   };
 
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString('en-IN', { 
-      day: '2-digit', 
-      month: 'short',
-      year: 'numeric'
-    });
-  };
-
-  const formatCurrency = (amount: number) => {
-    return `₹${(amount / 10000000).toFixed(1)} Cr`;
-  };
-
-  const progressData = activities.map(activity => ({
-    name: activity.title.substring(0, 20) + '...',
-    planned: 100,
-    actual: activity.completionPercentage,
-    category: activity.category
-  }));
-
   return (
     <Box>
       {/* Header */}
@@ -754,7 +758,12 @@ const TimelineView: React.FC<TimelineViewProps> = ({ project }) => {
               Gantt Chart View
             </Typography>
             <Box height={600} sx={{ overflowX: 'auto', overflowY: 'auto' }}>
-              <GanttChart activities={filteredActivities} theme={theme} />
+              <GanttChart 
+                activities={filteredActivities} 
+                theme={theme} 
+                formatDate={formatDate}
+                formatCurrency={formatCurrency}
+              />
             </Box>
           </CardContent>
         </Card>
@@ -899,7 +908,19 @@ const TimelineView: React.FC<TimelineViewProps> = ({ project }) => {
 };
 
 // Gantt Chart Component
-const GanttChart: React.FC<{ activities: TimelineActivity[], theme: any }> = ({ activities, theme }) => {
+const GanttChart: React.FC<{ 
+  activities: TimelineActivity[], 
+  theme: any,
+  formatDate: (date: Date) => string,
+  formatCurrency: (amount: number) => string
+}> = ({ activities, theme, formatDate, formatCurrency }) => {
+  const [selectedActivity, setSelectedActivity] = useState<TimelineActivity | null>(null);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(100);
+  const [timeScale, setTimeScale] = useState<'day' | 'week' | 'month'>('month');
+  const [contextMenu, setContextMenu] = useState<{ mouseX: number; mouseY: number; activity: TimelineActivity } | null>(null);
+  const [hoveredActivity, setHoveredActivity] = useState<string | null>(null);
+
   // Calculate date range
   const startDates = activities.map(a => a.startDate.getTime());
   const endDates = activities.map(a => (a.actualEndDate || a.endDate).getTime());
@@ -957,98 +978,175 @@ const GanttChart: React.FC<{ activities: TimelineActivity[], theme: any }> = ({ 
     return colors[category] || theme.palette.grey[500];
   };
 
+  const handleActivityClick = (activity: TimelineActivity) => {
+    setSelectedActivity(activity);
+    setDetailsOpen(true);
+  };
+
+  const handleContextMenu = (event: React.MouseEvent, activity: TimelineActivity) => {
+    event.preventDefault();
+    setContextMenu({
+      mouseX: event.clientX - 2,
+      mouseY: event.clientY - 4,
+      activity
+    });
+  };
+
+  const handleCloseContextMenu = () => {
+    setContextMenu(null);
+  };
+
+  const formatDuration = (start: Date, end: Date) => {
+    const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+    if (days < 30) return `${days} days`;
+    if (days < 365) return `${Math.round(days / 30)} months`;
+    return `${Math.round(days / 365 * 10) / 10} years`;
+  };
+
   return (
-    <Box sx={{ minWidth: 1200, position: 'relative' }}>
-      {/* Month headers */}
+    <Box sx={{ position: 'relative' }}>
+      {/* Zoom and Scale Controls */}
       <Box sx={{ 
         display: 'flex', 
-        height: 40, 
-        borderBottom: 2, 
-        borderColor: 'divider',
-        position: 'sticky',
-        top: 0,
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        mb: 2,
+        p: 2,
         bgcolor: 'background.paper',
-        zIndex: 2,
-        ml: '300px'
+        borderRadius: 1,
+        border: 1,
+        borderColor: 'divider'
       }}>
-        {monthLabels.map((month, index) => (
-          <Box
-            key={index}
-            sx={{
-              position: 'absolute',
-              left: `${month.position}%`,
-              px: 1,
-              borderLeft: 1,
-              borderColor: 'divider',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center'
-            }}
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Typography variant="body2" fontWeight={600}>Zoom:</Typography>
+          <IconButton size="small" onClick={() => setZoomLevel(Math.max(50, zoomLevel - 10))}>
+            <ZoomOut />
+          </IconButton>
+          <Slider
+            value={zoomLevel}
+            onChange={(_, value) => setZoomLevel(value as number)}
+            min={50}
+            max={200}
+            step={10}
+            sx={{ width: 150 }}
+            valueLabelDisplay="auto"
+            valueLabelFormat={(value) => `${value}%`}
+          />
+          <IconButton size="small" onClick={() => setZoomLevel(Math.min(200, zoomLevel + 10))}>
+            <ZoomIn />
+          </IconButton>
+          
+          <MuiDivider orientation="vertical" flexItem sx={{ mx: 2 }} />
+          
+          <Typography variant="body2" fontWeight={600}>Scale:</Typography>
+          <ToggleButtonGroup
+            value={timeScale}
+            exclusive
+            onChange={(_, value) => value && setTimeScale(value)}
+            size="small"
           >
-            <Typography variant="caption" fontWeight={600}>
-              {month.label}
-            </Typography>
-          </Box>
-        ))}
+            <ToggleButton value="day">Day</ToggleButton>
+            <ToggleButton value="week">Week</ToggleButton>
+            <ToggleButton value="month">Month</ToggleButton>
+          </ToggleButtonGroup>
+        </Stack>
+        
+        <Stack direction="row" spacing={1}>
+          <Button size="small" startIcon={<Today />}>Today</Button>
+          <Button size="small" startIcon={<CalendarMonth />}>Fit All</Button>
+        </Stack>
       </Box>
-      
-      {/* Today line */}
-      <Box
-        sx={{
-          position: 'absolute',
-          left: `calc(300px + ${getDatePosition(new Date())}%)`,
-          top: 40,
-          bottom: 0,
-          width: 2,
-          bgcolor: 'error.main',
-          zIndex: 1,
-          '&::before': {
-            content: '"Today"',
-            position: 'absolute',
-            top: -20,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            bgcolor: 'error.main',
-            color: 'white',
-            px: 1,
-            py: 0.5,
-            borderRadius: 1,
-            fontSize: '0.75rem',
-            fontWeight: 600
-          }
-        }}
-      />
-      
-      {/* Activities */}
-      {activities.map((activity, index) => (
-        <Box
-          key={activity.id}
-          sx={{
-            display: 'flex',
-            height: 60,
-            borderBottom: 1,
-            borderColor: 'divider',
-            position: 'relative',
-            '&:hover': {
-              bgcolor: alpha(theme.palette.action.hover, 0.04)
-            }
-          }}
-        >
-          {/* Activity name */}
-          <Box
-            sx={{
-              width: 300,
-              p: 1,
+
+      {/* Gantt Chart Container */}
+      <Box sx={{ 
+        overflow: 'auto',
+        maxHeight: 600,
+        border: 1,
+        borderColor: 'divider',
+        borderRadius: 1,
+        bgcolor: 'background.paper'
+      }}>
+        <Box sx={{ 
+          minWidth: 1200 * (zoomLevel / 100), 
+          position: 'relative',
+          transform: `scale(${zoomLevel / 100})`,
+          transformOrigin: 'top left'
+        }}>
+          {/* Header Row */}
+          <Box sx={{ display: 'flex', position: 'sticky', top: 0, zIndex: 10, bgcolor: 'background.paper' }}>
+            {/* Empty space for activity names column */}
+            <Box sx={{ 
+              width: 300, 
+              height: 40,
+              borderRight: 2,
+              borderBottom: 2,
+              borderColor: 'divider',
+              bgcolor: 'grey.50',
               display: 'flex',
               alignItems: 'center',
-              borderRight: 1,
+              px: 2
+            }}>
+              <Typography variant="body2" fontWeight={600}>Activities</Typography>
+            </Box>
+            
+            {/* Timeline header */}
+            <Box sx={{ 
+              flex: 1, 
+              height: 40,
+              borderBottom: 2,
               borderColor: 'divider',
-              position: 'sticky',
-              left: 0,
-              bgcolor: 'background.paper',
-              zIndex: 1
-            }}
-          >
+              position: 'relative',
+              bgcolor: 'grey.50'
+            }}>
+              {monthLabels.map((month, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    position: 'absolute',
+                    left: `${month.position}%`,
+                    px: 1,
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    borderLeft: index > 0 ? 1 : 0,
+                    borderColor: 'divider'
+                  }}
+                >
+                  <Typography variant="caption" fontWeight={600}>
+                    {month.label}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+      
+          {/* Activities Rows */}
+          {activities.map((activity, index) => (
+            <Box
+              key={activity.id}
+              sx={{
+                display: 'flex',
+                height: 60,
+                borderBottom: 1,
+                borderColor: 'divider',
+                '&:hover': {
+                  bgcolor: alpha(theme.palette.action.hover, 0.04)
+                }
+              }}
+            >
+              {/* Activity name */}
+              <Box
+                sx={{
+                  width: 300,
+                  p: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  borderRight: 1,
+                  borderColor: 'divider',
+                  bgcolor: 'background.paper',
+                  flexShrink: 0
+                }}
+              >
             <Stack spacing={0.5} sx={{ width: '100%' }}>
               <Typography variant="body2" fontWeight={600} noWrap>
                 {activity.title}
@@ -1072,63 +1170,134 @@ const GanttChart: React.FC<{ activities: TimelineActivity[], theme: any }> = ({ 
             </Stack>
           </Box>
           
-          {/* Gantt bar */}
-          <Box sx={{ flex: 1, position: 'relative' }}>
+              {/* Gantt timeline area */}
+              <Box sx={{ 
+                flex: 1, 
+                position: 'relative',
+                background: `repeating-linear-gradient(
+                  to right,
+                  transparent,
+                  transparent ${100 / monthLabels.length}%,
+                  ${alpha(theme.palette.divider, 0.1)} ${100 / monthLabels.length}%,
+                  ${alpha(theme.palette.divider, 0.1)} ${100 / monthLabels.length + 0.1}%
+                )`
+              }}>
             {/* Planned bar */}
-            <Box
-              sx={{
-                position: 'absolute',
-                left: `${getDatePosition(activity.startDate)}%`,
-                width: `${getBarWidth(activity.startDate, activity.endDate)}%`,
-                height: 24,
-                top: 10,
-                bgcolor: alpha(getStatusColor(activity.status), 0.3),
-                borderRadius: 1,
-                border: 1,
-                borderColor: alpha(getStatusColor(activity.status), 0.5),
-                display: 'flex',
-                alignItems: 'center',
-                px: 1,
-                overflow: 'hidden'
-              }}
+            <Tooltip 
+              title={
+                <Box>
+                  <Typography variant="caption" fontWeight={600}>{activity.title}</Typography>
+                  <Typography variant="caption" display="block">
+                    Planned: {formatDate(activity.startDate)} - {formatDate(activity.endDate)}
+                  </Typography>
+                  <Typography variant="caption" display="block">
+                    Duration: {formatDuration(activity.startDate, activity.endDate)}
+                  </Typography>
+                </Box>
+              }
+              arrow
+              placement="top"
             >
-              <Typography variant="caption" noWrap sx={{ color: 'text.primary' }}>
-                Planned
-              </Typography>
-            </Box>
-            
-            {/* Actual bar */}
-            {activity.actualStartDate && (
               <Box
+                onClick={() => handleActivityClick(activity)}
+                onContextMenu={(e) => handleContextMenu(e, activity)}
                 sx={{
                   position: 'absolute',
-                  left: `${getDatePosition(activity.actualStartDate)}%`,
-                  width: activity.actualEndDate 
-                    ? `${getBarWidth(activity.actualStartDate, activity.actualEndDate)}%`
-                    : `${getBarWidth(activity.actualStartDate, new Date()) * (activity.progress / 100)}%`,
-                  height: 20,
-                  bottom: 10,
-                  bgcolor: getStatusColor(activity.status),
+                  left: `${getDatePosition(activity.startDate)}%`,
+                  width: `${getBarWidth(activity.startDate, activity.endDate)}%`,
+                  height: 24,
+                  top: 10,
+                  bgcolor: alpha(getStatusColor(activity.status), 0.3),
                   borderRadius: 1,
+                  border: 1,
+                  borderColor: alpha(getStatusColor(activity.status), 0.5),
                   display: 'flex',
                   alignItems: 'center',
                   px: 1,
                   overflow: 'hidden',
-                  boxShadow: 1
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    bgcolor: alpha(getStatusColor(activity.status), 0.4),
+                    transform: 'translateY(-2px)',
+                    boxShadow: 2
+                  }
                 }}
               >
-                <Typography 
-                  variant="caption" 
-                  noWrap 
-                  sx={{ 
-                    color: 'white',
-                    fontWeight: 600,
-                    fontSize: '0.7rem'
-                  }}
-                >
-                  {activity.progress}%
+                <Typography variant="caption" noWrap sx={{ color: 'text.primary' }}>
+                  Planned
                 </Typography>
               </Box>
+            </Tooltip>
+            
+            {/* Actual bar */}
+            {activity.actualStartDate && (
+              <Tooltip
+                title={
+                  <Box>
+                    <Typography variant="caption" fontWeight={600}>Actual Progress</Typography>
+                    <Typography variant="caption" display="block">
+                      Started: {formatDate(activity.actualStartDate)}
+                    </Typography>
+                    {activity.actualEndDate && (
+                      <Typography variant="caption" display="block">
+                        Completed: {formatDate(activity.actualEndDate)}
+                      </Typography>
+                    )}
+                    <Typography variant="caption" display="block">
+                      Progress: {activity.progress}%
+                    </Typography>
+                    {activity.delayDays && activity.delayDays > 0 && (
+                      <Typography variant="caption" display="block" color="warning">
+                        Delayed by {activity.delayDays} days
+                      </Typography>
+                    )}
+                  </Box>
+                }
+                arrow
+                placement="bottom"
+              >
+                <Box
+                  onClick={() => handleActivityClick(activity)}
+                  onContextMenu={(e) => handleContextMenu(e, activity)}
+                  onMouseEnter={() => setHoveredActivity(activity.id)}
+                  onMouseLeave={() => setHoveredActivity(null)}
+                  sx={{
+                    position: 'absolute',
+                    left: `${getDatePosition(activity.actualStartDate)}%`,
+                    width: activity.actualEndDate 
+                      ? `${getBarWidth(activity.actualStartDate, activity.actualEndDate)}%`
+                      : `${getBarWidth(activity.actualStartDate, new Date()) * (activity.progress / 100)}%`,
+                    height: 20,
+                    bottom: 10,
+                    bgcolor: getStatusColor(activity.status),
+                    borderRadius: 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    px: 1,
+                    overflow: 'hidden',
+                    boxShadow: hoveredActivity === activity.id ? 3 : 1,
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    transform: hoveredActivity === activity.id ? 'translateY(-2px)' : 'none',
+                    '&:hover': {
+                      filter: 'brightness(1.1)'
+                    }
+                  }}
+                >
+                  <Typography 
+                    variant="caption" 
+                    noWrap 
+                    sx={{ 
+                      color: 'white',
+                      fontWeight: 600,
+                      fontSize: '0.7rem'
+                    }}
+                  >
+                    {activity.progress}%
+                  </Typography>
+                </Box>
+              </Tooltip>
             )}
             
             {/* Dependencies lines */}
@@ -1154,9 +1323,44 @@ const GanttChart: React.FC<{ activities: TimelineActivity[], theme: any }> = ({ 
                 }}
               />
             )}
+              </Box>
+            </Box>
+          ))}
+          
+          {/* Today line - positioned after all activities */}
+          <Box
+            sx={{
+              position: 'absolute',
+              left: `calc(300px + ${(getDatePosition(new Date()) / 100) * (100 - 300 / (1200 * (zoomLevel / 100))) * 100}%)`,
+              top: 40,
+              bottom: 0,
+              width: 2,
+              bgcolor: 'error.main',
+              zIndex: 5,
+              pointerEvents: 'none'
+            }}
+          >
+            <Box
+              sx={{
+                position: 'absolute',
+                top: -30,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                bgcolor: 'error.main',
+                color: 'white',
+                px: 1,
+                py: 0.25,
+                borderRadius: 1,
+                fontSize: '0.7rem',
+                fontWeight: 600,
+                whiteSpace: 'nowrap'
+              }}
+            >
+              Today
+            </Box>
           </Box>
         </Box>
-      ))}
+      </Box>
       
       {/* Legend */}
       <Box sx={{ 
@@ -1185,6 +1389,185 @@ const GanttChart: React.FC<{ activities: TimelineActivity[], theme: any }> = ({ 
           <Typography variant="caption">Today</Typography>
         </Stack>
       </Box>
+
+      {/* Activity Details Dialog */}
+      <Dialog open={detailsOpen} onClose={() => setDetailsOpen(false)} maxWidth="md" fullWidth>
+        {selectedActivity && (
+          <>
+            <DialogTitle>
+              <Stack direction="row" justifyContent="space-between" alignItems="center">
+                <Typography variant="h6">{selectedActivity.title}</Typography>
+                <Stack direction="row" spacing={1}>
+                  <Chip
+                    label={selectedActivity.status.replace('-', ' ')}
+                    color={getStatusColor(selectedActivity.status)}
+                    size="small"
+                  />
+                  {selectedActivity.isOnCriticalPath && (
+                    <Chip
+                      icon={<Flag />}
+                      label="Critical Path"
+                      color="error"
+                      size="small"
+                    />
+                  )}
+                </Stack>
+              </Stack>
+            </DialogTitle>
+            <DialogContent dividers>
+              <Box display="flex" flexWrap="wrap" gap={3}>
+                <Box flex="1 1 300px">
+                  <Typography variant="subtitle2" fontWeight={600} gutterBottom>
+                    Schedule Information
+                  </Typography>
+                  <Stack spacing={1}>
+                    <Typography variant="body2">
+                      <strong>Planned:</strong> {formatDate(selectedActivity.startDate)} - {formatDate(selectedActivity.endDate)}
+                    </Typography>
+                    {selectedActivity.actualStartDate && (
+                      <Typography variant="body2">
+                        <strong>Actual:</strong> {formatDate(selectedActivity.actualStartDate)} - {selectedActivity.actualEndDate ? formatDate(selectedActivity.actualEndDate) : 'In Progress'}
+                      </Typography>
+                    )}
+                    <Typography variant="body2">
+                      <strong>Duration:</strong> {formatDuration(selectedActivity.startDate, selectedActivity.endDate)}
+                    </Typography>
+                    {selectedActivity.delayDays && selectedActivity.delayDays > 0 && (
+                      <Typography variant="body2" color="warning.main">
+                        <strong>Delay:</strong> {selectedActivity.delayDays} days
+                      </Typography>
+                    )}
+                  </Stack>
+                </Box>
+
+                <Box flex="1 1 300px">
+                  <Typography variant="subtitle2" fontWeight={600} gutterBottom>
+                    Progress & Resources
+                  </Typography>
+                  <Stack spacing={1}>
+                    <Box>
+                      <Typography variant="body2" gutterBottom>
+                        <strong>Progress:</strong> {selectedActivity.progress}%
+                      </Typography>
+                      <LinearProgress
+                        variant="determinate"
+                        value={selectedActivity.progress}
+                        sx={{ height: 8, borderRadius: 4 }}
+                      />
+                    </Box>
+                    <Typography variant="body2">
+                      <strong>Budget:</strong> {formatCurrency(selectedActivity.budget)}
+                    </Typography>
+                    <Typography variant="body2">
+                      <strong>Resources:</strong> {selectedActivity.resources.manpower} personnel
+                    </Typography>
+                    <Typography variant="body2">
+                      <strong>Assigned to:</strong> {selectedActivity.assignedTo}
+                    </Typography>
+                  </Stack>
+                </Box>
+
+                <Box flex="1 1 100%">
+                  <Typography variant="subtitle2" fontWeight={600} gutterBottom>
+                    Description
+                  </Typography>
+                  <Typography variant="body2" paragraph>
+                    {selectedActivity.description}
+                  </Typography>
+                </Box>
+
+                <Box flex="1 1 300px">
+                  <Typography variant="subtitle2" fontWeight={600} gutterBottom>
+                    Milestones
+                  </Typography>
+                  <Stack spacing={0.5}>
+                    {selectedActivity.milestones.map((milestone, idx) => (
+                      <Chip
+                        key={idx}
+                        label={milestone}
+                        size="small"
+                        variant="outlined"
+                        color="primary"
+                      />
+                    ))}
+                  </Stack>
+                </Box>
+
+                <Box flex="1 1 300px">
+                  <Typography variant="subtitle2" fontWeight={600} gutterBottom>
+                    Deliverables
+                  </Typography>
+                  <Stack spacing={0.5}>
+                    {selectedActivity.deliverables.map((deliverable, idx) => (
+                      <Typography key={idx} variant="body2">
+                        • {deliverable}
+                      </Typography>
+                    ))}
+                  </Stack>
+                </Box>
+
+                {selectedActivity.risks.length > 0 && (
+                  <Box flex="1 1 100%">
+                    <Typography variant="subtitle2" fontWeight={600} gutterBottom color="warning.main">
+                      Risk Factors
+                    </Typography>
+                    <Stack direction="row" spacing={1} flexWrap="wrap">
+                      {selectedActivity.risks.map((risk, idx) => (
+                        <Chip
+                          key={idx}
+                          label={risk}
+                          size="small"
+                          color="warning"
+                          variant="outlined"
+                        />
+                      ))}
+                    </Stack>
+                  </Box>
+                )}
+              </Box>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setDetailsOpen(false)}>Close</Button>
+              <Button variant="contained" startIcon={<Assignment />}>
+                View Full Details
+              </Button>
+            </DialogActions>
+          </>
+        )}
+      </Dialog>
+
+      {/* Context Menu */}
+      <Menu
+        open={contextMenu !== null}
+        onClose={handleCloseContextMenu}
+        anchorReference="anchorPosition"
+        anchorPosition={
+          contextMenu !== null
+            ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+            : undefined
+        }
+      >
+        <MenuItem onClick={() => {
+          if (contextMenu) handleActivityClick(contextMenu.activity);
+          handleCloseContextMenu();
+        }}>
+          <Visibility sx={{ mr: 1 }} fontSize="small" />
+          View Details
+        </MenuItem>
+        <MenuItem onClick={handleCloseContextMenu}>
+          <Assignment sx={{ mr: 1 }} fontSize="small" />
+          Update Progress
+        </MenuItem>
+        <MenuItem onClick={handleCloseContextMenu}>
+          <Flag sx={{ mr: 1 }} fontSize="small" />
+          Mark as Critical
+        </MenuItem>
+        <MuiDivider />
+        <MenuItem onClick={handleCloseContextMenu}>
+          <Share sx={{ mr: 1 }} fontSize="small" />
+          Share Activity
+        </MenuItem>
+      </Menu>
     </Box>
   );
 };
