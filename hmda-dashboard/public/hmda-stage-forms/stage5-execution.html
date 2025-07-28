@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stage 5: Construction/Execution Phase - HMDA PES</title>
+    <link rel="stylesheet" href="shared/styles.css">
+    <link rel="stylesheet" href="shared/feedback-system.css">
+    <style>
+        .stage-info {
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
+            border: 1px solid #0891b2;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .previous-stages-summary {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .stages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stage-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .stage-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #059669;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-weight: bold;
+        }
+        
+        .stage-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+        
+        .stage-status {
+            font-size: 0.75rem;
+            color: #059669;
+            font-weight: 500;
+        }
+        
+        .project-summary {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 1px solid #f59e0b;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .milestone-tracker {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+        
+        .milestone-header {
+            background: #f3f4f6;
+            padding: 15px 20px;
+            font-weight: 600;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .milestone-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .milestone-item:last-child {
+            border-bottom: none;
+        }
+        
+        .milestone-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .milestone-name {
+            font-weight: 500;
+            color: #1f2937;
+        }
+        
+        .milestone-details {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        .milestone-progress {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .progress-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.875rem;
+        }
+        
+        .progress-completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .progress-current {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        
+        .progress-pending {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+        
+        .payment-tracker {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .payment-header {
+            background: #f3f4f6;
+            padding: 15px 20px;
+            font-weight: 600;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .payment-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .payment-item:last-child {
+            border-bottom: none;
+        }
+        
+        .status-submitted {
+            background: #dbeafe;
+            color: #1d4ed8;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .status-approved {
+            background: #dcfce7;
+            color: #166534;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .status-paid {
+            background: #f0fdf4;
+            color: #059669;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .quality-indicators {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .quality-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .quality-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .quality-good {
+            color: #059669;
+        }
+        
+        .quality-warning {
+            color: #f59e0b;
+        }
+        
+        .quality-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .timeline-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #0891b2;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        /* Bill Management Styles */
+        .document-list {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .document-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+        
+        .document-item:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+        
+        .doc-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+        
+        .doc-icon {
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .doc-details {
+            flex: 1;
+        }
+        
+        .doc-name {
+            font-weight: 500;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+        
+        .doc-meta {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        
+        .doc-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-icon {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 16px;
+        }
+        
+        .btn-icon:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+        }
+        
+        .bills-table {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        
+        .bills-header {
+            background: #f3f4f6;
+            padding: 15px 20px;
+            font-weight: 600;
+            border-bottom: 1px solid #e2e8f0;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1.5fr 1.5fr 1fr;
+            gap: 15px;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            color: #64748b;
+        }
+        
+        .bill-row {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1.5fr 1.5fr 1fr;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .bill-row:last-child {
+            border-bottom: none;
+        }
+        
+        .bill-row:hover {
+            background: #f8fafc;
+        }
+        
+        .bill-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-small {
+            padding: 4px 8px;
+            font-size: 0.875rem;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-small:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+        
+        .bills-summary {
+            background: #f0f9ff;
+            border: 1px solid #0284c7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .summary-item {
+            text-align: center;
+        }
+        
+        .summary-label {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+        
+        .summary-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0369a1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>HMDA Project Execution System</h1>
+                <p class="subtitle">Stage 5: Construction/Execution Phase</p>
+            </div>
+        </header>
+
+        <!-- User Info Bar -->
+        <div class="user-info">
+            <div class="user-details">
+                <div class="user-avatar">SR</div>
+                <div class="user-info-text">
+                    <div class="user-name">Sri S. Ramesh</div>
+                    <div class="user-role">Executive Engineer, Circle-II (Rangareddy)</div>
+                </div>
+            </div>
+            <div class="current-time" id="currentTime"></div>
+        </div>
+
+        <!-- Previous Stages Summary -->
+        <div class="previous-stages-summary">
+            <h3 class="summary-title">
+                <span>✅</span>
+                Previous Stages Completed Successfully
+            </h3>
+            <div class="stages-grid">
+                <div class="stage-card">
+                    <div class="stage-number">1</div>
+                    <div class="stage-name">Conceptualization</div>
+                    <div class="stage-status">Approved ✓</div>
+                </div>
+                <div class="stage-card">
+                    <div class="stage-number">2</div>
+                    <div class="stage-name">DPR & Approvals</div>
+                    <div class="stage-status">TS Sanctioned ✓</div>
+                </div>
+                <div class="stage-card">
+                    <div class="stage-number">3</div>
+                    <div class="stage-name">Tendering</div>
+                    <div class="stage-status">L1 Selected ✓</div>
+                </div>
+                <div class="stage-card">
+                    <div class="stage-number">4</div>
+                    <div class="stage-name">Contract Award</div>
+                    <div class="stage-status">Work Started ✓</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Summary -->
+        <div class="project-summary">
+            <h3 style="margin-bottom: 15px; color: #92400e;">🚧 Project Execution Status</h3>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-label">Project Code</div>
+                    <div class="summary-value">HMDA/EE/2025/0001</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Contractor</div>
+                    <div class="summary-value">M/s ABC Construction Ltd.</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Contract Value</div>
+                    <div class="summary-value">₹149.50 Lakhs</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Work Order Date</div>
+                    <div class="summary-value">April 15, 2025</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Completion Target</div>
+                    <div class="summary-value">October 15, 2026</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Days Elapsed</div>
+                    <div class="summary-value">195 days (35%)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage Information -->
+        <div class="stage-info">
+            <div class="stage-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-icon">⏱️</div>
+                    <span><strong>Duration:</strong> 18 months</span>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🎯</div>
+                    <span><strong>Current Status:</strong> Active Execution</span>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">📋</div>
+                    <span><strong>Key Focus:</strong> Progress Monitoring & Quality Control</span>
+                </div>
+            </div>
+            <p><strong>Objective:</strong> Monitor project execution, ensure quality standards, process payments, manage variations, and maintain schedule adherence throughout the construction phase.</p>
+        </div>
+
+        <!-- Form Content -->
+        <main class="form-content">
+            <!-- Progress Indicator -->
+            <div class="progress-section">
+                <div class="progress-header">
+                    <span class="progress-title">Overall Project Progress</span>
+                    <span class="progress-percentage" id="overallProgress">42%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 42%"></div>
+                </div>
+            </div>
+
+            <!-- Quality Indicators Dashboard -->
+            <div class="quality-indicators">
+                <div class="quality-card">
+                    <div class="quality-value quality-good">85%</div>
+                    <div class="quality-label">Quality Score</div>
+                </div>
+                <div class="quality-card">
+                    <div class="quality-value quality-good">98%</div>
+                    <div class="quality-label">Safety Compliance</div>
+                </div>
+                <div class="quality-card">
+                    <div class="quality-value quality-warning">+5 days</div>
+                    <div class="quality-label">Schedule Variance</div>
+                </div>
+                <div class="quality-card">
+                    <div class="quality-value quality-good">-2.3%</div>
+                    <div class="quality-label">Cost Variance</div>
+                </div>
+                <div class="quality-card">
+                    <div class="quality-value quality-good">45</div>
+                    <div class="quality-label">Workers Deployed</div>
+                </div>
+            </div>
+
+            <!-- Milestone Tracking - REMOVED per HMDA feedback -->
+            <div class="milestone-tracker" style="display:none;">
+                <div class="milestone-header">
+                    <span>📊 Project Milestones</span>
+                    <span>Progress Status</span>
+                </div>
+                
+                <div class="milestone-item">
+                    <div class="milestone-info">
+                        <div class="milestone-name">Site Clearance & Setup</div>
+                        <div class="milestone-details">Boundary marking, site office, material storage setup</div>
+                    </div>
+                    <div class="milestone-progress">
+                        <div class="progress-circle progress-completed">100%</div>
+                        <span style="color: #059669; font-weight: 500;">Completed</span>
+                    </div>
+                </div>
+                
+                <div class="milestone-item">
+                    <div class="milestone-info">
+                        <div class="milestone-name">Utility Shifting</div>
+                        <div class="milestone-details">Electrical lines, water pipes, telecom cables relocation</div>
+                    </div>
+                    <div class="milestone-progress">
+                        <div class="progress-circle progress-completed">100%</div>
+                        <span style="color: #059669; font-weight: 500;">Completed</span>
+                    </div>
+                </div>
+                
+                <div class="milestone-item">
+                    <div class="milestone-info">
+                        <div class="milestone-name">Earthwork & Sub-base</div>
+                        <div class="milestone-details">Excavation, filling, compaction - 2.5 km stretch</div>
+                    </div>
+                    <div class="milestone-progress">
+                        <div class="progress-circle progress-current">75%</div>
+                        <span style="color: #1d4ed8; font-weight: 500;">In Progress</span>
+                    </div>
+                </div>
+                
+                <div class="milestone-item">
+                    <div class="milestone-info">
+                        <div class="milestone-name">Drainage & Culverts</div>
+                        <div class="milestone-details">Storm water drains, box culverts construction</div>
+                    </div>
+                    <div class="milestone-progress">
+                        <div class="progress-circle progress-current">35%</div>
+                        <span style="color: #1d4ed8; font-weight: 500;">In Progress</span>
+                    </div>
+                </div>
+                
+                <div class="milestone-item">
+                    <div class="milestone-info">
+                        <div class="milestone-name">Base Course & Binder</div>
+                        <div class="milestone-details">WMM base, DBM binder course laying</div>
+                    </div>
+                    <div class="milestone-progress">
+                        <div class="progress-circle progress-pending">0%</div>
+                        <span style="color: #6b7280; font-weight: 500;">Pending</span>
+                    </div>
+                </div>
+                
+                <div class="milestone-item">
+                    <div class="milestone-info">
+                        <div class="milestone-name">Surface Course & Finishing</div>
+                        <div class="milestone-details">BC surface, road markings, signage installation</div>
+                    </div>
+                    <div class="milestone-progress">
+                        <div class="progress-circle progress-pending">0%</div>
+                        <span style="color: #6b7280; font-weight: 500;">Pending</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Current Progress Tracking -->
+            <div class="form-group">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">📈</span>
+                    Current Progress Tracking
+                </h3>
+                
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="currentStatus">
+                            Current Work Status <span class="required">*</span>
+                        </label>
+                        <select id="currentStatus" class="field-input" aria-describedby="currentStatusHelp">
+                            <option value="">Select Status</option>
+                            <option value="not_started">Not Started</option>
+                            <option value="in_progress" selected>In Progress</option>
+                            <option value="suspended">Suspended</option>
+                            <option value="resumed">Resumed</option>
+                            <option value="substantially_complete">Substantially Complete</option>
+                        </select>
+                        <div class="field-help" id="currentStatusHelp">Current execution status</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="physicalProgress">
+                            Physical Progress (%)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="physicalProgress" 
+                            class="field-input" 
+                            value="42"
+                            min="0"
+                            max="100"
+                            onchange="updateProgressIndicators()"
+                            aria-describedby="physicalProgressHelp"
+                        >
+                        <div class="field-help" id="physicalProgressHelp">Overall physical completion percentage</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="timeProgress">
+                            Time Progress (%)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="timeProgress" 
+                            class="field-input calculated-field" 
+                            value="35"
+                            readonly
+                            aria-describedby="timeProgressHelp"
+                        >
+                        <div class="field-help" id="timeProgressHelp">Time elapsed vs total duration</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial Progress with Tax -->
+            <div class="form-group">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">💰</span>
+                    Financial Progress
+                </h3>
+                
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="contractValue">
+                            Contract Value (₹ Lakhs)
+                        </label>
+                        <div class="input-group">
+                            <span class="input-prefix">₹</span>
+                            <input 
+                                type="number" 
+                                id="contractValue" 
+                                class="field-input" 
+                                value="149.50"
+                                readonly
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="progressAmountWithoutTax">
+                            Progress Amount (Without Tax) (₹ Lakhs) <span class="required">*</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-prefix">₹</span>
+                            <input 
+                                type="number" 
+                                id="progressAmountWithoutTax" 
+                                class="field-input" 
+                                step="0.01"
+                                placeholder="0.00"
+                                onchange="calculateFinancialProgress()"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="taxPercentage">
+                            Tax Rate (%) <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="number" 
+                            id="taxPercentage" 
+                            class="field-input" 
+                            value="18"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            onchange="calculateFinancialProgress()"
+                        >
+                        <div class="field-help">GST or applicable tax rate</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="taxAmount">
+                            Tax Amount (₹ Lakhs)
+                        </label>
+                        <div class="input-group">
+                            <span class="input-prefix">₹</span>
+                            <input 
+                                type="number" 
+                                id="taxAmount" 
+                                class="field-input calculated-field" 
+                                readonly
+                            >
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="progressAmountWithTax">
+                            Total Progress Amount (With Tax) (₹ Lakhs)
+                        </label>
+                        <div class="input-group">
+                            <span class="input-prefix">₹</span>
+                            <input 
+                                type="number" 
+                                id="progressAmountWithTax" 
+                                class="field-input calculated-field" 
+                                readonly
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="financialProgressPercentage">
+                            Financial Progress (%)
+                        </label>
+                        <div class="input-group">
+                            <input 
+                                type="number" 
+                                id="financialProgressPercentage" 
+                                class="field-input calculated-field" 
+                                readonly
+                            >
+                            <span class="input-suffix">%</span>
+                        </div>
+                        <div class="field-help">Calculated based on contract value</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="currentMilestone">
+                            Current Milestone
+                        </label>
+                        <select id="currentMilestone" class="field-input" aria-describedby="currentMilestoneHelp">
+                            <option value="">Select Current Milestone</option>
+                            <option value="site_setup">Site Clearance & Setup</option>
+                            <option value="utility_shifting">Utility Shifting</option>
+                            <option value="earthwork" selected>Earthwork & Sub-base</option>
+                            <option value="drainage">Drainage & Culverts</option>
+                            <option value="base_course">Base Course & Binder</option>
+                            <option value="surface_course">Surface Course & Finishing</option>
+                        </select>
+                        <div class="field-help" id="currentMilestoneHelp">Currently active milestone</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="nextMilestoneDate">
+                            Next Milestone Target Date
+                        </label>
+                        <input 
+                            type="date" 
+                            id="nextMilestoneDate" 
+                            class="field-input" 
+                            value="2025-12-15"
+                            aria-describedby="nextMilestoneHelp"
+                        >
+                        <div class="field-help" id="nextMilestoneHelp">Expected completion date of current milestone</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bill Issue Management -->
+            <div class="form-group">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">📄</span>
+                    Bill Issue Management
+                </h3>
+                
+                <!-- Bill Details -->
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="billNumber">
+                            Bill Number <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="billNumber" 
+                            class="field-input" 
+                            placeholder="Enter bill number"
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="billDate">
+                            Bill Date <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="date" 
+                            id="billDate" 
+                            class="field-input"
+                        >
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="billType">
+                            Bill Type <span class="required">*</span>
+                        </label>
+                        <select id="billType" class="field-input">
+                            <option value="">Select Bill Type</option>
+                            <option value="RA">Running Account (RA) Bill</option>
+                            <option value="Final">Final Bill</option>
+                            <option value="Supplementary">Supplementary Bill</option>
+                            <option value="Advance">Advance Bill</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="billPeriod">
+                            Bill Period
+                        </label>
+                        <input 
+                            type="text" 
+                            id="billPeriod" 
+                            class="field-input" 
+                            placeholder="e.g., April 2025 - May 2025"
+                        >
+                    </div>
+                </div>
+
+                <!-- Bill Amounts -->
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="billAmountWithoutTax">
+                            Bill Amount (Without Tax) (₹ Lakhs) <span class="required">*</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-prefix">₹</span>
+                            <input 
+                                type="number" 
+                                id="billAmountWithoutTax" 
+                                class="field-input" 
+                                step="0.01"
+                                placeholder="0.00"
+                                onchange="calculateBillTotals()"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="billTaxPercentage">
+                            Tax Rate (%) <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="number" 
+                            id="billTaxPercentage" 
+                            class="field-input" 
+                            value="18"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            onchange="calculateBillTotals()"
+                        >
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="billTaxAmount">
+                            Tax Amount (₹ Lakhs)
+                        </label>
+                        <div class="input-group">
+                            <span class="input-prefix">₹</span>
+                            <input 
+                                type="number" 
+                                id="billTaxAmount" 
+                                class="field-input calculated-field" 
+                                readonly
+                            >
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="billTotalAmount">
+                            Total Bill Amount (With Tax) (₹ Lakhs)
+                        </label>
+                        <div class="input-group">
+                            <span class="input-prefix">₹</span>
+                            <input 
+                                type="number" 
+                                id="billTotalAmount" 
+                                class="field-input calculated-field" 
+                                readonly
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bill Documents -->
+                <div class="field">
+                    <label class="field-label" for="billDocuments">
+                        Upload Bill Documents <span class="required">*</span>
+                    </label>
+                    <input 
+                        type="file" 
+                        id="billDocuments" 
+                        class="field-input" 
+                        multiple
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        onchange="handleBillDocumentUpload(this)"
+                    >
+                    <div class="field-help">Upload scanned copies of bills (PDF, JPG, PNG formats)</div>
+                </div>
+                
+                <div id="billDocumentsList" class="document-list">
+                    <!-- Uploaded bill documents will appear here -->
+                </div>
+
+                <!-- Add Bill Button -->
+                <div class="form-actions" style="margin-top: 20px;">
+                    <button type="button" class="btn btn-primary" onclick="addBillToList()">
+                        ➕ Add Bill to List
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bills List -->
+            <div class="form-group">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">📋</span>
+                    Bills Submitted
+                </h3>
+                
+                <div id="billsList" class="bills-table">
+                    <!-- Bill entries will appear here -->
+                </div>
+            </div>
+
+            <!-- Resource Deployment - REMOVED per HMDA feedback -->
+            <div class="form-group" style="display:none;">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">👷</span>
+                    Resource Deployment
+                </h3>
+                
+                <div class="form-row three-column">
+                    <div class="field">
+                        <label class="field-label" for="skilledWorkers">
+                            Skilled Workers
+                        </label>
+                        <input 
+                            type="number" 
+                            id="skilledWorkers" 
+                            class="field-input" 
+                            value="15"
+                            min="0"
+                            aria-describedby="skilledWorkersHelp"
+                        >
+                        <div class="field-help" id="skilledWorkersHelp">Number of skilled workers deployed</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="unskilledWorkers">
+                            Unskilled Workers
+                        </label>
+                        <input 
+                            type="number" 
+                            id="unskilledWorkers" 
+                            class="field-input" 
+                            value="30"
+                            min="0"
+                            aria-describedby="unskilledWorkersHelp"
+                        >
+                        <div class="field-help" id="unskilledWorkersHelp">Number of unskilled workers deployed</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="technicalStaff">
+                            Technical Staff
+                        </label>
+                        <input 
+                            type="number" 
+                            id="technicalStaff" 
+                            class="field-input" 
+                            value="8"
+                            min="0"
+                            aria-describedby="technicalStaffHelp"
+                        >
+                        <div class="field-help" id="technicalStaffHelp">Engineers, supervisors, QC staff</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="equipmentDeployed">
+                            Major Equipment Deployed
+                        </label>
+                        <textarea 
+                            id="equipmentDeployed" 
+                            class="field-input" 
+                            placeholder="List major equipment currently deployed on site"
+                            aria-describedby="equipmentHelp"
+                        >1 x Hydraulic Excavator (JCB 3DX)
+2 x Vibratory Roller (10 Ton)
+1 x Motor Grader (CAT 140M)
+3 x Tipper Trucks (12 Ton)
+1 x Water Tanker (8000L)
+1 x Compressor (portable)
+1 x Generator Set (125 KVA)</textarea>
+                        <div class="field-help" id="equipmentHelp">Major construction equipment on site</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="materialStatus">
+                            Material Availability Status
+                        </label>
+                        <select id="materialStatus" class="field-input" aria-describedby="materialStatusHelp">
+                            <option value="">Select Status</option>
+                            <option value="adequate" selected>Adequate Stock Available</option>
+                            <option value="running_low">Running Low</option>
+                            <option value="critical">Critical Shortage</option>
+                            <option value="procurement_pending">Procurement Pending</option>
+                        </select>
+                        <div class="field-help" id="materialStatusHelp">Current material availability status</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Processing -->
+            <div class="form-group">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">💰</span>
+                    Payment Processing
+                </h3>
+                
+                <div class="payment-tracker">
+                    <div class="payment-header">
+                        Running Account Bills Status
+                    </div>
+                    
+                    <div class="payment-item" style="font-weight: 600; background: #f9fafb;">
+                        <div>Bill Details</div>
+                        <div>Amount (₹ Lakhs)</div>
+                        <div>Submission Date</div>
+                        <div>Status</div>
+                        <div>Payment Date</div>
+                    </div>
+                    
+                    <div class="payment-item">
+                        <div>
+                            <div style="font-weight: 500;">RA Bill No. 1</div>
+                            <div style="font-size: 0.875rem; color: #6b7280;">Site setup & mobilization</div>
+                        </div>
+                        <div>₹18.50</div>
+                        <div>May 15, 2025</div>
+                        <div><span class="status-paid">Paid</span></div>
+                        <div>May 30, 2025</div>
+                    </div>
+                    
+                    <div class="payment-item">
+                        <div>
+                            <div style="font-weight: 500;">RA Bill No. 2</div>
+                            <div style="font-size: 0.875rem; color: #6b7280;">Earthwork progress (30%)</div>
+                        </div>
+                        <div>₹24.75</div>
+                        <div>July 20, 2025</div>
+                        <div><span class="status-paid">Paid</span></div>
+                        <div>August 5, 2025</div>
+                    </div>
+                    
+                    <div class="payment-item">
+                        <div>
+                            <div style="font-weight: 500;">RA Bill No. 3</div>
+                            <div style="font-size: 0.875rem; color: #6b7280;">Earthwork & drainage (45%)</div>
+                        </div>
+                        <div>₹19.20</div>
+                        <div>September 25, 2025</div>
+                        <div><span class="status-approved">Approved</span></div>
+                        <div>Pending</div>
+                    </div>
+                    
+                    <div class="payment-item">
+                        <div>
+                            <div style="font-weight: 500;">RA Bill No. 4</div>
+                            <div style="font-size: 0.875rem; color: #6b7280;">Current month progress</div>
+                        </div>
+                        <div>₹16.80</div>
+                        <div>October 28, 2025</div>
+                        <div><span class="status-submitted">Under Verification</span></div>
+                        <div>-</div>
+                    </div>
+                </div>
+
+                <div class="form-row three-column" style="margin-top: 20px;">
+                    <div class="field">
+                        <label class="field-label" for="totalBillsSubmitted">
+                            Total Bills Submitted
+                        </label>
+                        <input 
+                            type="number" 
+                            id="totalBillsSubmitted" 
+                            class="field-input calculated-field" 
+                            value="4"
+                            readonly
+                            aria-describedby="totalBillsHelp"
+                        >
+                        <div class="field-help" id="totalBillsHelp">Total RA bills submitted to date</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="totalAmountBilled">
+                            Total Amount Billed (₹ Lakhs)
+                        </label>
+                        <div class="input-group">
+                            <span class="input-prefix">₹</span>
+                            <input 
+                                type="number" 
+                                id="totalAmountBilled" 
+                                class="field-input calculated-field" 
+                                value="79.25"
+                                readonly
+                                aria-describedby="totalBilledHelp"
+                            >
+                        </div>
+                        <div class="field-help" id="totalBilledHelp">Cumulative amount in all bills</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="totalAmountPaid">
+                            Total Amount Paid (₹ Lakhs)
+                        </label>
+                        <div class="input-group">
+                            <span class="input-prefix">₹</span>
+                            <input 
+                                type="number" 
+                                id="totalAmountPaid" 
+                                class="field-input calculated-field" 
+                                value="43.25"
+                                readonly
+                                aria-describedby="totalPaidHelp"
+                            >
+                        </div>
+                        <div class="field-help" id="totalPaidHelp">Amount actually paid to contractor</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="retentionHeld">
+                            Retention Amount Held (₹ Lakhs)
+                        </label>
+                        <div class="input-group">
+                            <span class="input-prefix">₹</span>
+                            <input 
+                                type="number" 
+                                id="retentionHeld" 
+                                class="field-input calculated-field" 
+                                value="7.93"
+                                readonly
+                                aria-describedby="retentionHelp"
+                            >
+                        </div>
+                        <div class="field-help" id="retentionHelp">10% retention deducted from bills</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="pendingPayment">
+                            Pending Payment (₹ Lakhs)
+                        </label>
+                        <div class="input-group">
+                            <span class="input-prefix">₹</span>
+                            <input 
+                                type="number" 
+                                id="pendingPayment" 
+                                class="field-input calculated-field" 
+                                value="36.00"
+                                readonly
+                                aria-describedby="pendingPaymentHelp"
+                            >
+                        </div>
+                        <div class="field-help" id="pendingPaymentHelp">Amount pending payment to contractor</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Issues & Challenges - REMOVED per HMDA feedback -->
+            <div class="form-group" style="display:none;">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">⚠️</span>
+                    Issues & Challenges Management
+                </h3>
+                
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="currentIssues">
+                            Current Issues/Challenges
+                        </label>
+                        <textarea 
+                            id="currentIssues" 
+                            class="field-input" 
+                            placeholder="List current issues affecting the project"
+                            aria-describedby="currentIssuesHelp"
+                        >1. Minor delay in drainage work due to unexpected utility conflicts
+2. Intermittent material delivery delays from supplier
+3. Need traffic management permission for weekend work
+4. Monsoon preparation required for completed earthwork sections</textarea>
+                        <div class="field-help" id="currentIssuesHelp">Current challenges and roadblocks</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="mitigation">
+                            Mitigation Measures
+                        </label>
+                        <textarea 
+                            id="mitigation" 
+                            class="field-input" 
+                            placeholder="Actions taken or planned to address issues"
+                            aria-describedby="mitigationHelp"
+                        >1. Coordinated with utility agencies, shifting work 90% complete
+2. Alternative supplier identified and approved
+3. Applied for traffic police permission, expected by Nov 15
+4. Temporary drainage channels and covering arrangements made</textarea>
+                        <div class="field-help" id="mitigationHelp">Actions to address current issues</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="safetyIncidents">
+                            Safety Incidents Count
+                        </label>
+                        <input 
+                            type="number" 
+                            id="safetyIncidents" 
+                            class="field-input" 
+                            value="0"
+                            min="0"
+                            aria-describedby="safetyIncidentsHelp"
+                        >
+                        <div class="field-help" id="safetyIncidentsHelp">Number of safety incidents this month</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="scheduleVariance">
+                            Schedule Variance (Days)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="scheduleVariance" 
+                            class="field-input" 
+                            value="5"
+                            aria-describedby="scheduleVarianceHelp"
+                        >
+                        <div class="field-help" id="scheduleVarianceHelp">Positive = delay, Negative = ahead of schedule</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Report -->
+            <div class="form-group">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">📋</span>
+                    Monthly Progress Report - October 2025
+                </h3>
+                
+                <div class="form-row single-column">
+                    <div class="field">
+                        <label class="field-label" for="monthlyAchievements">
+                            Key Achievements This Month
+                        </label>
+                        <textarea 
+                            id="monthlyAchievements" 
+                            class="field-input" 
+                            placeholder="List major achievements and milestones completed"
+                            aria-describedby="achievementsHelp"
+                        >• Completed 75% of earthwork activities for the entire stretch
+• Successfully diverted traffic with minimal disruption
+• Achieved zero safety incidents for the third consecutive month
+• Completed utility shifting coordination with all agencies
+• Maintained quality compliance at 95% across all work items
+• Advanced drainage work to 35% completion, ahead of monsoon season</textarea>
+                        <div class="field-help" id="achievementsHelp">Major accomplishments during the month</div>
+                    </div>
+                </div>
+
+                <div class="form-row single-column">
+                    <div class="field">
+                        <label class="field-label" for="nextMonthPlan">
+                            Next Month Action Plan
+                        </label>
+                        <textarea 
+                            id="nextMonthPlan" 
+                            class="field-input" 
+                            placeholder="Planned activities for next month"
+                            aria-describedby="nextMonthHelp"
+                        >• Complete remaining 25% earthwork activities by November 20
+• Finish drainage and culvert work to 80% completion
+• Start base course preparation and material procurement
+• Conduct joint inspection with GHMC for completed sections
+• Implement monsoon protection measures for exposed work
+• Process and submit RA Bill No. 5 for current month progress
+• Conduct quarterly safety training for all workers</textarea>
+                        <div class="field-help" id="nextMonthHelp">Planned activities and targets for next month</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+            <div>
+                <button type="button" class="btn btn-secondary" onclick="saveDraft()">
+                    💾 Save Progress
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="generateMonthlyReport()">
+                    📄 Generate Monthly Report
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="viewPhotos()">
+                    📸 View Progress Photos
+                </button>
+            </div>
+            
+            <div style="display: flex; gap: 15px;">
+                <button type="button" class="btn btn-secondary" onclick="goToPreviousStage()">
+                    ← Back to Contract Award
+                </button>
+                <button type="button" class="btn btn-primary" onclick="proceedToQualityControl()">
+                    Next: Quality Control →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Stage 5 specific functionality
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 1000);
+            initializeProgressCalculations();
+        });
+
+        function updateProgressIndicators() {
+            const physicalProgress = parseFloat(document.getElementById('physicalProgress').value) || 0;
+            
+            // Update overall progress
+            document.getElementById('overallProgress').textContent = physicalProgress + '%';
+            document.querySelector('.progress-fill').style.width = physicalProgress + '%';
+            
+            // Update quality indicators color based on progress
+            const qualityCards = document.querySelectorAll('.quality-value');
+            qualityCards.forEach(card => {
+                if (card.textContent.includes('%')) {
+                    const value = parseInt(card.textContent);
+                    if (value >= 85) {
+                        card.className = 'quality-value quality-good';
+                    } else if (value >= 70) {
+                        card.className = 'quality-value quality-warning';
+                    } else {
+                        card.className = 'quality-value quality-error';
+                    }
+                }
+            });
+        }
+
+        function initializeProgressCalculations() {
+            // Calculate time progress based on actual dates
+            const startDate = new Date('2025-04-15');
+            const endDate = new Date('2026-10-15');
+            const currentDate = new Date();
+            
+            const totalTime = endDate - startDate;
+            const elapsedTime = currentDate - startDate;
+            const timeProgress = Math.min(100, Math.max(0, (elapsedTime / totalTime) * 100));
+            
+            document.getElementById('timeProgress').value = Math.round(timeProgress);
+            
+            // Calculate payment summaries
+            calculatePaymentSummaries();
+        }
+
+        function calculatePaymentSummaries() {
+            // These would be calculated from actual bill data in real implementation
+            const bills = [
+                { amount: 18.50, status: 'paid' },
+                { amount: 24.75, status: 'paid' },
+                { amount: 19.20, status: 'approved' },
+                { amount: 16.80, status: 'submitted' }
+            ];
+            
+            const totalBilled = bills.reduce((sum, bill) => sum + bill.amount, 0);
+            const totalPaid = bills.filter(bill => bill.status === 'paid').reduce((sum, bill) => sum + bill.amount, 0);
+            const retention = totalBilled * 0.1; // 10% retention
+            const pending = totalBilled - totalPaid;
+            
+            document.getElementById('totalBillsSubmitted').value = bills.length;
+            document.getElementById('totalAmountBilled').value = totalBilled.toFixed(2);
+            document.getElementById('totalAmountPaid').value = totalPaid.toFixed(2);
+            document.getElementById('retentionHeld').value = retention.toFixed(2);
+            document.getElementById('pendingPayment').value = pending.toFixed(2);
+        }
+
+        function saveDraft() {
+            const formData = collectFormData();
+            localStorage.setItem('hmda_stage5_draft', JSON.stringify(formData));
+            alert('Progress data saved successfully!');
+        }
+
+        function generateMonthlyReport() {
+            alert('Monthly Progress Report will be generated in PDF format. This may take a few moments.');
+            // In real implementation, this would generate a comprehensive PDF report
+        }
+
+        function viewPhotos() {
+            window.open('progress-photos-gallery.html?project=HMDA-EE-2025-0001&month=October2025', '_blank');
+        }
+
+        function goToPreviousStage() {
+            if (confirm('Are you sure you want to go back to Contract Award stage?')) {
+                window.location.href = 'stage4-contract-award.html?project=HMDA-EE-2025-0001';
+            }
+        }
+
+        function proceedToQualityControl() {
+            if (confirm('Proceed to Quality Control stage? Ensure all current progress data is saved.')) {
+                window.location.href = 'stage6-quality-control.html?project=HMDA-EE-2025-0001';
+            }
+        }
+
+        function collectFormData() {
+            const data = {};
+            const inputs = document.querySelectorAll('.field-input');
+            
+            inputs.forEach(input => {
+                data[input.id] = input.value;
+            });
+            
+            return data;
+        }
+
+        function updateCurrentTime() {
+            const now = new Date();
+            const timeString = now.toLocaleString('en-IN', {
+                timeZone: 'Asia/Kolkata',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            const timeElement = document.getElementById('currentTime');
+            if (timeElement) {
+                timeElement.textContent = timeString;
+            }
+        }
+
+        // Initialize page
+        updateProgressIndicators();
+        
+        // Financial Progress Calculations
+        function calculateFinancialProgress() {
+            const amountWithoutTax = parseFloat(document.getElementById('progressAmountWithoutTax').value) || 0;
+            const taxPercentage = parseFloat(document.getElementById('taxPercentage').value) || 0;
+            const contractValue = parseFloat(document.getElementById('contractValue').value) || 0;
+            
+            const taxAmount = amountWithoutTax * (taxPercentage / 100);
+            const totalWithTax = amountWithoutTax + taxAmount;
+            
+            document.getElementById('taxAmount').value = taxAmount.toFixed(2);
+            document.getElementById('progressAmountWithTax').value = totalWithTax.toFixed(2);
+            
+            if (contractValue > 0) {
+                const progressPercentage = (amountWithoutTax / contractValue) * 100;
+                document.getElementById('financialProgressPercentage').value = progressPercentage.toFixed(2);
+            }
+        }
+
+        // Bill Calculations
+        function calculateBillTotals() {
+            const billAmount = parseFloat(document.getElementById('billAmountWithoutTax').value) || 0;
+            const taxPercentage = parseFloat(document.getElementById('billTaxPercentage').value) || 0;
+            
+            const taxAmount = billAmount * (taxPercentage / 100);
+            const totalAmount = billAmount + taxAmount;
+            
+            document.getElementById('billTaxAmount').value = taxAmount.toFixed(2);
+            document.getElementById('billTotalAmount').value = totalAmount.toFixed(2);
+        }
+
+        // Bill Document Upload
+        let billDocCount = 0;
+        function handleBillDocumentUpload(input) {
+            const files = input.files;
+            const docList = document.getElementById('billDocumentsList');
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const docItem = createBillDocumentItem(file, billDocCount);
+                docList.appendChild(docItem);
+                billDocCount++;
+            }
+            
+            input.value = '';
+        }
+
+        function createBillDocumentItem(file, index) {
+            const docDiv = document.createElement('div');
+            docDiv.className = 'document-item';
+            docDiv.id = `billDoc-${index}`;
+            
+            const icon = getFileIcon(file.name);
+            const size = (file.size / 1024).toFixed(2) + ' KB';
+            
+            docDiv.innerHTML = `
+                <div class="doc-info">
+                    <span class="doc-icon">${icon}</span>
+                    <div class="doc-details">
+                        <div class="doc-name">${file.name}</div>
+                        <div class="doc-meta">Size: ${size} | Uploaded: ${new Date().toLocaleDateString()}</div>
+                    </div>
+                </div>
+                <div class="doc-actions">
+                    <button type="button" class="btn-icon" onclick="viewDocument('${file.name}')" title="View">
+                        <span>👁️</span>
+                    </button>
+                    <button type="button" class="btn-icon" onclick="removeBillDoc(${index})" title="Remove">
+                        <span>🗑️</span>
+                    </button>
+                </div>
+            `;
+            
+            return docDiv;
+        }
+
+        function getFileIcon(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            switch(ext) {
+                case 'pdf': return '📄';
+                case 'jpg':
+                case 'jpeg':
+                case 'png': return '🖼️';
+                default: return '📎';
+            }
+        }
+
+        function removeBillDoc(index) {
+            if (confirm('Remove this document?')) {
+                document.getElementById(`billDoc-${index}`).remove();
+            }
+        }
+
+        function viewDocument(filename) {
+            alert(`View document: ${filename} (This would open the document in production)`);
+        }
+
+        // Add Bill to List
+        let billsData = [];
+        function addBillToList() {
+            // Validate required fields
+            const billNumber = document.getElementById('billNumber').value;
+            const billDate = document.getElementById('billDate').value;
+            const billType = document.getElementById('billType').value;
+            const billAmount = document.getElementById('billAmountWithoutTax').value;
+            
+            if (!billNumber || !billDate || !billType || !billAmount) {
+                alert('Please fill all required fields');
+                return;
+            }
+            
+            // Create bill object
+            const bill = {
+                number: billNumber,
+                date: billDate,
+                type: document.getElementById('billType').options[document.getElementById('billType').selectedIndex].text,
+                period: document.getElementById('billPeriod').value,
+                amountWithoutTax: parseFloat(billAmount),
+                taxAmount: parseFloat(document.getElementById('billTaxAmount').value),
+                totalAmount: parseFloat(document.getElementById('billTotalAmount').value)
+            };
+            
+            billsData.push(bill);
+            updateBillsList();
+            clearBillForm();
+            alert('Bill added successfully!');
+        }
+
+        function updateBillsList() {
+            const billsList = document.getElementById('billsList');
+            
+            if (billsData.length === 0) {
+                billsList.innerHTML = '<p style="text-align: center; color: #64748b; padding: 40px;">No bills submitted yet</p>';
+                return;
+            }
+            
+            let totalWithoutTax = 0;
+            let totalTax = 0;
+            let totalWithTax = 0;
+            
+            let html = `
+                <div class="bills-header">
+                    <div>Bill No.</div>
+                    <div>Date</div>
+                    <div>Type</div>
+                    <div>Amount (w/o Tax)</div>
+                    <div>Total (with Tax)</div>
+                    <div>Actions</div>
+                </div>
+            `;
+            
+            billsData.forEach((bill, index) => {
+                totalWithoutTax += bill.amountWithoutTax;
+                totalTax += bill.taxAmount;
+                totalWithTax += bill.totalAmount;
+                
+                html += `
+                    <div class="bill-row">
+                        <div>${bill.number}</div>
+                        <div>${new Date(bill.date).toLocaleDateString('en-IN')}</div>
+                        <div>${bill.type}</div>
+                        <div>₹${bill.amountWithoutTax.toFixed(2)} L</div>
+                        <div>₹${bill.totalAmount.toFixed(2)} L</div>
+                        <div class="bill-actions">
+                            <button class="btn-small" onclick="viewBill(${index})">View</button>
+                            <button class="btn-small" onclick="removeBill(${index})">Remove</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            billsList.innerHTML = html;
+            
+            // Add summary
+            const summaryDiv = document.createElement('div');
+            summaryDiv.className = 'bills-summary';
+            summaryDiv.innerHTML = `
+                <div class="summary-item">
+                    <div class="summary-label">Total Bills</div>
+                    <div class="summary-value">${billsData.length}</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Total Amount (w/o Tax)</div>
+                    <div class="summary-value">₹${totalWithoutTax.toFixed(2)} L</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Total Tax</div>
+                    <div class="summary-value">₹${totalTax.toFixed(2)} L</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Total Amount (with Tax)</div>
+                    <div class="summary-value">₹${totalWithTax.toFixed(2)} L</div>
+                </div>
+            `;
+            billsList.appendChild(summaryDiv);
+        }
+
+        function clearBillForm() {
+            document.getElementById('billNumber').value = '';
+            document.getElementById('billDate').value = '';
+            document.getElementById('billType').value = '';
+            document.getElementById('billPeriod').value = '';
+            document.getElementById('billAmountWithoutTax').value = '';
+            document.getElementById('billTaxPercentage').value = '18';
+            document.getElementById('billTaxAmount').value = '';
+            document.getElementById('billTotalAmount').value = '';
+            document.getElementById('billDocumentsList').innerHTML = '';
+            billDocCount = 0;
+        }
+
+        function viewBill(index) {
+            const bill = billsData[index];
+            alert(`Bill Details:\nNumber: ${bill.number}\nDate: ${bill.date}\nType: ${bill.type}\nAmount: ₹${bill.totalAmount.toFixed(2)} Lakhs`);
+        }
+
+        function removeBill(index) {
+            if (confirm('Remove this bill from the list?')) {
+                billsData.splice(index, 1);
+                updateBillsList();
+            }
+        }
+        
+        // Initialize bills list
+        updateBillsList();
+    </script>
+    <script src="shared/feedback-system.js"></script>
+</body>
+</html>

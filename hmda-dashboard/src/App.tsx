@@ -25,11 +25,13 @@ import {
   AccountCircle,
   Engineering,
   FilterList as FilterListIcon,
-  Download as DownloadIcon
+  Download as DownloadIcon,
+  Input as InputIcon
 } from '@mui/icons-material';
 import { DashboardOverview } from './components/DashboardOverview';
 import { ProjectsTable } from './components/ProjectsTable';
 import Project360View from './components/Project360View/Project360View';
+import StageFormsView from './components/StageFormsView';
 import { HMDAProject, Circle } from './types/Project';
 import FilterSidebar from './components/filters/FilterSidebar';
 import GlobalSearchBar from './components/GlobalSearchBar';
@@ -447,6 +449,12 @@ function App() {
                 aria-controls="dashboard-tabpanel-2"
                 disabled={!selectedProject}
               />
+              <Tab 
+                icon={<InputIcon />} 
+                label="Stage Forms" 
+                id="dashboard-tab-3"
+                aria-controls="dashboard-tabpanel-3"
+              />
             </Tabs>
           </Container>
         </Box>
@@ -491,6 +499,10 @@ function App() {
                 </Typography>
               </Box>
             )}
+          </TabPanel>
+
+          <TabPanel value={tabValue} index={3}>
+            <StageFormsView />
           </TabPanel>
 
         </Container>

@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stage 2: Detailed Project Report & Approvals - HMDA PES</title>
+    <link rel="stylesheet" href="shared/styles.css">
+    <link rel="stylesheet" href="shared/feedback-system.css">
+    <style>
+        .stage-info {
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
+            border: 1px solid #0891b2;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .previous-stage-summary {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .summary-title {
+            color: #1e293b;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .summary-item {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .summary-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+        
+        .summary-value {
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .status-approved {
+            background: #dcfce7;
+            color: #166534;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .file-upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            background: #f9fafb;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload-area:hover {
+            border-color: #1e3a8a;
+            background: #f0f9ff;
+        }
+        
+        .file-upload-area.dragover {
+            border-color: #059669;
+            background: #f0fdf4;
+        }
+        
+        .uploaded-files {
+            margin-top: 15px;
+        }
+        
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .file-icon {
+            width: 24px;
+            height: 24px;
+            background: #1e3a8a;
+            color: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+        
+        .clearance-tracker {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .clearance-header {
+            background: #f3f4f6;
+            padding: 12px 16px;
+            font-weight: 600;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .clearance-item {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .clearance-item:last-child {
+            border-bottom: none;
+        }
+        
+        .clearance-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .clearance-name {
+            font-weight: 500;
+            color: #1f2937;
+        }
+        
+        .clearance-authority {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        .clearance-status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-in-progress {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        
+        .status-obtained {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-na {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .timeline-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #0891b2;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>HMDA Project Execution System</h1>
+                <p class="subtitle">Stage 2: Detailed Project Report & Approvals</p>
+            </div>
+        </header>
+
+        <!-- User Info Bar -->
+        <div class="user-info">
+            <div class="user-details">
+                <div class="user-avatar">SR</div>
+                <div class="user-info-text">
+                    <div class="user-name">Sri S. Ramesh</div>
+                    <div class="user-role">Executive Engineer, Circle-II (Rangareddy)</div>
+                </div>
+            </div>
+            <div class="current-time" id="currentTime"></div>
+        </div>
+
+        <!-- Previous Stage Summary -->
+        <div class="previous-stage-summary">
+            <h3 class="summary-title">
+                <span>📋</span>
+                Stage 1 Summary - Project Conceptualization (Approved)
+                <span class="status-approved">APPROVED</span>
+            </h3>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-label">Project Code</div>
+                    <div class="summary-value">HMDA/EE/2025/0001</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Project Name</div>
+                    <div class="summary-value">Construction of 4-Lane Road from Gachibowli to HITECH City</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Category</div>
+                    <div class="summary-value">Infrastructure Development - Road Construction</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Location</div>
+                    <div class="summary-value">Rangareddy District, Serilingampally Mandal</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Approved Cost</div>
+                    <div class="summary-value">₹150.50 Lakhs</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Duration</div>
+                    <div class="summary-value">18 Months</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Approved By</div>
+                    <div class="summary-value">Executive Engineer (Within Authority)</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Approval Date</div>
+                    <div class="summary-value">February 2, 2025</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage Information -->
+        <div class="stage-info">
+            <div class="stage-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-icon">⏱️</div>
+                    <span><strong>Duration:</strong> 4-8 months</span>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🎯</div>
+                    <span><strong>EE Authority:</strong> Technical Sanction up to ₹2 Cr</span>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">📋</div>
+                    <span><strong>Key Output:</strong> Technical Sanction & DPR</span>
+                </div>
+            </div>
+            <p><strong>Objective:</strong> Prepare detailed project report, obtain technical specifications, secure necessary clearances, and obtain technical sanction for project execution.</p>
+        </div>
+
+        <!-- Form Content -->
+        <main class="form-content">
+            <!-- Progress Indicator -->
+            <div class="progress-section">
+                <div class="progress-header">
+                    <span class="progress-title">Stage 2 Completion</span>
+                    <span class="progress-percentage" id="stage2Progress">35%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 35%"></div>
+                </div>
+            </div>
+
+            <!-- DPR Development Mode -->
+            <div class="form-group">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">📊</span>
+                    DPR Development Strategy
+                </h3>
+                
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="dprStrategy">
+                            DPR Preparation Strategy <span class="required">*</span>
+                        </label>
+                        <select id="dprStrategy" class="field-input" onchange="toggleConsultantFields()" aria-describedby="dprStrategyHelp">
+                            <option value="">Select Strategy</option>
+                            <option value="inhouse">In-house</option>
+                            <option value="external">External Consultant</option>
+                        </select>
+                        <div class="field-help" id="dprStrategyHelp">Select DPR preparation strategy</div>
+                    </div>
+
+                </div>
+                
+                <!-- Consultant Details Section (shown only for External) -->
+                <div id="consultantDetailsSection" style="display: none;">
+                    <div class="form-row">
+                        <div class="field">
+                            <label class="field-label" for="consultantName">
+                                Consultant Name <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="consultantName" 
+                                class="field-input" 
+                                placeholder="Enter consultant name"
+                                aria-describedby="consultantNameHelp"
+                            >
+                            <div class="field-help" id="consultantNameHelp">Name of the consultant</div>
+                        </div>
+                        
+                        <div class="field">
+                            <label class="field-label" for="consultantFirm">
+                                Consultant Firm <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="consultantFirm" 
+                                class="field-input" 
+                                placeholder="Enter consulting firm name"
+                                aria-describedby="consultantFirmHelp"
+                            >
+                            <div class="field-help" id="consultantFirmHelp">Name of consulting firm/organization</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row single-column">
+                        <div class="field">
+                            <label class="field-label" for="consultantContact">
+                                Contact Details
+                            </label>
+                            <textarea 
+                                id="consultantContact" 
+                                class="field-input" 
+                                placeholder="Phone, email, address"
+                                rows="3"
+                                aria-describedby="consultantContactHelp"
+                            ></textarea>
+                            <div class="field-help" id="consultantContactHelp">Consultant contact information</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row single-column">
+                        <div class="field">
+                            <label class="field-label" for="consultantExperience">
+                                Experience/Expertise
+                            </label>
+                            <textarea 
+                                id="consultantExperience" 
+                                class="field-input" 
+                                placeholder="Describe consultant's relevant experience and expertise"
+                                rows="3"
+                                aria-describedby="consultantExpHelp"
+                            ></textarea>
+                            <div class="field-help" id="consultantExpHelp">Consultant's relevant experience in similar projects</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="consultantSelection">
+                            Consultant Selection Method
+                        </label>
+                        <select id="consultantSelection" class="field-input">
+                            <option value="">Selection Method</option>
+                            <option value="rfp">Request for Proposal (RFP)</option>
+                            <option value="empanelled">From Empanelled List</option>
+                            <option value="nomination">Nomination Basis</option>
+                            <option value="qcbs">Quality & Cost Based Selection</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="dprCost">
+                            DPR Development Cost (₹ Lakhs)
+                        </label>
+                        <div class="input-group">
+                            <span class="input-prefix">₹</span>
+                            <input 
+                                type="number" 
+                                id="dprCost" 
+                                class="field-input" 
+                                step="0.01"
+                                placeholder="0.00"
+                                aria-describedby="dprCostHelp"
+                            >
+                        </div>
+                        <div class="field-help" id="dprCostHelp">Cost for external consultant (typically 2-5% of project cost)</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="dprStartDate">
+                            DPR Start Date <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="date" 
+                            id="dprStartDate" 
+                            class="field-input" 
+                            value="2025-02-10"
+                            aria-describedby="dprStartHelp"
+                        >
+                        <div class="field-help" id="dprStartHelp">When DPR development commenced</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="dprTargetCompletion">
+                            Target Completion Date <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="date" 
+                            id="dprTargetCompletion" 
+                            class="field-input" 
+                            value="2025-05-10"
+                            aria-describedby="dprTargetHelp"
+                        >
+                        <div class="field-help" id="dprTargetHelp">Expected DPR completion date</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="dprProgress">
+                            DPR Progress (%)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="dprProgress" 
+                            class="field-input" 
+                            min="0"
+                            max="100"
+                            value="35"
+                            onchange="updateProgressIndicator()"
+                            aria-describedby="dprProgressHelp"
+                        >
+                        <div class="field-help" id="dprProgressHelp">Current completion percentage</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="teamLead">
+                            Technical Team Lead
+                        </label>
+                        <select id="teamLead" class="field-input" aria-describedby="teamLeadHelp">
+                            <option value="">Select Team Lead</option>
+                            <option value="ae_kumar">Sri A. Kumar (AE - Roads)</option>
+                            <option value="ae_reddy">Sri B. Reddy (AE - Structures)</option>
+                            <option value="aee_sharma">Sri C. Sharma (AEE - Design)</option>
+                            <option value="consultant">External Consultant Team</option>
+                        </select>
+                        <div class="field-help" id="teamLeadHelp">Officer responsible for DPR coordination</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Work Order/Agreement Details (shown only for External) -->
+            <div class="form-group" id="agreementSection" style="display: none;">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">📄</span>
+                    Work Order/Agreement Details
+                </h3>
+                
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="agreementNumber">
+                            Agreement Number <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="agreementNumber" 
+                            class="field-input" 
+                            placeholder="Enter agreement/work order number"
+                            aria-describedby="agreementNumHelp"
+                        >
+                        <div class="field-help" id="agreementNumHelp">Agreement or work order reference number</div>
+                    </div>
+                    
+                    <div class="field">
+                        <label class="field-label" for="agreementDate">
+                            Agreement Date <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="date" 
+                            id="agreementDate" 
+                            class="field-input"
+                            aria-describedby="agreementDateHelp"
+                        >
+                        <div class="field-help" id="agreementDateHelp">Date of agreement execution</div>
+                    </div>
+                </div>
+                
+                <div class="form-row single-column">
+                    <div class="field">
+                        <label class="field-label" for="agreementUpload">
+                            Upload Agreement Document
+                        </label>
+                        <input 
+                            type="file" 
+                            id="agreementUpload" 
+                            class="field-input" 
+                            accept=".pdf,.doc,.docx"
+                            aria-describedby="agreementUploadHelp"
+                        >
+                        <div class="field-help" id="agreementUploadHelp">Upload signed agreement (PDF/DOC format)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Specifications - REMOVED per HMDA feedback -->
+            <div class="form-group" style="display:none;">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">🔧</span>
+                    Technical Specifications & Design Standards
+                </h3>
+                
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="designStandards">
+                            Applicable Design Standards <span class="required">*</span>
+                        </label>
+                        <select id="designStandards" class="field-input" multiple size="4" aria-describedby="designStandardsHelp">
+                            <option value="irc_sp_84" selected>IRC SP:84-2019 (Manual for Design & Construction of Roads)</option>
+                            <option value="irc_6" selected>IRC:6-2017 (Standard Specifications & Code of Practice for Road Bridges)</option>
+                            <option value="irc_37">IRC:37-2018 (Guidelines for the Design of Flexible Pavements)</option>
+                            <option value="is_456" selected>IS 456:2000 (Plain and Reinforced Concrete)</option>
+                            <option value="is_800">IS 800:2007 (General Construction In Steel)</option>
+                            <option value="is_1893">IS 1893:2016 (Earthquake Resistant Design)</option>
+                            <option value="cpwd_spec">CPWD Specifications</option>
+                            <option value="morth_spec" selected>MoRTH Specifications for Road and Bridge Works</option>
+                        </select>
+                        <div class="field-help" id="designStandardsHelp">Hold Ctrl to select multiple standards</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="designLife">
+                            Design Life (Years) <span class="required">*</span>
+                        </label>
+                        <select id="designLife" class="field-input" aria-describedby="designLifeHelp">
+                            <option value="">Select Design Life</option>
+                            <option value="15">15 Years (Flexible Pavement)</option>
+                            <option value="20" selected>20 Years (Rigid Pavement)</option>
+                            <option value="30">30 Years (Structures/Bridges)</option>
+                            <option value="50">50 Years (Major Infrastructure)</option>
+                            <option value="75">75 Years (Critical Infrastructure)</option>
+                            <option value="100">100 Years (Monumental Structures)</option>
+                        </select>
+                        <div class="field-help" id="designLifeHelp">Expected service life of the project</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="seismicZone">
+                            Seismic Zone <span class="required">*</span>
+                        </label>
+                        <select id="seismicZone" class="field-input" aria-describedby="seismicZoneHelp">
+                            <option value="">Select Seismic Zone</option>
+                            <option value="II" selected>Zone II (Low Risk) - Hyderabad Region</option>
+                            <option value="III">Zone III (Moderate Risk)</option>
+                            <option value="IV">Zone IV (High Risk)</option>
+                            <option value="V">Zone V (Very High Risk)</option>
+                        </select>
+                        <div class="field-help" id="seismicZoneHelp">Seismic zone as per IS 1893</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="trafficCategory">
+                            Traffic Category
+                        </label>
+                        <select id="trafficCategory" class="field-input" aria-describedby="trafficCategoryHelp">
+                            <option value="">Select Traffic Category</option>
+                            <option value="light">Light Traffic (< 1 MSA)</option>
+                            <option value="medium" selected>Medium Traffic (1-10 MSA)</option>
+                            <option value="heavy">Heavy Traffic (10-30 MSA)</option>
+                            <option value="very_heavy">Very Heavy Traffic (> 30 MSA)</option>
+                        </select>
+                        <div class="field-help" id="trafficCategoryHelp">Expected traffic load (MSA = Million Standard Axles)</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="roadCategory">
+                            Road Category
+                        </label>
+                        <select id="roadCategory" class="field-input" aria-describedby="roadCategoryHelp">
+                            <option value="">Select Road Category</option>
+                            <option value="arterial" selected>Urban Arterial (4-Lane Divided)</option>
+                            <option value="sub_arterial">Sub-Arterial (2-Lane)</option>
+                            <option value="collector">Collector Road</option>
+                            <option value="local">Local Street</option>
+                            <option value="expressway">Expressway/Highway</option>
+                        </select>
+                        <div class="field-help" id="roadCategoryHelp">Functional classification of the road</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="designSpeed">
+                            Design Speed (kmph)
+                        </label>
+                        <select id="designSpeed" class="field-input" aria-describedby="designSpeedHelp">
+                            <option value="">Select Design Speed</option>
+                            <option value="40">40 kmph (Urban Local)</option>
+                            <option value="50">50 kmph (Urban Collector)</option>
+                            <option value="60" selected>60 kmph (Urban Arterial)</option>
+                            <option value="80">80 kmph (Sub-Urban)</option>
+                            <option value="100">100 kmph (Highway)</option>
+                            <option value="120">120 kmph (Expressway)</option>
+                        </select>
+                        <div class="field-help" id="designSpeedHelp">Design speed for geometric design</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="carriageway">
+                            Carriageway Configuration
+                        </label>
+                        <select id="carriageway" class="field-input" aria-describedby="carriageHelp">
+                            <option value="">Select Configuration</option>
+                            <option value="4_lane_divided" selected>4-Lane Divided Carriageway</option>
+                            <option value="4_lane_undivided">4-Lane Undivided</option>
+                            <option value="6_lane_divided">6-Lane Divided</option>
+                            <option value="2_lane">2-Lane with Paved Shoulders</option>
+                            <option value="single_lane">Single Lane</option>
+                        </select>
+                        <div class="field-help" id="carriageHelp">Cross-sectional configuration</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="pavementType">
+                            Pavement Type
+                        </label>
+                        <select id="pavementType" class="field-input" aria-describedby="pavementHelp">
+                            <option value="">Select Pavement Type</option>
+                            <option value="flexible" selected>Flexible Pavement (Bituminous)</option>
+                            <option value="rigid">Rigid Pavement (Concrete)</option>
+                            <option value="composite">Composite Pavement</option>
+                            <option value="block_paving">Block Paving</option>
+                            <option value="granular">Granular Pavement</option>
+                        </select>
+                        <div class="field-help" id="pavementHelp">Type of pavement construction</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Site Investigation & Surveys - REMOVED per HMDA feedback -->
+            <div class="form-group" style="display:none;">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">🔍</span>
+                    Site Investigation & Surveys
+                </h3>
+                
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="topographicSurvey">
+                            Topographic Survey Status
+                        </label>
+                        <select id="topographicSurvey" class="field-input" aria-describedby="topoSurveyHelp">
+                            <option value="">Select Status</option>
+                            <option value="completed" selected>Completed (Feb 15, 2025)</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="planned">Planned</option>
+                            <option value="not_required">Not Required</option>
+                        </select>
+                        <div class="field-help" id="topoSurveyHelp">Status of topographic survey</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="soilInvestigation">
+                            Soil Investigation Status
+                        </label>
+                        <select id="soilInvestigation" class="field-input" aria-describedby="soilInvestigationHelp">
+                            <option value="">Select Status</option>
+                            <option value="completed" selected>Completed (Feb 20, 2025)</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="planned">Planned</option>
+                            <option value="not_required">Not Required</option>
+                        </select>
+                        <div class="field-help" id="soilInvestigationHelp">Status of geotechnical investigation</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="trafficSurvey">
+                            Traffic Survey Status
+                        </label>
+                        <select id="trafficSurvey" class="field-input" aria-describedby="trafficSurveyHelp">
+                            <option value="">Select Status</option>
+                            <option value="completed" selected>Completed (Feb 12, 2025)</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="planned">Planned</option>
+                            <option value="not_required">Not Required</option>
+                        </select>
+                        <div class="field-help" id="trafficSurveyHelp">Traffic volume and pattern study</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="utilitySurvey">
+                            Utility Survey Status
+                        </label>
+                        <select id="utilitySurvey" class="field-input" aria-describedby="utilitySurveyHelp">
+                            <option value="">Select Status</option>
+                            <option value="completed">Completed</option>
+                            <option value="in_progress" selected>In Progress (70% Complete)</option>
+                            <option value="planned">Planned</option>
+                            <option value="not_required">Not Required</option>
+                        </select>
+                        <div class="field-help" id="utilitySurveyHelp">Existing utilities mapping</div>
+                    </div>
+                </div>
+
+                <div class="form-row single-column">
+                    <div class="field">
+                        <label class="field-label" for="soilBearingCapacity">
+                            Soil Bearing Capacity (kN/m²)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="soilBearingCapacity" 
+                            class="field-input" 
+                            value="180"
+                            aria-describedby="bearingCapacityHelp"
+                        >
+                        <div class="field-help" id="bearingCapacityHelp">Safe bearing capacity from soil investigation</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clearances & NOCs - REMOVED per HMDA feedback -->
+            <div class="form-group" style="display:none;">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">📜</span>
+                    Clearances & NOCs Management
+                </h3>
+                
+                <div class="clearance-tracker">
+                    <div class="clearance-header">
+                        Clearance Status Tracker
+                    </div>
+                    
+                    <div class="clearance-item">
+                        <div class="clearance-info">
+                            <div class="clearance-name">Environmental Clearance</div>
+                            <div class="clearance-authority">Telangana State Pollution Control Board</div>
+                        </div>
+                        <span class="clearance-status status-na">Not Required</span>
+                    </div>
+                    
+                    <div class="clearance-item">
+                        <div class="clearance-info">
+                            <div class="clearance-name">Forest Clearance</div>
+                            <div class="clearance-authority">Forest Department, Telangana</div>
+                        </div>
+                        <span class="clearance-status status-na">Not Required</span>
+                    </div>
+                    
+                    <div class="clearance-item">
+                        <div class="clearance-info">
+                            <div class="clearance-name">Traffic Police NOC</div>
+                            <div class="clearance-authority">Cyberabad Traffic Police</div>
+                        </div>
+                        <span class="clearance-status status-obtained">Obtained (Feb 25, 2025)</span>
+                    </div>
+                    
+                    <div class="clearance-item">
+                        <div class="clearance-info">
+                            <div class="clearance-name">Utilities Shifting NOC</div>
+                            <div class="clearance-authority">TSSPDCL, HMWSSB, BSNL</div>
+                        </div>
+                        <span class="clearance-status status-in-progress">In Progress</span>
+                    </div>
+                    
+                    <div class="clearance-item">
+                        <div class="clearance-info">
+                            <div class="clearance-name">PWD Coordination</div>
+                            <div class="clearance-authority">Roads & Buildings Department</div>
+                        </div>
+                        <span class="clearance-status status-obtained">Obtained (Feb 18, 2025)</span>
+                    </div>
+                    
+                    <div class="clearance-item">
+                        <div class="clearance-info">
+                            <div class="clearance-name">GHMC Planning Permission</div>
+                            <div class="clearance-authority">Greater Hyderabad Municipal Corporation</div>
+                        </div>
+                        <span class="clearance-status status-pending">Applied (Pending)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Estimates - REMOVED per HMDA feedback -->
+            <div class="form-group" style="display:none;">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">💰</span>
+                    Detailed Cost Estimates
+                </h3>
+                
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="estimatePreparationMethod">
+                            Estimate Preparation Method <span class="required">*</span>
+                        </label>
+                        <select id="estimatePreparationMethod" class="field-input" aria-describedby="estimateMethodHelp">
+                            <option value="">Select Method</option>
+                            <option value="standard_schedule" selected>Standard Schedule of Rates (SSR)</option>
+                            <option value="market_rate">Current Market Rates</option>
+                            <option value="quotation_based">Quotation Based</option>
+                            <option value="hybrid">Hybrid (SSR + Market)</option>
+                        </select>
+                        <div class="field-help" id="estimateMethodHelp">Method used for cost estimation</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="baseYear">
+                            Base Year for Rates <span class="required">*</span>
+                        </label>
+                        <select id="baseYear" class="field-input" aria-describedby="baseYearHelp">
+                            <option value="">Select Base Year</option>
+                            <option value="2024" selected>2024-25 (Current SSR)</option>
+                            <option value="2023">2023-24</option>
+                            <option value="2025">2025-26 (Projected)</option>
+                        </select>
+                        <div class="field-help" id="baseYearHelp">Base year for rate analysis</div>
+                    </div>
+                </div>
+
+                <div class="form-row three-column">
+                    <div class="field">
+                        <label class="field-label" for="labourComponent">
+                            Labour Component (%)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="labourComponent" 
+                            class="field-input" 
+                            value="25"
+                            min="15"
+                            max="40"
+                            aria-describedby="labourHelp"
+                        >
+                        <div class="field-help" id="labourHelp">Percentage of labour cost (15-40%)</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="materialComponent">
+                            Material Component (%)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="materialComponent" 
+                            class="field-input" 
+                            value="60"
+                            min="40"
+                            max="70"
+                            aria-describedby="materialHelp"
+                        >
+                        <div class="field-help" id="materialHelp">Percentage of material cost (40-70%)</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="equipmentComponent">
+                            Equipment Component (%)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="equipmentComponent" 
+                            class="field-input" 
+                            value="15"
+                            min="5"
+                            max="20"
+                            aria-describedby="equipmentHelp"
+                        >
+                        <div class="field-help" id="equipmentHelp">Percentage of equipment cost (5-20%)</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="detailedEstimate">
+                            Detailed Estimate Amount (₹ Lakhs) <span class="required">*</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-prefix">₹</span>
+                            <input 
+                                type="number" 
+                                id="detailedEstimate" 
+                                class="field-input" 
+                                value="142.75"
+                                step="0.01"
+                                onchange="calculateTSAmount()"
+                                aria-describedby="detailedEstimateHelp"
+                            >
+                        </div>
+                        <div class="field-help" id="detailedEstimateHelp">Sum of all BOQ items</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="contingencyAmount">
+                            Contingency Amount (₹ Lakhs)
+                        </label>
+                        <div class="input-group">
+                            <span class="input-prefix">₹</span>
+                            <input 
+                                type="number" 
+                                id="contingencyAmount" 
+                                class="field-input" 
+                                value="14.28"
+                                step="0.01"
+                                onchange="calculateTSAmount()"
+                                aria-describedby="contingencyAmountHelp"
+                            >
+                        </div>
+                        <div class="field-help" id="contingencyAmountHelp">10% of detailed estimate</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="totalTSAmount">
+                            Total Technical Sanction Amount (₹ Lakhs)
+                        </label>
+                        <div class="input-group">
+                            <span class="input-prefix">₹</span>
+                            <input 
+                                type="number" 
+                                id="totalTSAmount" 
+                                class="field-input calculated-field" 
+                                value="157.03"
+                                readonly
+                                aria-describedby="totalTSHelp"
+                            >
+                        </div>
+                        <div class="field-help" id="totalTSHelp">Detailed estimate + Contingency</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="boqItemsCount">
+                            BOQ Items Count
+                        </label>
+                        <input 
+                            type="number" 
+                            id="boqItemsCount" 
+                            class="field-input" 
+                            value="45"
+                            aria-describedby="boqCountHelp"
+                        >
+                        <div class="field-help" id="boqCountHelp">Total number of BOQ items</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document Management - REMOVED per HMDA feedback -->
+            <div class="form-group" style="display:none;">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">📁</span>
+                    Document Management
+                </h3>
+                
+                <div class="form-row single-column">
+                    <div class="field">
+                        <label class="field-label">
+                            Upload DPR Documents
+                        </label>
+                        <div class="file-upload-area" ondrop="handleFileDrop(event)" ondragover="handleDragOver(event)">
+                            <div style="font-size: 2rem; margin-bottom: 10px;">📁</div>
+                            <p><strong>Drag and drop files here</strong> or <a href="#" onclick="triggerFileInput()">browse files</a></p>
+                            <p style="font-size: 0.875rem; color: #6b7280; margin-top: 8px;">
+                                Supported formats: PDF, DOC, DOCX, XLS, XLSX, DWG, JPG, PNG<br>
+                                Maximum file size: 50MB per file
+                            </p>
+                            <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.dwg,.jpg,.jpeg,.png" style="display: none;" onchange="handleFileSelect(event)">
+                        </div>
+                        
+                        <div class="uploaded-files" id="uploadedFiles">
+                            <!-- Mockup uploaded files -->
+                            <div class="file-item">
+                                <div class="file-info">
+                                    <div class="file-icon">📄</div>
+                                    <div>
+                                        <div style="font-weight: 500;">Detailed_Project_Report_V2.1.pdf</div>
+                                        <div style="font-size: 0.875rem; color: #6b7280;">2.3 MB • Uploaded Feb 28, 2025</div>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="removeFile(this)" style="background: #ef4444; color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer;">Remove</button>
+                            </div>
+                            
+                            <div class="file-item">
+                                <div class="file-info">
+                                    <div class="file-icon">📊</div>
+                                    <div>
+                                        <div style="font-weight: 500;">BOQ_Detailed_Estimates.xlsx</div>
+                                        <div style="font-size: 0.875rem; color: #6b7280;">845 KB • Uploaded Feb 27, 2025</div>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="removeFile(this)" style="background: #ef4444; color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer;">Remove</button>
+                            </div>
+                            
+                            <div class="file-item">
+                                <div class="file-info">
+                                    <div class="file-icon">🗺️</div>
+                                    <div>
+                                        <div style="font-weight: 500;">General_Arrangement_Drawings.dwg</div>
+                                        <div style="font-size: 0.875rem; color: #6b7280;">1.7 MB • Uploaded Feb 26, 2025</div>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="removeFile(this)" style="background: #ef4444; color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer;">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Administrative Sanction Process -->
+            <div class="form-group">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">✅</span>
+                    Administrative Sanction Process
+                </h3>
+                
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="sanctionAmount">
+                            Sanction Amount (₹ Lakhs) <span class="required">*</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-prefix">₹</span>
+                            <input 
+                                type="number" 
+                                id="sanctionAmount" 
+                                class="field-input" 
+                                step="0.01"
+                                placeholder="0.00"
+                                aria-describedby="sanctionAmountHelp"
+                            >
+                        </div>
+                        <div class="field-help" id="sanctionAmountHelp">Administrative sanction amount in lakhs</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="sanctionAuthority">
+                            Sanction Authority <span class="required">*</span>
+                        </label>
+                        <select 
+                            id="sanctionAuthority" 
+                            class="field-input"
+                            aria-describedby="sanctionAuthorityHelp"
+                        >
+                            <option value="">Select Authority</option>
+                            <option value="mc">MC (Commissioner)</option>
+                            <option value="govt">Government</option>
+                        </select>
+                        <div class="field-help" id="sanctionAuthorityHelp">Select the administrative sanction authority</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="sanctionDate">
+                            Sanction Date
+                        </label>
+                        <input 
+                            type="date" 
+                            id="sanctionDate" 
+                            class="field-input" 
+                            aria-describedby="sanctionDateHelp"
+                        >
+                        <div class="field-help" id="sanctionDateHelp">Date of administrative sanction</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="sanctionReference">
+                            Sanction Reference Number
+                        </label>
+                        <input 
+                            type="text" 
+                            id="sanctionReference" 
+                            class="field-input" 
+                            placeholder="Enter reference number"
+                            aria-describedby="sanctionRefHelp"
+                        >
+                        <div class="field-help" id="sanctionRefHelp">Administrative sanction reference/file number</div>
+                    </div>
+                </div>
+
+                <div class="form-row single-column">
+                    <div class="field">
+                        <label class="field-label" for="sanctionRemarks">
+                            Administrative Sanction Remarks
+                        </label>
+                        <textarea 
+                            id="sanctionRemarks" 
+                            class="field-input" 
+                            placeholder="Any specific conditions or remarks for administrative sanction"
+                            maxlength="1000"
+                            aria-describedby="sanctionRemarksHelp"
+                        ></textarea>
+                        <div class="field-help" id="sanctionRemarksHelp">Special conditions or remarks from sanctioning authority</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DPR Document Upload Section -->
+            <div class="form-group">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">📄</span>
+                    DPR Document Upload
+                </h3>
+                
+                <div class="form-row single-column">
+                    <div class="field">
+                        <label class="field-label" for="dprDocument">
+                            Upload Final DPR Document <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="file" 
+                            id="dprDocument" 
+                            class="field-input" 
+                            accept=".pdf,.doc,.docx"
+                            onchange="handleDPRUpload(this)"
+                            aria-describedby="dprDocHelp"
+                        >
+                        <div class="field-help" id="dprDocHelp">Upload the final DPR document (PDF/DOC format, max 50MB)</div>
+                    </div>
+                </div>
+
+                <!-- DPR Version History -->
+                <div id="dprVersions" style="margin-top: 20px;">
+                    <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 15px;">DPR Version History</h4>
+                    <div class="uploaded-files" id="dprVersionList">
+                        <!-- Versions will be added dynamically -->
+                    </div>
+                    
+                    <button type="button" class="btn btn-secondary" onclick="addDPRVersion()" style="margin-top: 10px;">
+                        <span style="font-size: 16px;">+</span> Add New Version
+                    </button>
+                </div>
+                
+                <style>
+                    .version-item {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        padding: 12px;
+                        background: #f8fafc;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 8px;
+                        margin-bottom: 10px;
+                    }
+                    
+                    .version-info {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 4px;
+                    }
+                    
+                    .version-number {
+                        font-weight: 600;
+                        color: #1e293b;
+                    }
+                    
+                    .version-date {
+                        font-size: 0.875rem;
+                        color: #64748b;
+                    }
+                    
+                    .version-actions {
+                        display: flex;
+                        gap: 10px;
+                    }
+                    
+                    .version-actions button {
+                        padding: 6px 12px;
+                        font-size: 0.875rem;
+                        border: 1px solid #e2e8f0;
+                        background: white;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                    }
+                    
+                    .version-actions button:hover {
+                        background: #f1f5f9;
+                    }
+                </style>
+            </div>
+
+            <!-- Approval Document Upload Section -->
+            <div class="form-group">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">📋</span>
+                    Approval Documents
+                </h3>
+                
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="approvalDocument">
+                            Upload Scanned Approval Document
+                        </label>
+                        <input 
+                            type="file" 
+                            id="approvalDocument" 
+                            class="field-input" 
+                            accept=".pdf,.jpg,.jpeg,.png"
+                            multiple
+                            onchange="handleApprovalUpload(this)"
+                            aria-describedby="approvalDocHelp"
+                        >
+                        <div class="field-help" id="approvalDocHelp">Upload scanned approval documents (PDF/JPG/PNG, multiple files allowed)</div>
+                    </div>
+                </div>
+                
+                <!-- Uploaded Approval Documents List -->
+                <div id="approvalDocuments" style="margin-top: 20px;">
+                    <div class="uploaded-files" id="approvalDocList">
+                        <!-- Approval documents will be listed here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+            <div>
+                <button type="button" class="btn btn-secondary" onclick="saveDraft()">
+                    💾 Save as Draft
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="generateDPR()">
+                    📄 Generate DPR
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="previewTS()">
+                    👁️ Preview TS
+                </button>
+            </div>
+            
+            <div style="display: flex; gap: 15px;">
+                <button type="button" class="btn btn-secondary" onclick="goToPreviousStage()">
+                    ← Back to Stage 1
+                </button>
+                <button type="button" class="btn btn-primary" onclick="submitForTechnicalSanction()">
+                    ✓ Submit for Technical Sanction
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Stage 2 specific functionality
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 1000);
+            initializeValidations();
+            updateStageProgress();
+        });
+
+        function toggleConsultantFields() {
+            const dprStrategy = document.getElementById('dprStrategy').value;
+            const consultantDetailsSection = document.getElementById('consultantDetailsSection');
+            const agreementSection = document.getElementById('agreementSection');
+            
+            if (dprStrategy === 'external') {
+                consultantDetailsSection.style.display = 'block';
+                agreementSection.style.display = 'block';
+                // Make consultant fields required
+                document.getElementById('consultantName').required = true;
+                document.getElementById('consultantFirm').required = true;
+                document.getElementById('agreementNumber').required = true;
+                document.getElementById('agreementDate').required = true;
+            } else {
+                consultantDetailsSection.style.display = 'none';
+                agreementSection.style.display = 'none';
+                // Remove required from consultant fields
+                document.getElementById('consultantName').required = false;
+                document.getElementById('consultantFirm').required = false;
+                document.getElementById('agreementNumber').required = false;
+                document.getElementById('agreementDate').required = false;
+            }
+            
+            updateStageProgress();
+        }
+
+        function calculateTSAmount() {
+            const detailed = parseFloat(document.getElementById('detailedEstimate').value) || 0;
+            const contingency = parseFloat(document.getElementById('contingencyAmount').value) || 0;
+            const total = detailed + contingency;
+            
+            document.getElementById('totalTSAmount').value = total.toFixed(2);
+            document.getElementById('tsAmount').value = total.toFixed(2);
+            
+            // Update TS Authority based on amount
+            updateTSAuthority(total);
+        }
+
+        function updateTSAuthority(amount) {
+            const authorityField = document.getElementById('tsAuthority');
+            
+            if (amount <= 200) {
+                authorityField.value = 'Executive Engineer (Within Authority Limit)';
+            } else if (amount <= 1000) {
+                authorityField.value = 'Deputy Chief Engineer (Escalation Required)';
+            } else if (amount <= 5000) {
+                authorityField.value = 'Chief Engineer (Higher Authority Required)';
+            } else {
+                authorityField.value = 'Secretary/Commissioner (Board Approval Required)';
+            }
+        }
+
+        function updateProgressIndicator() {
+            const progress = parseFloat(document.getElementById('dprProgress').value) || 0;
+            document.getElementById('stage2Progress').textContent = Math.round(progress) + '%';
+            document.querySelector('.progress-fill').style.width = progress + '%';
+        }
+
+        // DPR Document Upload Handling
+        let dprVersionCount = 1;
+        
+        function handleDPRUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                const versionItem = createVersionItem(file, dprVersionCount);
+                document.getElementById('dprVersionList').appendChild(versionItem);
+                dprVersionCount++;
+                
+                // Clear the input for next upload
+                input.value = '';
+            }
+        }
+        
+        function createVersionItem(file, versionNumber) {
+            const div = document.createElement('div');
+            div.className = 'version-item';
+            div.innerHTML = `
+                <div class="version-info">
+                    <div class="version-number">Version ${versionNumber}.0</div>
+                    <div class="version-date">Uploaded: ${new Date().toLocaleDateString()} | ${file.name}</div>
+                    <div class="version-date">Size: ${(file.size / 1024 / 1024).toFixed(2)} MB</div>
+                </div>
+                <div class="version-actions">
+                    <button type="button" onclick="viewDocument('${file.name}')">View</button>
+                    <button type="button" onclick="downloadDocument('${file.name}')">Download</button>
+                    <button type="button" onclick="removeVersion(this)" style="color: #dc2626;">Remove</button>
+                </div>
+            `;
+            return div;
+        }
+        
+        function addDPRVersion() {
+            // Trigger file input click for adding new version
+            const input = document.getElementById('dprDocument');
+            input.click();
+        }
+        
+        function removeVersion(button) {
+            if (confirm('Are you sure you want to remove this version?')) {
+                button.closest('.version-item').remove();
+            }
+        }
+        
+        // Approval Document Upload Handling
+        function handleApprovalUpload(input) {
+            const files = input.files;
+            const docList = document.getElementById('approvalDocList');
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div class="file-info">
+                        <div class="file-icon">${getFileIcon(file.type)}</div>
+                        <div>
+                            <div style="font-weight: 500;">${file.name}</div>
+                            <div style="font-size: 0.875rem; color: #64748b;">
+                                ${(file.size / 1024).toFixed(2)} KB | Uploaded: ${new Date().toLocaleDateString()}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="version-actions">
+                        <button type="button" onclick="viewDocument('${file.name}')">View</button>
+                        <button type="button" onclick="removeApprovalDoc(this)" style="color: #dc2626;">Remove</button>
+                    </div>
+                `;
+                docList.appendChild(fileItem);
+            }
+            
+            // Clear input for next selection
+            input.value = '';
+        }
+        
+        function getFileIcon(fileType) {
+            if (fileType.includes('pdf')) return '📄';
+            if (fileType.includes('image')) return '🖼️';
+            return '📎';
+        }
+        
+        function removeApprovalDoc(button) {
+            if (confirm('Are you sure you want to remove this document?')) {
+                button.closest('.file-item').remove();
+            }
+        }
+        
+        function viewDocument(filename) {
+            // In a real implementation, this would open the document
+            alert(`Opening document: ${filename}`);
+        }
+        
+        function downloadDocument(filename) {
+            // In a real implementation, this would download the document
+            alert(`Downloading document: ${filename}`);
+        }
+
+        function updateStageProgress() {
+            const requiredFields = [
+                'dprMode', 'dprStartDate', 'dprTargetCompletion', 'designStandards', 
+                'designLife', 'seismicZone', 'estimatePreparationMethod', 'baseYear', 
+                'detailedEstimate'
+            ];
+            
+            let filledFields = 0;
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field && field.value && field.value.trim()) {
+                    filledFields++;
+                }
+            });
+            
+            const progress = Math.round((filledFields / requiredFields.length) * 100);
+            document.getElementById('stage2Progress').textContent = progress + '%';
+            document.querySelector('.progress-fill').style.width = progress + '%';
+        }
+
+        // File upload functions
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.currentTarget.classList.add('dragover');
+        }
+
+        function handleFileDrop(event) {
+            event.preventDefault();
+            event.currentTarget.classList.remove('dragover');
+            const files = event.dataTransfer.files;
+            handleFiles(files);
+        }
+
+        function triggerFileInput() {
+            document.getElementById('fileInput').click();
+        }
+
+        function handleFileSelect(event) {
+            const files = event.target.files;
+            handleFiles(files);
+        }
+
+        function handleFiles(files) {
+            const uploadedFilesContainer = document.getElementById('uploadedFiles');
+            
+            Array.from(files).forEach(file => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                
+                const fileIcon = getFileIcon(file.name);
+                const fileSize = formatFileSize(file.size);
+                const currentDate = new Date().toLocaleDateString('en-GB');
+                
+                fileItem.innerHTML = `
+                    <div class="file-info">
+                        <div class="file-icon">${fileIcon}</div>
+                        <div>
+                            <div style="font-weight: 500;">${file.name}</div>
+                            <div style="font-size: 0.875rem; color: #6b7280;">${fileSize} • Uploaded ${currentDate}</div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="removeFile(this)" style="background: #ef4444; color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer;">Remove</button>
+                `;
+                
+                uploadedFilesContainer.appendChild(fileItem);
+            });
+            
+            updateStageProgress();
+        }
+
+        function getFileIcon(filename) {
+            const extension = filename.split('.').pop().toLowerCase();
+            const iconMap = {
+                'pdf': '📄',
+                'doc': '📝',
+                'docx': '📝',
+                'xls': '📊',
+                'xlsx': '📊',
+                'dwg': '🗺️',
+                'jpg': '🖼️',
+                'jpeg': '🖼️',
+                'png': '🖼️'
+            };
+            return iconMap[extension] || '📁';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function removeFile(button) {
+            button.parentNode.remove();
+        }
+
+        // Form actions
+        function saveDraft() {
+            const formData = collectFormData();
+            localStorage.setItem('hmda_stage2_draft', JSON.stringify(formData));
+            alert('Stage 2 draft saved successfully!');
+        }
+
+        function generateDPR() {
+            alert('DPR document will be generated in PDF format. This may take a few minutes.');
+        }
+
+        function previewTS() {
+            window.open('technical-sanction-preview.html', '_blank');
+        }
+
+        function goToPreviousStage() {
+            if (confirm('Are you sure you want to go back to Stage 1? Any unsaved changes will be lost.')) {
+                window.location.href = 'stage1-conceptualization.html';
+            }
+        }
+
+        function submitForTechnicalSanction() {
+            if (validateAllFields()) {
+                if (confirm('Are you sure you want to submit for Technical Sanction? Once submitted, you cannot edit the DPR details.')) {
+                    alert('Project submitted for Technical Sanction successfully! You will receive notification once approved.');
+                    localStorage.removeItem('hmda_stage2_draft');
+                    window.location.href = 'stage3-tendering.html?project=HMDA-EE-2025-0001';
+                }
+            } else {
+                alert('Please complete all required fields and upload necessary documents before submitting.');
+            }
+        }
+
+        function collectFormData() {
+            const data = {};
+            const inputs = document.querySelectorAll('.field-input, input[type="radio"]:checked');
+            
+            inputs.forEach(input => {
+                if (input.type === 'radio') {
+                    data[input.name] = input.value;
+                } else if (input.multiple) {
+                    data[input.id] = Array.from(input.selectedOptions).map(option => option.value);
+                } else {
+                    data[input.id] = input.value;
+                }
+            });
+            
+            return data;
+        }
+
+        function validateAllFields() {
+            const requiredFields = [
+                'dprMode', 'dprStartDate', 'dprTargetCompletion', 'designStandards', 
+                'designLife', 'seismicZone', 'estimatePreparationMethod', 'baseYear', 
+                'detailedEstimate'
+            ];
+            
+            let isValid = true;
+            
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field || !field.value || !field.value.toString().trim()) {
+                    isValid = false;
+                    if (field) {
+                        field.classList.add('error');
+                    }
+                }
+            });
+            
+            return isValid;
+        }
+
+        function initializeValidations() {
+            const inputs = document.querySelectorAll('.field-input');
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    validateField(this);
+                });
+                
+                input.addEventListener('input', function() {
+                    updateStageProgress();
+                });
+            });
+        }
+
+        function validateField(field) {
+            // Implement field-specific validation logic
+            field.classList.remove('error', 'success');
+            
+            if (field.value && field.value.trim()) {
+                field.classList.add('success');
+            }
+        }
+
+        function updateCurrentTime() {
+            const now = new Date();
+            const timeString = now.toLocaleString('en-IN', {
+                timeZone: 'Asia/Kolkata',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            const timeElement = document.getElementById('currentTime');
+            if (timeElement) {
+                timeElement.textContent = timeString;
+            }
+        }
+
+        // Initialize calculations on page load
+        calculateTSAmount();
+    </script>
+    <script src="shared/feedback-system.js"></script>
+</body>
+</html>

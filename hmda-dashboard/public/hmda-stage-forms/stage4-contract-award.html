@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stage 4: Contract Award & Mobilization - HMDA PES</title>
+    <link rel="stylesheet" href="shared/styles.css">
+    <link rel="stylesheet" href="shared/feedback-system.css">
+    <style>
+        .award-summary {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 1px solid #0284c7;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .award-summary h3 {
+            color: #0369a1;
+            margin-bottom: 15px;
+        }
+        
+        .award-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .award-detail-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e0f2fe;
+        }
+        
+        .award-detail-item label {
+            font-size: 12px;
+            color: #64748b;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .award-detail-item .value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .document-checklist {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .checklist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .checklist-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .checklist-item label {
+            cursor: pointer;
+            flex: 1;
+        }
+        
+        .compliance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .compliance-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .compliance-card.valid {
+            border-color: #059669;
+        }
+        
+        .compliance-card.pending {
+            border-color: #f59e0b;
+        }
+        
+        .compliance-card.invalid {
+            border-color: #ef4444;
+        }
+        
+        .compliance-status {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            border-bottom-left-radius: 8px;
+        }
+        
+        .compliance-status.valid {
+            background: #059669;
+            color: white;
+        }
+        
+        .compliance-status.pending {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .compliance-status.invalid {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .team-assignment {
+            background: #fefce8;
+            border: 1px solid #fbbf24;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .team-member {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #fde68a;
+        }
+        
+        .risk-assessment {
+            background: #fef2f2;
+            border: 1px solid #fca5a5;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .risk-level {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+        
+        .risk-level.low {
+            background: #059669;
+            color: white;
+        }
+        
+        .risk-level.medium {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .risk-level.high {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .final-checklist {
+            background: #f0fdf4;
+            border: 2px solid #059669;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+        
+        .final-checklist h3 {
+            color: #059669;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .final-checklist-items {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .final-checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #86efac;
+        }
+        
+        .final-checklist-item input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+        
+        .final-checklist-item label {
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            flex: 1;
+        }
+        
+        /* Reference Document Styles */
+        .document-list {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .document-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+        
+        .document-item:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+        
+        .doc-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+        
+        .doc-icon {
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .doc-details {
+            flex: 1;
+        }
+        
+        .doc-name {
+            font-weight: 500;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+        
+        .doc-meta {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        
+        .doc-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-icon {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 16px;
+        }
+        
+        .btn-icon:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+        }
+        
+        .section-subtitle {
+            color: #64748b;
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-header">
+            <div class="form-title">
+                <h1>Stage 4: Contract Award & Mobilization</h1>
+                <p>Award contract and mobilize resources for project execution</p>
+            </div>
+            <div class="form-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Project Code</span>
+                    <span class="meta-value">HMDA/EE/2025/0001</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Stage</span>
+                    <span class="meta-value">4 of 9</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Status</span>
+                    <span class="meta-value status-active">In Progress</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-tracker">
+            <div class="progress-step completed">1. Conceptualization</div>
+            <div class="progress-step completed">2. DPR & Approvals</div>
+            <div class="progress-step completed">3. Tendering</div>
+            <div class="progress-step active">4. Contract Award</div>
+            <div class="progress-step">5. Execution</div>
+            <div class="progress-step">6. Quality Control</div>
+            <div class="progress-step">7. Testing</div>
+            <div class="progress-step">8. Closure</div>
+            <div class="progress-step">9. DLP & O&M</div>
+        </div>
+
+        <form id="stage4Form" class="stage-form">
+            <!-- Award Decision Summary -->
+            <div class="form-section">
+                <h2>Award Decision Summary</h2>
+                <div class="award-summary">
+                    <h3>Tender Evaluation Outcome</h3>
+                    <div class="award-details">
+                        <div class="award-detail-item">
+                            <label>Project Code</label>
+                            <div class="value">HMDA/EE/2025/0001</div>
+                        </div>
+                        <div class="award-detail-item">
+                            <label>Recommended Contractor (L1)</label>
+                            <div class="value">M/s ABC Construction Ltd.</div>
+                        </div>
+                        <div class="award-detail-item">
+                            <label>Award Amount</label>
+                            <div class="value">₹149.50 Lakhs</div>
+                        </div>
+                        <div class="award-detail-item">
+                            <label>Award Approval Required</label>
+                            <div class="value">Executive Engineer (Within ₹2 Cr limit)</div>
+                        </div>
+                        <div class="award-detail-item">
+                            <label>Recommendation Date</label>
+                            <div class="value">15-Jan-2025</div>
+                        </div>
+                        <div class="award-detail-item">
+                            <label>Budget Variance</label>
+                            <div class="value" style="color: #059669;">-0.33% (Within Budget)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Letter of Award -->
+            <div class="form-section">
+                <h2>Letter of Award (LOA)</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="loaNumber">Letter of Award Number</label>
+                        <input type="text" id="loaNumber" name="loaNumber" value="HMDA/EE/LOA/2025/001" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="loaIssueDate">LOA Issue Date <span class="required">*</span></label>
+                        <input type="date" id="loaIssueDate" name="loaIssueDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loaValidityPeriod">LOA Validity Period (Days) <span class="required">*</span></label>
+                        <input type="number" id="loaValidityPeriod" name="loaValidityPeriod" value="30" min="1" max="90" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contractorAcceptanceDate">Contractor Acceptance Date</label>
+                        <input type="date" id="contractorAcceptanceDate" name="contractorAcceptanceDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="acceptanceStatus">Acceptance Status</label>
+                        <select id="acceptanceStatus" name="acceptanceStatus">
+                            <option value="">Select Status</option>
+                            <option value="Pending" selected>Pending</option>
+                            <option value="Accepted">Accepted</option>
+                            <option value="Rejected">Rejected</option>
+                            <option value="Expired">Expired</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contract Agreement -->
+            <div class="form-section">
+                <h2>Contract Agreement</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="agreementType">Agreement Type <span class="required">*</span></label>
+                        <select id="agreementType" name="agreementType" required>
+                            <option value="">Select Agreement Type</option>
+                            <option value="Standard HMDA Contract" selected>Standard HMDA Contract</option>
+                            <option value="Modified Standard">Modified Standard</option>
+                            <option value="Special Conditions">Special Conditions</option>
+                            <option value="FIDIC Based">FIDIC Based</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contractValue">Contract Value (₹ Lakhs)</label>
+                        <input type="number" id="contractValue" name="contractValue" value="149.50" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="contractDuration">Contract Duration (Months)</label>
+                        <input type="number" id="contractDuration" name="contractDuration" value="18" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="contractStartDate">Contract Start Date <span class="required">*</span></label>
+                        <input type="date" id="contractStartDate" name="contractStartDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contractCompletionDate">Contract Completion Date</label>
+                        <input type="date" id="contractCompletionDate" name="contractCompletionDate" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Security -->
+            <div class="form-section">
+                <h2>Performance Security</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="securityType">Performance Security Type <span class="required">*</span></label>
+                        <select id="securityType" name="securityType" required>
+                            <option value="">Select Security Type</option>
+                            <option value="Bank Guarantee" selected>Bank Guarantee</option>
+                            <option value="Fixed Deposit">Fixed Deposit</option>
+                            <option value="Government Securities">Government Securities</option>
+                            <option value="Insurance Guarantee">Insurance Guarantee</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="securityAmount">Security Amount (₹ Lakhs)</label>
+                        <input type="number" id="securityAmount" name="securityAmount" value="14.95" readonly>
+                        <span class="field-hint">10% of contract value</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="securityValidityPeriod">Security Validity Period (Months) <span class="required">*</span></label>
+                        <input type="number" id="securityValidityPeriod" name="securityValidityPeriod" value="30" min="12" max="60" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="securityReceiptDate">Security Receipt Date <span class="required">*</span></label>
+                        <input type="date" id="securityReceiptDate" name="securityReceiptDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="securityBankDetails">Issuing Bank Details</label>
+                        <input type="text" id="securityBankDetails" name="securityBankDetails" placeholder="Bank name and branch">
+                    </div>
+                    <div class="form-group">
+                        <label for="securityNumber">Security Reference Number <span class="required">*</span></label>
+                        <input type="text" id="securityNumber" name="securityNumber" placeholder="BG/FD reference number" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Work Order - REMOVED per HMDA feedback -->
+            <div class="form-section" style="display:none;">
+                <h2>Work Order</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="workOrderNumber">Work Order Number</label>
+                        <input type="text" id="workOrderNumber" name="workOrderNumber" value="HMDA/EE/WO/2025/001" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="workOrderDate">Work Order Issue Date <span class="required">*</span></label>
+                        <input type="date" id="workOrderDate" name="workOrderDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="siteHandoverDate">Site Handover Date <span class="required">*</span></label>
+                        <input type="date" id="siteHandoverDate" name="siteHandoverDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mobilizationPeriod">Mobilization Period (Days) <span class="required">*</span></label>
+                        <input type="number" id="mobilizationPeriod" name="mobilizationPeriod" value="30" min="7" max="45" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mobilizationDeadline">Mobilization Deadline</label>
+                        <input type="date" id="mobilizationDeadline" name="mobilizationDeadline" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="workCommencementDate">Work Commencement Date</label>
+                        <input type="date" id="workCommencementDate" name="workCommencementDate">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Insurance & Indemnity - REMOVED per HMDA feedback -->
+            <div class="form-section" style="display:none;">
+                <h2>Insurance & Indemnity</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="workmenCompensation">Workmen Compensation Insurance <span class="required">*</span></label>
+                        <select id="workmenCompensation" name="workmenCompensation" required>
+                            <option value="">Select Status</option>
+                            <option value="Valid Policy Submitted">Valid Policy Submitted</option>
+                            <option value="Policy Pending" selected>Policy Pending</option>
+                            <option value="Not Required">Not Required</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contractorAllRisk">Contractor All Risk Insurance <span class="required">*</span></label>
+                        <select id="contractorAllRisk" name="contractorAllRisk" required>
+                            <option value="">Select Status</option>
+                            <option value="Valid Policy Submitted">Valid Policy Submitted</option>
+                            <option value="Policy Pending" selected>Policy Pending</option>
+                            <option value="Not Required">Not Required</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="thirdPartyLiability">Third Party Liability Insurance <span class="required">*</span></label>
+                        <select id="thirdPartyLiability" name="thirdPartyLiability" required>
+                            <option value="">Select Status</option>
+                            <option value="Valid Policy Submitted">Valid Policy Submitted</option>
+                            <option value="Policy Pending" selected>Policy Pending</option>
+                            <option value="Not Required">Not Required</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="vehicleInsurance">Vehicle Insurance</label>
+                        <select id="vehicleInsurance" name="vehicleInsurance">
+                            <option value="">Select Status</option>
+                            <option value="Valid Policy Submitted">Valid Policy Submitted</option>
+                            <option value="Policy Pending">Policy Pending</option>
+                            <option value="Not Required" selected>Not Required</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="insuranceValidityPeriod">Insurance Validity Period</label>
+                        <input type="text" id="insuranceValidityPeriod" name="insuranceValidityPeriod" value="Contract duration + 3 months" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bank Guarantees -->
+            <div class="form-section">
+                <h2>Bank Guarantees</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="earnestMoneyStatus">Earnest Money Status <span class="required">*</span></label>
+                        <select id="earnestMoneyStatus" name="earnestMoneyStatus" required>
+                            <option value="">Select Status</option>
+                            <option value="Received" selected>Received</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Waived">Waived</option>
+                            <option value="Converted to Security">Converted to Security</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="securityBankGuarantee">Performance Security BG Details</label>
+                        <input type="text" id="securityBankGuarantee" name="securityBankGuarantee" placeholder="BG reference and bank details">
+                    </div>
+                    <div class="form-group">
+                        <label for="advancePaymentGuarantee">Advance Payment Guarantee</label>
+                        <input type="text" id="advancePaymentGuarantee" name="advancePaymentGuarantee" placeholder="If advance payment provided">
+                    </div>
+                    <div class="form-group">
+                        <label for="retentionMoneyGuarantee">Retention Money Guarantee</label>
+                        <input type="text" id="retentionMoneyGuarantee" name="retentionMoneyGuarantee" placeholder="In lieu of retention money">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statutory Compliance - REMOVED per HMDA feedback -->
+            <div class="form-section" style="display:none;">
+                <h2>Statutory Compliance</h2>
+                <div class="compliance-grid">
+                    <div class="compliance-card valid">
+                        <span class="compliance-status valid">Valid</span>
+                        <label for="contractorRegistration">Contractor Registration <span class="required">*</span></label>
+                        <select id="contractorRegistration" name="contractorRegistration" required>
+                            <option value="Valid Registration" selected>Valid Registration</option>
+                            <option value="Expired">Expired</option>
+                            <option value="Pending Renewal">Pending Renewal</option>
+                        </select>
+                    </div>
+                    <div class="compliance-card valid">
+                        <span class="compliance-status valid">Verified</span>
+                        <label for="panCardDetails">PAN Card Verification <span class="required">*</span></label>
+                        <select id="panCardDetails" name="panCardDetails" required>
+                            <option value="Verified" selected>Verified</option>
+                            <option value="Pending Verification">Pending Verification</option>
+                            <option value="Invalid">Invalid</option>
+                        </select>
+                    </div>
+                    <div class="compliance-card valid">
+                        <span class="compliance-status valid">Valid</span>
+                        <label for="gstRegistration">GST Registration <span class="required">*</span></label>
+                        <select id="gstRegistration" name="gstRegistration" required>
+                            <option value="Valid GST Number" selected>Valid GST Number</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Invalid">Invalid</option>
+                        </select>
+                    </div>
+                    <div class="compliance-card pending">
+                        <span class="compliance-status pending">Pending</span>
+                        <label for="labourLicense">Labour License <span class="required">*</span></label>
+                        <select id="labourLicense" name="labourLicense" required>
+                            <option value="Valid License">Valid License</option>
+                            <option value="Expired">Expired</option>
+                            <option value="Pending Renewal" selected>Pending Renewal</option>
+                        </select>
+                    </div>
+                    <div class="compliance-card valid">
+                        <span class="compliance-status valid">Valid</span>
+                        <label for="epfRegistration">EPF Registration <span class="required">*</span></label>
+                        <select id="epfRegistration" name="epfRegistration" required>
+                            <option value="Valid Registration" selected>Valid Registration</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Not Applicable">Not Applicable</option>
+                        </select>
+                    </div>
+                    <div class="compliance-card valid">
+                        <span class="compliance-status valid">Valid</span>
+                        <label for="esiRegistration">ESI Registration <span class="required">*</span></label>
+                        <select id="esiRegistration" name="esiRegistration" required>
+                            <option value="Valid Registration" selected>Valid Registration</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Not Applicable">Not Applicable</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Compliance - REMOVED per HMDA feedback -->
+            <div class="form-section" style="display:none;">
+                <h2>Technical Compliance</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="drawingApproval">Drawing Approval Status <span class="required">*</span></label>
+                        <select id="drawingApproval" name="drawingApproval" required>
+                            <option value="">Select Status</option>
+                            <option value="All Drawings Approved">All Drawings Approved</option>
+                            <option value="Partial Approval" selected>Partial Approval</option>
+                            <option value="Pending Approval">Pending Approval</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="materialApproval">Material Approval Status <span class="required">*</span></label>
+                        <select id="materialApproval" name="materialApproval" required>
+                            <option value="">Select Status</option>
+                            <option value="All Materials Approved">All Materials Approved</option>
+                            <option value="Partial Approval">Partial Approval</option>
+                            <option value="Pending Approval" selected>Pending Approval</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="methodStatement">Method Statement <span class="required">*</span></label>
+                        <select id="methodStatement" name="methodStatement" required>
+                            <option value="">Select Status</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Under Review">Under Review</option>
+                            <option value="Pending Submission" selected>Pending Submission</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="qualityPlan">Quality Assurance Plan <span class="required">*</span></label>
+                        <select id="qualityPlan" name="qualityPlan" required>
+                            <option value="">Select Status</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Under Review">Under Review</option>
+                            <option value="Pending Submission" selected>Pending Submission</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="safetyPlan">Safety Management Plan <span class="required">*</span></label>
+                        <select id="safetyPlan" name="safetyPlan" required>
+                            <option value="">Select Status</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Under Review">Under Review</option>
+                            <option value="Pending Submission" selected>Pending Submission</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Team Assignment - REMOVED per HMDA feedback -->
+            <div class="form-section" style="display:none;">
+                <h2>Project Team Assignment</h2>
+                <div class="team-assignment">
+                    <h3>Contractor's Team</h3>
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <label for="projectManager">Project Manager <span class="required">*</span></label>
+                            <input type="text" id="projectManager" name="projectManager" placeholder="Name and qualification" required>
+                        </div>
+                        <div class="team-member">
+                            <label for="siteEngineer">Site Engineer <span class="required">*</span></label>
+                            <input type="text" id="siteEngineer" name="siteEngineer" placeholder="Name and qualification" required>
+                        </div>
+                        <div class="team-member">
+                            <label for="qualityController">Quality Controller <span class="required">*</span></label>
+                            <input type="text" id="qualityController" name="qualityController" placeholder="Name and qualification" required>
+                        </div>
+                        <div class="team-member">
+                            <label for="safetyOfficer">Safety Officer <span class="required">*</span></label>
+                            <input type="text" id="safetyOfficer" name="safetyOfficer" placeholder="Name and qualification" required>
+                        </div>
+                    </div>
+                    <h3 style="margin-top: 20px;">HMDA Supervision Team</h3>
+                    <div class="form-group">
+                        <label for="hmdasupervision">HMDA Supervision Team</label>
+                        <input type="text" id="hmdasupervision" name="hmdasupervision" value="AE: Rajesh Kumar, JE: Priya Sharma" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Communication Protocol - REMOVED per HMDA feedback -->
+            <div class="form-section" style="display:none;">
+                <h2>Communication Protocol</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="reportingFrequency">Reporting Frequency <span class="required">*</span></label>
+                        <select id="reportingFrequency" name="reportingFrequency" required>
+                            <option value="">Select Frequency</option>
+                            <option value="Daily">Daily</option>
+                            <option value="Weekly" selected>Weekly</option>
+                            <option value="Bi-weekly">Bi-weekly</option>
+                            <option value="Monthly">Monthly</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="meetingSchedule">Meeting Schedule <span class="required">*</span></label>
+                        <select id="meetingSchedule" name="meetingSchedule" required>
+                            <option value="">Select Schedule</option>
+                            <option value="Weekly" selected>Weekly</option>
+                            <option value="Bi-weekly">Bi-weekly</option>
+                            <option value="Monthly">Monthly</option>
+                            <option value="As Required">As Required</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="communicationChannel">Primary Communication Channel <span class="required">*</span></label>
+                        <select id="communicationChannel" name="communicationChannel" required>
+                            <option value="">Select Channel</option>
+                            <option value="Email" selected>Email</option>
+                            <option value="Project Portal">Project Portal</option>
+                            <option value="WhatsApp Group">WhatsApp Group</option>
+                            <option value="Phone">Phone</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="escalationMatrix">Escalation Matrix</label>
+                        <input type="text" id="escalationMatrix" name="escalationMatrix" value="L1: PM → L2: EE → L3: DCE" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Risk Management - REMOVED per HMDA feedback -->
+            <div class="form-section" style="display:none;">
+                <h2>Risk Management</h2>
+                <div class="risk-assessment">
+                    <div class="form-group">
+                        <label for="contractRisks">Contract Risk Assessment</label>
+                        <select id="contractRisks" name="contractRisks">
+                            <option value="">Select Risk Level</option>
+                            <option value="Low Risk">Low Risk</option>
+                            <option value="Medium Risk" selected>Medium Risk</option>
+                            <option value="High Risk">High Risk</option>
+                        </select>
+                        <span class="risk-level medium">Medium Risk</span>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="financialRisks">Financial Risk Factors</label>
+                        <textarea id="financialRisks" name="financialRisks" rows="3" placeholder="Identify financial risk factors">1. Material price escalation risk
+2. Payment delay risk from department
+3. GST rate change impact</textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="technicalRisks">Technical Risk Factors</label>
+                        <textarea id="technicalRisks" name="technicalRisks" rows="3" placeholder="Identify technical risk factors">1. Soil condition variations
+2. Utility relocation delays
+3. Design modification requirements</textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="mitigationStrategies">Risk Mitigation Strategies</label>
+                        <textarea id="mitigationStrategies" name="mitigationStrategies" rows="3" placeholder="Planned mitigation strategies">1. Price escalation clause in contract
+2. Advance soil investigation
+3. Early utility coordination meetings
+4. Design freeze before execution</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Checklist - REMOVED per HMDA feedback -->
+            <div class="form-section" style="display:none;">
+                <div class="final-checklist">
+                    <h3>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 11l3 3L22 4"></path>
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+                        </svg>
+                        Final Contract Award Checklist
+                    </h3>
+                    <div class="final-checklist-items">
+                        <div class="final-checklist-item">
+                            <input type="checkbox" id="allDocumentsReceived" name="allDocumentsReceived" required>
+                            <label for="allDocumentsReceived">All required documents have been received and verified</label>
+                        </div>
+                        <div class="final-checklist-item">
+                            <input type="checkbox" id="allApprovalsObtained" name="allApprovalsObtained" required>
+                            <label for="allApprovalsObtained">All necessary approvals have been obtained</label>
+                        </div>
+                        <div class="final-checklist-item">
+                            <input type="checkbox" id="contractReadyForExecution" name="contractReadyForExecution" required>
+                            <label for="contractReadyForExecution">Contract agreement is ready for execution</label>
+                        </div>
+                        <div class="final-checklist-item">
+                            <input type="checkbox" id="workOrderReadyToIssue" name="workOrderReadyToIssue" required>
+                            <label for="workOrderReadyToIssue">Work order is ready to be issued</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="button" class="btn-secondary">Save as Draft</button>
+                <button type="button" class="btn-secondary">Previous Stage</button>
+                <button type="submit" class="btn-primary">Complete Contract Award</button>
+            </div>
+
+            <!-- Reference Documents -->
+            <div class="form-section">
+                <h2>Reference Documents</h2>
+                <div class="form-group">
+                    <p class="section-subtitle">Upload drawings, specifications, and other reference documents for the contract</p>
+                    
+                    <div class="field">
+                        <label class="field-label" for="referenceDocuments">
+                            Upload Drawings & Other Documents
+                        </label>
+                        <input 
+                            type="file" 
+                            id="referenceDocuments" 
+                            class="field-input" 
+                            multiple
+                            accept=".pdf,.dwg,.jpg,.jpeg,.png,.doc,.docx"
+                            onchange="handleReferenceUpload(this)"
+                        >
+                        <div class="field-help">Upload drawings, specifications, or other reference documents (PDF, DWG, JPG, DOC formats)</div>
+                    </div>
+                    
+                    <div id="referenceDocList" class="document-list">
+                        <!-- Uploaded documents will appear here -->
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Include feedback system -->
+    <script src="shared/feedback-system.js"></script>
+    <script>
+        // Initialize feedback system
+        document.addEventListener('DOMContentLoaded', function() {
+            const feedbackSystem = new HMDAFeedbackSystem();
+            
+            // Auto-calculate contract completion date
+            const contractStartDate = document.getElementById('contractStartDate');
+            const contractDuration = document.getElementById('contractDuration');
+            const contractCompletionDate = document.getElementById('contractCompletionDate');
+            
+            function calculateCompletionDate() {
+                if (contractStartDate.value && contractDuration.value) {
+                    const startDate = new Date(contractStartDate.value);
+                    const months = parseInt(contractDuration.value);
+                    startDate.setMonth(startDate.getMonth() + months);
+                    contractCompletionDate.value = startDate.toISOString().split('T')[0];
+                }
+            }
+            
+            contractStartDate.addEventListener('change', calculateCompletionDate);
+            
+            // Auto-calculate security amount (10% of contract value)
+            const contractValue = document.getElementById('contractValue');
+            const securityAmount = document.getElementById('securityAmount');
+            
+            function calculateSecurityAmount() {
+                const value = parseFloat(contractValue.value) || 0;
+                securityAmount.value = (value * 0.1).toFixed(2);
+            }
+            
+            // Auto-calculate mobilization deadline
+            const siteHandoverDate = document.getElementById('siteHandoverDate');
+            const mobilizationPeriod = document.getElementById('mobilizationPeriod');
+            const mobilizationDeadline = document.getElementById('mobilizationDeadline');
+            
+            function calculateMobilizationDeadline() {
+                if (siteHandoverDate.value && mobilizationPeriod.value) {
+                    const handoverDate = new Date(siteHandoverDate.value);
+                    const days = parseInt(mobilizationPeriod.value);
+                    handoverDate.setDate(handoverDate.getDate() + days);
+                    mobilizationDeadline.value = handoverDate.toISOString().split('T')[0];
+                }
+            }
+            
+            siteHandoverDate.addEventListener('change', calculateMobilizationDeadline);
+            mobilizationPeriod.addEventListener('change', calculateMobilizationDeadline);
+            
+            // Update compliance card status based on selection
+            const complianceSelects = document.querySelectorAll('.compliance-card select');
+            complianceSelects.forEach(select => {
+                select.addEventListener('change', function() {
+                    const card = this.closest('.compliance-card');
+                    const statusSpan = card.querySelector('.compliance-status');
+                    const value = this.value;
+                    
+                    // Remove all status classes
+                    card.classList.remove('valid', 'pending', 'invalid');
+                    statusSpan.classList.remove('valid', 'pending', 'invalid');
+                    
+                    // Add appropriate class based on value
+                    if (value.includes('Valid') || value.includes('Verified')) {
+                        card.classList.add('valid');
+                        statusSpan.classList.add('valid');
+                        statusSpan.textContent = 'Valid';
+                    } else if (value.includes('Pending') || value.includes('Expired')) {
+                        card.classList.add('pending');
+                        statusSpan.classList.add('pending');
+                        statusSpan.textContent = 'Pending';
+                    } else if (value.includes('Invalid')) {
+                        card.classList.add('invalid');
+                        statusSpan.classList.add('invalid');
+                        statusSpan.textContent = 'Invalid';
+                    }
+                });
+            });
+            
+            // Update risk level display
+            const contractRisks = document.getElementById('contractRisks');
+            contractRisks.addEventListener('change', function() {
+                const riskLevel = this.parentElement.querySelector('.risk-level');
+                riskLevel.className = 'risk-level';
+                
+                if (this.value === 'Low Risk') {
+                    riskLevel.classList.add('low');
+                    riskLevel.textContent = 'Low Risk';
+                } else if (this.value === 'Medium Risk') {
+                    riskLevel.classList.add('medium');
+                    riskLevel.textContent = 'Medium Risk';
+                } else if (this.value === 'High Risk') {
+                    riskLevel.classList.add('high');
+                    riskLevel.textContent = 'High Risk';
+                }
+            });
+            
+            // Form submission
+            document.getElementById('stage4Form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Check if all final checklist items are checked
+                const checklistItems = document.querySelectorAll('.final-checklist-item input[type="checkbox"]');
+                const allChecked = Array.from(checklistItems).every(checkbox => checkbox.checked);
+                
+                if (!allChecked) {
+                    alert('Please complete all items in the final checklist before proceeding.');
+                    return;
+                }
+                
+                alert('Contract Award completed successfully! Ready to proceed to Execution stage.');
+            });
+        });
+
+        // Reference Document Upload Functions
+        let referenceDocCount = 0;
+
+        function handleReferenceUpload(input) {
+            const files = input.files;
+            const docList = document.getElementById('referenceDocList');
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const docItem = createReferenceDocItem(file, referenceDocCount);
+                docList.appendChild(docItem);
+                referenceDocCount++;
+            }
+            
+            // Clear input for next selection
+            input.value = '';
+        }
+
+        function createReferenceDocItem(file, index) {
+            const docDiv = document.createElement('div');
+            docDiv.className = 'document-item';
+            docDiv.id = `refDoc-${index}`;
+            
+            const icon = getFileIcon(file.name);
+            const size = (file.size / 1024).toFixed(2) + ' KB';
+            
+            docDiv.innerHTML = `
+                <div class="doc-info">
+                    <span class="doc-icon">${icon}</span>
+                    <div class="doc-details">
+                        <div class="doc-name">${file.name}</div>
+                        <div class="doc-meta">Size: ${size} | Uploaded: ${new Date().toLocaleDateString()}</div>
+                    </div>
+                </div>
+                <div class="doc-actions">
+                    <button type="button" class="btn-icon" onclick="viewDocument('${file.name}')" title="View">
+                        <span>👁️</span>
+                    </button>
+                    <button type="button" class="btn-icon" onclick="removeReferenceDoc(${index})" title="Remove">
+                        <span>🗑️</span>
+                    </button>
+                </div>
+            `;
+            
+            return docDiv;
+        }
+
+        function getFileIcon(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            switch(ext) {
+                case 'pdf': return '📄';
+                case 'dwg': return '📐';
+                case 'jpg':
+                case 'jpeg':
+                case 'png': return '🖼️';
+                case 'doc':
+                case 'docx': return '📝';
+                default: return '📎';
+            }
+        }
+
+        function removeReferenceDoc(index) {
+            if (confirm('Remove this document?')) {
+                document.getElementById(`refDoc-${index}`).remove();
+            }
+        }
+
+        function viewDocument(filename) {
+            alert(`View document: ${filename} (This would open the document in production)`);
+        }
+    </script>
+</body>
+</html>

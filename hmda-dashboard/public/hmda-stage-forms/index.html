@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HMDA Project Execution System - Stage Forms</title>
+    <link rel="stylesheet" href="shared/feedback-system.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #059669 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="white" opacity="0.1"/><circle cx="80" cy="80" r="2" fill="white" opacity="0.1"/><circle cx="40" cy="60" r="1" fill="white" opacity="0.1"/><circle cx="70" cy="30" r="1.5" fill="white" opacity="0.1"/></svg>');
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: -0.02em;
+        }
+
+        .header .subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+
+        .header .description {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .intro-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .intro-section h2 {
+            font-size: 2.5rem;
+            color: #1e293b;
+            margin-bottom: 20px;
+        }
+
+        .intro-section p {
+            font-size: 1.2rem;
+            color: #64748b;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .stages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .stage-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stage-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-color: #1e3a8a;
+        }
+
+        .stage-card.completed {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-color: #059669;
+        }
+
+        .stage-card.active {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-color: #3b82f6;
+        }
+
+        .stage-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stage-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .stage-card.completed .stage-number {
+            background: linear-gradient(135deg, #059669, #10b981);
+        }
+
+        .stage-card.active .stage-number {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+        }
+
+        .stage-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+
+        .stage-duration {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .stage-description {
+            color: #4b5563;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .stage-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .stage-authority {
+            font-size: 0.875rem;
+            color: #059669;
+            font-weight: 600;
+        }
+
+        .stage-output {
+            font-size: 0.875rem;
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+
+        .stage-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .stage-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(30, 58, 138, 0.2);
+        }
+
+        .stage-card.completed .stage-link {
+            background: linear-gradient(135deg, #059669, #10b981);
+        }
+
+        .stage-card.active .stage-link {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-active {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .status-pending {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .project-info {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .project-info h3 {
+            color: #92400e;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .project-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .detail-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #fbbf24;
+        }
+
+        .detail-label {
+            font-size: 0.875rem;
+            color: #92400e;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .footer {
+            background: #f8fafc;
+            padding: 30px 40px;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .footer p {
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .footer .version {
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .header .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .stages-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .stage-card {
+                padding: 20px;
+            }
+
+            .project-details {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>HMDA Project Execution System</h1>
+                <p class="subtitle">Executive Engineer Stage Forms Collection</p>
+                <p class="description">
+                    Comprehensive digital forms for managing projects through all 9 stages of execution, 
+                    from conceptualization to O&M, with role-based access control and real-time progress tracking.
+                </p>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Intro Section -->
+            <div class="intro-section">
+                <h2>Project Lifecycle Management</h2>
+                <p>
+                    Experience the complete HMDA project execution workflow with our interactive stage forms. 
+                    Each form demonstrates real-world scenarios with mockup data showing how the system handles 
+                    projects from initial concept through operational maintenance.
+                </p>
+            </div>
+
+            <!-- Current Project Info -->
+            <div class="project-info">
+                <h3>🚧 Demo Project: Construction of 4-Lane Road from Gachibowli to HITECH City</h3>
+                <div class="project-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Project Code</div>
+                        <div class="detail-value">HMDA/EE/2025/0001</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Executive Engineer</div>
+                        <div class="detail-value">Sri S. Ramesh (Circle-II)</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Project Value</div>
+                        <div class="detail-value">₹157.03 Lakhs</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Duration</div>
+                        <div class="detail-value">18 Months</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Location</div>
+                        <div class="detail-value">Rangareddy, Serilingampally</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Current Status</div>
+                        <div class="detail-value">Stage 5 - Execution (42% Complete)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stages Grid -->
+            <div class="stages-grid">
+                <!-- Stage 1 -->
+                <div class="stage-card completed">
+                    <div class="status-badge status-completed">COMPLETED</div>
+                    <div class="stage-header">
+                        <div class="stage-number">1</div>
+                        <div class="stage-info">
+                            <h3>Project Conceptualization</h3>
+                            <div class="stage-duration">Duration: 3-6 months</div>
+                        </div>
+                    </div>
+                    <p class="stage-description">
+                        Initiate project with basic information, location details, preliminary cost estimates, 
+                        and obtain concept approval from appropriate authority.
+                    </p>
+                    <div class="stage-details">
+                        <div class="stage-authority">EE Authority: ₹2 Cr</div>
+                        <div class="stage-output">Output: Concept Approval</div>
+                    </div>
+                    <a href="stage1-conceptualization.html" class="stage-link">
+                        📋 View Stage 1 Form
+                    </a>
+                </div>
+
+                <!-- Stage 2 -->
+                <div class="stage-card completed">
+                    <div class="status-badge status-completed">COMPLETED</div>
+                    <div class="stage-header">
+                        <div class="stage-number">2</div>
+                        <div class="stage-info">
+                            <h3>DPR & Approvals</h3>
+                            <div class="stage-duration">Duration: 4-8 months</div>
+                        </div>
+                    </div>
+                    <p class="stage-description">
+                        Develop comprehensive DPR, obtain technical specifications, secure necessary clearances, 
+                        and obtain technical sanction for project execution.
+                    </p>
+                    <div class="stage-details">
+                        <div class="stage-authority">Technical Sanction</div>
+                        <div class="stage-output">Output: Sanctioned DPR</div>
+                    </div>
+                    <a href="stage2-dpr-approvals.html" class="stage-link">
+                        📊 View Stage 2 Form
+                    </a>
+                </div>
+
+                <!-- Stage 3 -->
+                <div class="stage-card completed">
+                    <div class="status-badge status-completed">COMPLETED</div>
+                    <div class="stage-header">
+                        <div class="stage-number">3</div>
+                        <div class="stage-info">
+                            <h3>Tendering & Procurement</h3>
+                            <div class="stage-duration">Duration: 2-4 months</div>
+                        </div>
+                    </div>
+                    <p class="stage-description">
+                        Prepare tender documents, conduct e-procurement process, evaluate bids, 
+                        and select appropriate contractor for project execution.
+                    </p>
+                    <div class="stage-details">
+                        <div class="stage-authority">Committee Evaluation</div>
+                        <div class="stage-output">Output: L1 Selection</div>
+                    </div>
+                    <a href="stage3-tendering.html" class="stage-link">
+                        📋 View Stage 3 Form
+                    </a>
+                </div>
+
+                <!-- Stage 4 -->
+                <div class="stage-card completed">
+                    <div class="status-badge status-completed">COMPLETED</div>
+                    <div class="stage-header">
+                        <div class="stage-number">4</div>
+                        <div class="stage-info">
+                            <h3>Contract Award & Mobilization</h3>
+                            <div class="stage-duration">Duration: 1-2 months</div>
+                        </div>
+                    </div>
+                    <p class="stage-description">
+                        Issue Letter of Award, execute agreement, collect performance security, 
+                        hand over site, and issue work order for commencement.
+                    </p>
+                    <div class="stage-details">
+                        <div class="stage-authority">Contract Execution</div>
+                        <div class="stage-output">Output: Work Order</div>
+                    </div>
+                    <a href="stage4-contract-award.html" class="stage-link">
+                        📋 View Stage 4 Form
+                    </a>
+                </div>
+
+                <!-- Stage 5 -->
+                <div class="stage-card active">
+                    <div class="status-badge status-active">ACTIVE</div>
+                    <div class="stage-header">
+                        <div class="stage-number">5</div>
+                        <div class="stage-info">
+                            <h3>Construction/Execution</h3>
+                            <div class="stage-duration">Duration: 6-60 months</div>
+                        </div>
+                    </div>
+                    <p class="stage-description">
+                        Monitor project execution, ensure quality standards, process payments, 
+                        manage variations, and maintain schedule adherence throughout construction.
+                    </p>
+                    <div class="stage-details">
+                        <div class="stage-authority">Progress Monitoring</div>
+                        <div class="stage-output">Output: 42% Complete</div>
+                    </div>
+                    <a href="stage5-execution.html" class="stage-link">
+                        🚧 View Stage 5 Form
+                    </a>
+                </div>
+
+                <!-- Stage 6 -->
+                <div class="stage-card">
+                    <div class="status-badge status-pending">PENDING</div>
+                    <div class="stage-header">
+                        <div class="stage-number">6</div>
+                        <div class="stage-info">
+                            <h3>Quality Control & Monitoring</h3>
+                            <div class="stage-duration">Duration: Continuous</div>
+                        </div>
+                    </div>
+                    <p class="stage-description">
+                        Implement three-tier quality assurance system, conduct material testing, 
+                        manage non-conformances, and ensure compliance with specifications.
+                    </p>
+                    <div class="stage-details">
+                        <div class="stage-authority">Quality Assurance</div>
+                        <div class="stage-output">Output: QC Reports</div>
+                    </div>
+                    <a href="stage6-quality-control.html" class="stage-link">
+                        🔍 View Stage 6 Form
+                    </a>
+                </div>
+
+                <!-- Stage 7 -->
+                <div class="stage-card">
+                    <div class="status-badge status-pending">PENDING</div>
+                    <div class="stage-header">
+                        <div class="stage-number">7</div>
+                        <div class="stage-info">
+                            <h3>Testing & Commissioning</h3>
+                            <div class="stage-duration">Duration: 1-3 months</div>
+                        </div>
+                    </div>
+                    <p class="stage-description">
+                        Conduct pre-commissioning activities, perform individual and integrated testing, 
+                        validate performance parameters, and obtain commissioning certificates.
+                    </p>
+                    <div class="stage-details">
+                        <div class="stage-authority">Performance Testing</div>
+                        <div class="stage-output">Output: Commission Certificate</div>
+                    </div>
+                    <a href="stage7-testing-commissioning.html" class="stage-link">
+                        🔧 View Stage 7 Form
+                    </a>
+                </div>
+
+                <!-- Stage 8 -->
+                <div class="stage-card">
+                    <div class="status-badge status-pending">PENDING</div>
+                    <div class="stage-header">
+                        <div class="stage-number">8</div>
+                        <div class="stage-info">
+                            <h3>Project Closure & Handover</h3>
+                            <div class="stage-duration">Duration: 1-2 months</div>
+                        </div>
+                    </div>
+                    <p class="stage-description">
+                        Issue completion certificates, handover documentation, process final bills, 
+                        transfer assets, and close project accounts.
+                    </p>
+                    <div class="stage-details">
+                        <div class="stage-authority">Project Closure</div>
+                        <div class="stage-output">Output: Handover</div>
+                    </div>
+                    <a href="stage8-project-closure.html" class="stage-link">
+                        ✅ View Stage 8 Form
+                    </a>
+                </div>
+
+                <!-- Stage 9 -->
+                <div class="stage-card completed">
+                    <div class="status-badge status-completed">ACTIVE</div>
+                    <div class="stage-header">
+                        <div class="stage-number">9</div>
+                        <div class="stage-info">
+                            <h3>DLP & O&M Phase</h3>
+                            <div class="stage-duration">Duration: 12-60 months</div>
+                        </div>
+                    </div>
+                    <p class="stage-description">
+                        Monitor defect liability period, manage maintenance activities, 
+                        release performance securities, and ensure long-term asset performance.
+                    </p>
+                    <div class="stage-details">
+                        <div class="stage-authority">DLP Monitoring</div>
+                        <div class="stage-output">Output: 6 months DLP</div>
+                    </div>
+                    <a href="stage9-dlp-om.html" class="stage-link">
+                        🔧 View Stage 9 Form
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>HMDA Project Execution System</strong> - Digital Transformation Initiative</p>
+            <p>Developed for Executive Engineer Office Workflow Management</p>
+            <p class="version">Version 1.0 | January 2025 | For Demonstration Purposes</p>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate stage cards on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Initially hide stage cards
+            const stageCards = document.querySelectorAll('.stage-card');
+            stageCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+                observer.observe(card);
+            });
+
+            // Add click tracking
+            document.querySelectorAll('.stage-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const stageName = this.closest('.stage-card').querySelector('h3').textContent;
+                    console.log(`Navigating to: ${stageName}`);
+                });
+            });
+        });
+    </script>
+    <script src="shared/feedback-system.js"></script>
+</body>
+</html>

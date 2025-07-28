@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stage 1: Project Conceptualization & Feasibility - HMDA PES</title>
+    <link rel="stylesheet" href="shared/styles.css">
+    <link rel="stylesheet" href="shared/feedback-system.css">
+    <style>
+        .stage-info {
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
+            border: 1px solid #0891b2;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stage-timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .timeline-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #0891b2;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .mockup-banner {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .mockup-banner h3 {
+            color: #92400e;
+            margin-bottom: 5px;
+        }
+        
+        .mockup-banner p {
+            color: #78350f;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>HMDA Project Execution System</h1>
+                <p class="subtitle">Stage 1: Project Conceptualization & Feasibility</p>
+            </div>
+        </header>
+
+        <!-- User Info Bar -->
+        <div class="user-info">
+            <div class="user-details">
+                <div class="user-avatar">SR</div>
+                <div class="user-info-text">
+                    <div class="user-name">Sri S. Ramesh</div>
+                    <div class="user-role">Executive Engineer, Circle-II (Rangareddy)</div>
+                </div>
+            </div>
+            <div class="current-time" id="currentTime"></div>
+        </div>
+
+        <!-- Stage Information -->
+        <div class="stage-info">
+            <div class="stage-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-icon">⏱️</div>
+                    <span><strong>Duration:</strong> 3-6 months</span>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🎯</div>
+                    <span><strong>EE Authority:</strong> Up to ₹2 Crores</span>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">📋</div>
+                    <span><strong>Key Output:</strong> Concept Approval</span>
+                </div>
+            </div>
+            <p><strong>Objective:</strong> Establish project foundation with basic information, location details, preliminary cost estimates, and obtain concept approval from appropriate authority.</p>
+        </div>
+
+        <!-- Form Content -->
+        <main class="form-content">
+            <!-- Progress Indicator -->
+            <div class="progress-section">
+                <div class="progress-header">
+                    <span class="progress-title">Stage 1 Completion</span>
+                    <span class="progress-percentage" id="stage1Progress">25%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 25%"></div>
+                </div>
+            </div>
+
+            <!-- Basic Project Information -->
+            <div class="form-group">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">📋</span>
+                    Basic Project Information
+                </h3>
+                
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="workId">
+                            Work ID <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="workId" 
+                            class="field-input" 
+                            placeholder="Enter Work ID (e.g., HMDA/WRK/2025/001)"
+                            aria-describedby="workIdHelp"
+                        >
+                        <div class="field-help" id="workIdHelp">Unique work identifier assigned by HMDA</div>
+                    </div>
+                    
+                    <div class="field">
+                        <label class="field-label" for="fileNumber">
+                            File Number <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="fileNumber" 
+                            class="field-input" 
+                            placeholder="Enter File Number"
+                            aria-describedby="fileNumberHelp"
+                        >
+                        <div class="field-help" id="fileNumberHelp">Administrative file number for tracking</div>
+                    </div>
+                    
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="proposedBy">
+                            Proposed By <span class="required">*</span>
+                        </label>
+                        <select 
+                            id="proposedBy" 
+                            class="field-input" 
+                            aria-describedby="proposedByHelp"
+                        >
+                            <option value="">Select Division</option>
+                            <option value="circle1">Circle-I (Hyderabad)</option>
+                            <option value="circle2">Circle-II (Rangareddy)</option>
+                            <option value="circle3">Circle-III (Medchal)</option>
+                            <option value="circle4">Circle-IV (Sangareddy)</option>
+                            <option value="circle5">Circle-V (Vikarabad)</option>
+                            <option value="plandept">Planning Department</option>
+                            <option value="engdept">Engineering Department</option>
+                        </select>
+                        <div class="field-help" id="proposedByHelp">Division proposing the project</div>
+                    </div>
+                    
+                    <div class="field">
+                        <label class="field-label" for="productCategory">
+                            Product Category <span class="required">*</span>
+                        </label>
+                        <select 
+                            id="productCategory" 
+                            class="field-input" 
+                            aria-describedby="productCategoryHelp"
+                        >
+                            <option value="">Select Product Category</option>
+                            <option value="roads">Roads & Highways</option>
+                            <option value="drainage">Storm Water Drainage</option>
+                            <option value="water_supply">Water Supply</option>
+                            <option value="sewerage">Sewerage System</option>
+                            <option value="parks">Parks & Open Spaces</option>
+                            <option value="buildings">Buildings & Infrastructure</option>
+                            <option value="streetlighting">Street Lighting</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="field-help" id="productCategoryHelp">Category of infrastructure being developed</div>
+                    </div>
+                </div>
+
+                <div class="form-row single-column">
+                    <div class="field">
+                        <label class="field-label" for="projectName">
+                            Project Name <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="projectName" 
+                            class="field-input" 
+                            placeholder="Enter descriptive project name (e.g., Construction of 4-Lane Road from Gachibowli to HITECH City)"
+                            maxlength="500"
+                            value=""
+                            onblur="validateField(this)"
+                            aria-describedby="projectNameHelp"
+                        >
+                        <div class="field-help" id="projectNameHelp">Maximum 500 characters, descriptive name for the project</div>
+                    </div>
+                </div>
+
+                <!-- Removed this section as Project Category is now in the previous row -->
+
+                <div class="form-row single-column">
+                    <div class="field">
+                        <label class="field-label" for="projectDescription">
+                            Project Description <span class="required">*</span>
+                        </label>
+                        <textarea 
+                            id="projectDescription" 
+                            class="field-input" 
+                            placeholder="Provide detailed description including scope, objectives, and expected outcomes. Example: This project involves construction of a modern 4-lane divided carriageway connecting Gachibowli junction to HITECH City main gate, including pedestrian walkways, cycling tracks, smart traffic signals, and LED street lighting system."
+                            maxlength="2000"
+                            aria-describedby="projectDescriptionHelp"
+                        ></textarea>
+                        <div class="field-help" id="projectDescriptionHelp">Detailed description (maximum 2000 characters)</div>
+                    </div>
+                </div>
+
+                <div class="form-row single-column">
+                    <div class="field">
+                        <label class="field-label" for="justification">
+                            Project Justification <span class="required">*</span>
+                        </label>
+                        <textarea 
+                            id="justification" 
+                            class="field-input" 
+                            placeholder="Explain the need and justification. Example: Current road experiences severe traffic congestion during peak hours causing 45-minute delays. This project will reduce travel time by 60%, improve connectivity to IT corridor, and support economic development in the region. Expected to benefit 50,000+ daily commuters."
+                            maxlength="1500"
+                            aria-describedby="justificationHelp"
+                        ></textarea>
+                        <div class="field-help" id="justificationHelp">Business case and justification (maximum 1500 characters)</div>
+                    </div>
+                </div>
+
+                <!-- Removed Proposed Date and Expected Start Date fields -->
+
+                <div class="form-row single-column">
+                    <div class="field">
+                        <label class="field-label" for="fundingDetails">
+                            Funding Details
+                        </label>
+                        <textarea 
+                            id="fundingDetails" 
+                            class="field-input" 
+                            placeholder="Enter funding source and pattern details. Example: State Government Budget 2025-26 (100%) or Central + State (60:40) under Smart Cities Mission"
+                            maxlength="500"
+                            rows="3"
+                            aria-describedby="fundingDetailsHelp"
+                        ></textarea>
+                        <div class="field-help" id="fundingDetailsHelp">Describe funding source and pattern</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location & Scope Details -->
+            <div class="form-group">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">📍</span>
+                    Location & Scope Details
+                </h3>
+                
+                <div class="form-row three-column">
+                    <div class="field">
+                        <label class="field-label" for="district">
+                            District <span class="required">*</span>
+                        </label>
+                        <select 
+                            id="district" 
+                            class="field-input" 
+                            onchange="updateMandals()"
+                            aria-describedby="districtHelp"
+                        >
+                            <option value="">Select District</option>
+                            <option value="hyderabad">Hyderabad</option>
+                            <option value="rangareddy">Rangareddy</option>
+                            <option value="medchal">Medchal-Malkajgiri</option>
+                            <option value="sangareddy">Sangareddy</option>
+                            <option value="vikarabad">Vikarabad</option>
+                        </select>
+                        <div class="field-help" id="districtHelp">District within HMDA jurisdiction</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="mandal">
+                            Mandal <span class="required">*</span>
+                        </label>
+                        <select 
+                            id="mandal" 
+                            class="field-input" 
+                            disabled
+                            onchange="updateVillages()"
+                            aria-describedby="mandalHelp"
+                        >
+                            <option value="">Select Mandal</option>
+                        </select>
+                        <div class="field-help" id="mandalHelp">Mandal within selected district</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="village">
+                            Village(s) <span class="required">*</span>
+                        </label>
+                        <select 
+                            id="village" 
+                            class="field-input" 
+                            multiple
+                            size="3"
+                            disabled
+                            aria-describedby="villageHelp"
+                        >
+                            <option value="">Select Village(s)</option>
+                        </select>
+                        <div class="field-help" id="villageHelp">One or more villages (hold Ctrl to select multiple)</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="assemblyConstituency">
+                            Assembly Constituency <span class="required">*</span>
+                        </label>
+                        <select 
+                            id="assemblyConstituency" 
+                            class="field-input" 
+                            aria-describedby="assemblyHelp"
+                        >
+                            <option value="">Select Assembly Constituency</option>
+                            <option value="serilingampally">Serilingampally</option>
+                            <option value="kukatpally">Kukatpally</option>
+                            <option value="quthbullapur">Quthbullapur</option>
+                            <option value="medchal">Medchal</option>
+                            <option value="malkajgiri">Malkajgiri</option>
+                            <option value="uppal">Uppal</option>
+                            <option value="lbnagar">LB Nagar</option>
+                            <option value="rajendranagar">Rajendranagar</option>
+                            <option value="serlingampally">Serlingampally</option>
+                            <option value="chevella">Chevella</option>
+                            <option value="maheshwaram">Maheshwaram</option>
+                            <option value="ibrahimpatnam">Ibrahimpatnam</option>
+                        </select>
+                        <div class="field-help" id="assemblyHelp">Assembly constituency for the project location</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="parliamentConstituency">
+                            Parliament Constituency <span class="required">*</span>
+                        </label>
+                        <select 
+                            id="parliamentConstituency" 
+                            class="field-input" 
+                            aria-describedby="parliamentHelp"
+                        >
+                            <option value="">Select Parliament Constituency</option>
+                            <option value="hyderabad">Hyderabad</option>
+                            <option value="secunderabad">Secunderabad</option>
+                            <option value="malkajgiri">Malkajgiri</option>
+                            <option value="chevella">Chevella</option>
+                            <option value="bhongir">Bhongir</option>
+                            <option value="medak">Medak</option>
+                        </select>
+                        <div class="field-help" id="parliamentHelp">Parliament constituency for the project location</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="workLocation">
+                            Work Location Details
+                        </label>
+                        <textarea 
+                            id="workLocation" 
+                            class="field-input" 
+                            placeholder="Provide specific location details. Example: Starting from Gachibowli junction (near Bio-diversity Junction), extending along Road No. 36, passing through Kondapur Cross Roads, ending at HITECH City main gate near Cyber Towers."
+                            maxlength="500"
+                            aria-describedby="workLocationHelp"
+                        ></textarea>
+                        <div class="field-help" id="workLocationHelp">Detailed work location description</div>
+                    </div>
+
+                </div>
+
+                <!-- Removed Land Type field -->
+                <div class="form-row" style="display:none;">
+                    <div class="field">
+                        <label class="field-label" for="landType">
+                            Land Type
+                        </label>
+                        <select id="landType" class="field-input" aria-describedby="landTypeHelp">
+                            <option value="">Select Land Type</option>
+                            <option value="government">Government Land</option>
+                            <option value="private">Private Land</option>
+                            <option value="mixed">Mixed (Government + Private)</option>
+                            <option value="patta">Patta Land</option>
+                            <option value="sarkar">Sarkar Land</option>
+                        </select>
+                        <div class="field-help" id="landTypeHelp">Type of land ownership</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="landAcquisition">
+                            Land Acquisition Required
+                        </label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="landAcqYes" name="landAcquisition" value="yes" class="radio">
+                                <label for="landAcqYes">Yes</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="landAcqNo" name="landAcquisition" value="no" class="radio">
+                                <label for="landAcqNo">No</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="landAcqPartial" name="landAcquisition" value="partial" class="radio">
+                                <label for="landAcqPartial">Partial</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row single-column">
+                    <div class="field">
+                        <label class="field-label" for="projectArea">
+                            Project Area <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="projectArea" 
+                            class="field-input" 
+                            placeholder="Enter area (e.g., 5 hectares 20 guntas or 12.5 acres)"
+                            maxlength="100"
+                            aria-describedby="projectAreaHelp"
+                        >
+                        <div class="field-help" id="projectAreaHelp">Enter project area in format: X hectares Y guntas or acres</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="projectLength">
+                            Project Length (Km)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="projectLength" 
+                            class="field-input" 
+                            step="0.1"
+                            min="0"
+                            placeholder="0.0"
+                            aria-describedby="projectLengthHelp"
+                        >
+                        <div class="field-help" id="projectLengthHelp">Length of project (for linear projects like roads)</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="projectWidth">
+                            Project Width (Meters)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="projectWidth" 
+                            class="field-input" 
+                            step="0.1"
+                            min="0"
+                            placeholder="0.0"
+                            aria-describedby="projectWidthHelp"
+                        >
+                        <div class="field-help" id="projectWidthHelp">Width of project (for linear projects)</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="gpsLatitude">
+                            GPS Latitude (Start Point)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="gpsLatitude" 
+                            class="field-input" 
+                            step="0.000001"
+                            placeholder="17.123456"
+                            aria-describedby="gpsLatHelp"
+                        >
+                        <div class="field-help" id="gpsLatHelp">Latitude coordinates (decimal degrees)</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="gpsLongitude">
+                            GPS Longitude (Start Point)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="gpsLongitude" 
+                            class="field-input" 
+                            step="0.000001"
+                            placeholder="78.123456"
+                            aria-describedby="gpsLongHelp"
+                        >
+                        <div class="field-help" id="gpsLongHelp">Longitude coordinates (decimal degrees)</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="environmentalSensitivity">
+                            Environmental Sensitivity
+                        </label>
+                        <select id="environmentalSensitivity" class="field-input" aria-describedby="envSensitivityHelp">
+                            <option value="">Select Sensitivity Level</option>
+                            <option value="low">Low (No special considerations)</option>
+                            <option value="medium">Medium (Standard clearances required)</option>
+                            <option value="high">High (Environmental impact assessment)</option>
+                            <option value="very_high">Very High (Near protected areas/water bodies)</option>
+                        </select>
+                        <div class="field-help" id="envSensitivityHelp">Environmental sensitivity of project location</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="nearbyLandmarks">
+                            Nearby Landmarks
+                        </label>
+                        <input 
+                            type="text" 
+                            id="nearbyLandmarks" 
+                            class="field-input" 
+                            placeholder="e.g., HITECH City, Cyber Towers, DLF Mall"
+                            maxlength="300"
+                            aria-describedby="landmarksHelp"
+                        >
+                        <div class="field-help" id="landmarksHelp">Notable landmarks near project location</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Major Project Components -->
+            <div class="form-group">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">🔧</span>
+                    Major Project Components
+                </h3>
+                
+                <div id="projectComponentsContainer">
+                    <!-- Dynamic components will be added here -->
+                </div>
+                
+                <button type="button" class="add-component-btn" onclick="addProjectComponent()" style="
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 10px 20px;
+                    background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    margin-top: 15px;
+                ">
+                    <span style="font-size: 20px;">+</span> Add Component
+                </button>
+                
+                <style>
+                    .component-item {
+                        margin-bottom: 15px;
+                        padding: 15px;
+                        background: #f8fafc;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 8px;
+                    }
+                    
+                    .component-row {
+                        display: flex;
+                        gap: 15px;
+                        align-items: center;
+                    }
+                    
+                    .component-select {
+                        flex: 1;
+                        padding: 10px;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 6px;
+                        font-size: 14px;
+                    }
+                    
+                    .component-manual {
+                        flex: 2;
+                        padding: 10px;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 6px;
+                        font-size: 14px;
+                    }
+                    
+                    .remove-btn {
+                        width: 35px;
+                        height: 35px;
+                        background: #ef4444;
+                        color: white;
+                        border: none;
+                        border-radius: 50%;
+                        font-size: 20px;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                    }
+                    
+                    .remove-btn:hover {
+                        background: #dc2626;
+                        transform: scale(1.1);
+                    }
+                    
+                    .add-component-btn:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+                    }
+                </style>
+            </div>
+
+            <!-- Financial Estimates -->
+            <div class="form-group">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">💰</span>
+                    Financial Estimates
+                </h3>
+                
+                <div class="form-row single-column">
+                    <div class="field">
+                        <label class="field-label" for="preliminaryEstimate">
+                            Preliminary Estimate (₹ Lakhs) <span class="required">*</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-prefix">₹</span>
+                            <input 
+                                type="number" 
+                                id="preliminaryEstimate" 
+                                class="field-input" 
+                                step="0.01"
+                                min="0"
+                                placeholder="0.00"
+                                aria-describedby="preliminaryEstimateHelp"
+                            >
+                        </div>
+                        <div class="field-help" id="preliminaryEstimateHelp">Preliminary cost estimate in lakhs (EE authority: up to ₹2 Crores)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Approvals and Next Steps -->
+            <div class="form-group">
+                <h3 class="form-group-title">
+                    <span class="form-group-icon">✅</span>
+                    Approvals and Next Steps
+                </h3>
+                
+                <div class="form-row">
+                    <div class="field">
+                        <label class="field-label" for="approvalRequired">
+                            Approval Required From <span class="required">*</span>
+                        </label>
+                        <select 
+                            id="approvalRequired" 
+                            class="field-input" 
+                            aria-describedby="approvalRequiredHelp"
+                        >
+                            <option value="">Select Approval Authority</option>
+                            <option value="mc">MC (Commissioner)</option>
+                            <option value="govt">Government</option>
+                        </select>
+                        <div class="field-help" id="approvalRequiredHelp">Select the approval authority for this project</div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="targetApprovalDate">
+                            Target Approval Date
+                        </label>
+                        <input 
+                            type="date" 
+                            id="targetApprovalDate" 
+                            class="field-input" 
+                            aria-describedby="targetApprovalHelp"
+                        >
+                        <div class="field-help" id="targetApprovalHelp">Expected date for concept approval</div>
+                    </div>
+                </div>
+
+                <div class="form-row single-column">
+                    <div class="field">
+                        <label class="field-label" for="additionalRemarks">
+                            Additional Remarks
+                        </label>
+                        <textarea 
+                            id="additionalRemarks" 
+                            class="field-input" 
+                            placeholder="Any additional information, special considerations, or constraints"
+                            maxlength="1000"
+                            aria-describedby="remarksHelp"
+                        ></textarea>
+                        <div class="field-help" id="remarksHelp">Additional remarks or special considerations</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+            <div>
+                <button type="button" class="btn btn-secondary" onclick="saveDraft()">
+                    💾 Save as Draft
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="previewProject()">
+                    👁️ Preview
+                </button>
+            </div>
+            
+            <div style="display: flex; gap: 15px;">
+                <button type="button" class="btn btn-primary" onclick="submitForApproval()">
+                    ✓ Submit for Concept Approval
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="shared/common.js"></script>
+    <script>
+        // Stage 1 specific functionality
+        
+        // Initialize the form
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 1000);
+            initializeValidations();
+            // Remove auto-calculation of approval authority since it's now manual
+        });
+
+        // Dynamic component management
+        function addProjectComponent() {
+            const container = document.getElementById('projectComponentsContainer');
+            const componentDiv = document.createElement('div');
+            componentDiv.className = 'component-item';
+            
+            const uniqueId = 'component_' + Date.now();
+            
+            componentDiv.innerHTML = `
+                <div class="component-row">
+                    <select class="component-select" id="${uniqueId}_select" onchange="handleComponentChange('${uniqueId}')">
+                        <option value="">Select Component</option>
+                        <option value="road_construction">Road Construction</option>
+                        <option value="bridge_culvert">Bridge/Culvert</option>
+                        <option value="drainage_system">Drainage System</option>
+                        <option value="retaining_wall">Retaining Wall</option>
+                        <option value="streetlighting">Street Lighting</option>
+                        <option value="footpath">Footpath/Sidewalk</option>
+                        <option value="service_road">Service Road</option>
+                        <option value="junction_improvement">Junction Improvement</option>
+                        <option value="utility_shifting">Utility Shifting</option>
+                        <option value="landscaping">Landscaping</option>
+                        <option value="other">Other (Manual Entry)</option>
+                    </select>
+                    <input type="text" class="component-manual" id="${uniqueId}_manual" 
+                           placeholder="Enter component details" style="display:none;">
+                    <button type="button" class="remove-btn" onclick="removeComponent(this)">×</button>
+                </div>
+            `;
+            
+            container.appendChild(componentDiv);
+        }
+        
+        function handleComponentChange(uniqueId) {
+            const select = document.getElementById(uniqueId + '_select');
+            const manual = document.getElementById(uniqueId + '_manual');
+            
+            if (select.value === 'other') {
+                manual.style.display = 'block';
+                manual.focus();
+            } else {
+                manual.style.display = 'none';
+                manual.value = '';
+            }
+        }
+        
+        function removeComponent(button) {
+            const componentItem = button.closest('.component-item');
+            componentItem.remove();
+        }
+
+        // Dynamic dropdown updates
+        function updateProjectTypes() {
+            const category = document.getElementById('projectCategory').value;
+            const typeSelect = document.getElementById('projectType');
+            
+            typeSelect.innerHTML = '<option value="">Select Project Type</option>';
+            
+            const projectTypes = {
+                'infrastructure': [
+                    'Road Construction & Improvement',
+                    'Bridge & Flyover Construction',
+                    'Storm Water Drainage',
+                    'Street Lighting & Electrical',
+                    'Pedestrian Infrastructure'
+                ],
+                'layout': [
+                    'Residential Layout Development',
+                    'Commercial Complex Development',
+                    'Industrial Layout Development',
+                    'IT Park Development',
+                    'Special Economic Zone'
+                ],
+                'water_supply': [
+                    'Water Treatment Plant',
+                    'Distribution Network',
+                    'Sewage Treatment Plant',
+                    'Pumping Stations',
+                    'Water Storage Facilities'
+                ],
+                'parks': [
+                    'Urban Parks Development',
+                    'Sports Complex',
+                    'Community Centers',
+                    'Recreational Facilities',
+                    'Garden & Landscaping'
+                ],
+                'transportation': [
+                    'Bus Rapid Transit (BRT)',
+                    'Metro Rail Integration',
+                    'Multi-Modal Transport Hub',
+                    'Parking Facilities',
+                    'Traffic Management Systems'
+                ],
+                'environmental': [
+                    'Solid Waste Management',
+                    'Air Quality Monitoring',
+                    'Lake Restoration',
+                    'Green Building Projects',
+                    'Renewable Energy Systems'
+                ],
+                'smart_city': [
+                    'Smart Traffic Systems',
+                    'Digital Governance Platforms',
+                    'IoT Infrastructure',
+                    'Smart Utilities',
+                    'Command & Control Centers'
+                ]
+            };
+            
+            if (projectTypes[category]) {
+                typeSelect.disabled = false;
+                projectTypes[category].forEach(type => {
+                    const option = document.createElement('option');
+                    option.value = type.toLowerCase().replace(/[^a-z0-9]/g, '_');
+                    option.textContent = type;
+                    typeSelect.appendChild(option);
+                });
+            } else {
+                typeSelect.disabled = true;
+            }
+            
+            updateStageProgress();
+        }
+
+        function updateMandals() {
+            const district = document.getElementById('district').value;
+            const mandalSelect = document.getElementById('mandal');
+            
+            mandalSelect.innerHTML = '<option value="">Select Mandal</option>';
+            
+            const mandals = {
+                'hyderabad': ['Ameenpur', 'Balanagar', 'Ghanpur', 'Hayathnagar', 'Keesara', 'Medchal', 'Quthbullapur', 'Rajendranagar', 'Serilingampally', 'Shamirpet'],
+                'rangareddy': ['Abdullapurmet', 'Chevella', 'Ibrahimpatnam', 'Kandukur', 'Maheswaram', 'Marpally', 'Shadnagar', 'Shamshabad', 'Shankarpally', 'Yacharam'],
+                'medchal': ['Bachupally', 'Ghatkesar', 'Gundlapochampally', 'Keesara', 'Kompally', 'Kukatpally', 'Malkajgiri', 'Medchal', 'Nizampet', 'Uppal'],
+                'sangareddy': ['Gummadidala', 'Kangti', 'Koheda', 'Kondapur', 'Mangalpally', 'Patancheru', 'Ramachandrapuram', 'Sangareddy'],
+                'vikarabad': ['Bantwaram', 'Chevella', 'Doma', 'Kulkacharla', 'Moinabad', 'Peddemul', 'Tandur', 'Vikarabad']
+            };
+            
+            if (mandals[district]) {
+                mandalSelect.disabled = false;
+                mandals[district].forEach(mandal => {
+                    const option = document.createElement('option');
+                    option.value = mandal.toLowerCase();
+                    option.textContent = mandal;
+                    mandalSelect.appendChild(option);
+                });
+            } else {
+                mandalSelect.disabled = true;
+                document.getElementById('village').disabled = true;
+            }
+        }
+
+        function updateVillages() {
+            const mandal = document.getElementById('mandal').value;
+            const villageSelect = document.getElementById('village');
+            
+            villageSelect.innerHTML = '<option value="">Select Village(s)</option>';
+            
+            // Sample villages based on mandal selection
+            const villageMap = {
+                'serilingampally': ['Gachibowli', 'Kondapur', 'Madhapur', 'Miyapur', 'Lingampally'],
+                'rajendranagar': ['Rajendranagar', 'Narsingi', 'Kokapet', 'Gandipet', 'Budvel'],
+                'shamshabad': ['Shamshabad', 'Tukkuguda', 'Mamidipally', 'Kothur', 'Kadthal'],
+                'chevella': ['Chevella', 'Moinabad', 'Shankarpally', 'Kothaguda', 'Manchirevula']
+            };
+            
+            const villages = villageMap[mandal] || ['Village 1', 'Village 2', 'Village 3', 'Village 4', 'Village 5'];
+            
+            if (mandal) {
+                villageSelect.disabled = false;
+                villages.forEach(village => {
+                    const option = document.createElement('option');
+                    option.value = village.toLowerCase().replace(/\s+/g, '_');
+                    option.textContent = village;
+                    villageSelect.appendChild(option);
+                });
+            } else {
+                villageSelect.disabled = true;
+            }
+        }
+
+        function showEstimateBasisFields() {
+            const basis = document.getElementById('estimateBasis').value;
+            const detailsRow = document.getElementById('estimateDetailsRow');
+            const costPerUnitField = document.getElementById('costPerUnitField');
+            const quantityField = document.getElementById('quantityField');
+            
+            if (basis === 'unit_rate') {
+                detailsRow.style.display = 'grid';
+                costPerUnitField.style.display = 'flex';
+                quantityField.style.display = 'flex';
+            } else {
+                detailsRow.style.display = 'none';
+            }
+        }
+
+        // Removed calculation functions as per HMDA feedback:
+        // - calculateAcres: Project area is now manual text entry
+        // - calculateTotalProjectCost: Only preliminary estimate needed
+        // - calculateCostPerBeneficiary: Not needed with simplified financials
+        // - updateApprovalAuthority: Now manual selection (MC or Govt)
+
+        // Progress calculation
+        function updateStageProgress() {
+            const requiredFields = [
+                'projectName', 'projectCategory', 'projectType', 'projectDescription', 
+                'justification', 'priorityLevel', 'district', 'mandal', 'village', 
+                'preliminaryEstimate', 'estimateBasis'
+            ];
+            
+            let filledFields = 0;
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field && field.value.trim()) {
+                    filledFields++;
+                }
+            });
+            
+            const progress = Math.round((filledFields / requiredFields.length) * 100);
+            document.getElementById('stage1Progress').textContent = progress + '%';
+            document.querySelector('.progress-fill').style.width = progress + '%';
+        }
+
+        // Form submission functions
+        function saveDraft() {
+            const formData = collectFormData();
+            localStorage.setItem('hmda_stage1_draft', JSON.stringify(formData));
+            alert('Draft saved successfully!');
+        }
+
+        function previewProject() {
+            // Open preview in new window
+            window.open('project-preview.html', '_blank');
+        }
+
+        function submitForApproval() {
+            if (validateAllFields()) {
+                if (confirm('Are you sure you want to submit this project for concept approval? Once submitted, you cannot edit the basic details.')) {
+                    alert('Project submitted for concept approval successfully! You will receive a notification once approved.');
+                    localStorage.removeItem('hmda_stage1_draft');
+                    
+                    // Redirect to dashboard or next stage
+                    window.location.href = 'stage2-dpr-approvals.html?project=HMDA-EE-2025-0001';
+                }
+            } else {
+                alert('Please fill all required fields before submitting.');
+            }
+        }
+
+        function collectFormData() {
+            const data = {};
+            const inputs = document.querySelectorAll('.field-input, input[type="radio"]:checked');
+            
+            inputs.forEach(input => {
+                if (input.type === 'radio') {
+                    data[input.name] = input.value;
+                } else {
+                    data[input.id] = input.value;
+                }
+            });
+            
+            return data;
+        }
+
+        function validateAllFields() {
+            const requiredFields = [
+                'projectName', 'projectCategory', 'projectType', 'projectDescription', 
+                'justification', 'priorityLevel', 'district', 'mandal', 'village', 
+                'preliminaryEstimate', 'estimateBasis'
+            ];
+            
+            let isValid = true;
+            
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field || !field.value.trim()) {
+                    isValid = false;
+                    if (field) {
+                        field.classList.add('error');
+                    }
+                }
+            });
+            
+            return isValid;
+        }
+
+        function initializeValidations() {
+            const inputs = document.querySelectorAll('.field-input');
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    validateField(this);
+                });
+                
+                input.addEventListener('input', function() {
+                    updateStageProgress();
+                });
+            });
+        }
+
+        function validateField(field) {
+            const value = field.value.trim();
+            field.classList.remove('error', 'success');
+            
+            const existingMessage = field.parentNode.querySelector('.field-error, .field-success');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+            
+            let isValid = true;
+            let message = '';
+            
+            switch (field.id) {
+                case 'projectName':
+                    if (value.length < 10) {
+                        isValid = false;
+                        message = 'Project name must be at least 10 characters long';
+                    } else if (value.length > 500) {
+                        isValid = false;
+                        message = 'Project name cannot exceed 500 characters';
+                    }
+                    break;
+                    
+                case 'preliminaryEstimate':
+                    const amount = parseFloat(value);
+                    if (amount <= 0) {
+                        isValid = false;
+                        message = 'Amount must be greater than 0';
+                    } else if (amount > 20000) {
+                        message = 'Amount exceeds EE authority limit. DCE approval required.';
+                        field.classList.add('success');
+                        const messageDiv = document.createElement('div');
+                        messageDiv.className = 'field-success';
+                        messageDiv.textContent = message;
+                        field.parentNode.appendChild(messageDiv);
+                        return;
+                    }
+                    break;
+            }
+            
+            if (isValid) {
+                field.classList.add('success');
+            } else {
+                field.classList.add('error');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'field-error';
+                messageDiv.textContent = message;
+                field.parentNode.appendChild(messageDiv);
+            }
+        }
+
+        function updateCurrentTime() {
+            const now = new Date();
+            const timeString = now.toLocaleString('en-IN', {
+                timeZone: 'Asia/Kolkata',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            const timeElement = document.getElementById('currentTime');
+            if (timeElement) {
+                timeElement.textContent = timeString;
+            }
+        }
+    </script>
+    <script src="shared/feedback-system.js"></script>
+</body>
+</html>
