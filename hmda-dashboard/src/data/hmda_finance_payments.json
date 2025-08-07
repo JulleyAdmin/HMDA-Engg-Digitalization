@@ -1,0 +1,131 @@
+[
+  {
+    "paymentId": "PAY-HMDA-001",
+    "totalWorkValue": 491838.61,
+    "currentBill": 215930.0,
+    "deductions": {
+      "incomeTax": 4319.0,
+      "labourCess": 0.0,
+      "gstTDS": 0.0,
+      "retention": 0.0,
+      "seignorage": 0.0
+    },
+    "projectName": "HMDA Infrastructure Work",
+    "contractorName": "HMDA Approved Contractor",
+    "status": "pending",
+    "netPayable": 211611.0,
+    "totalDeductions": 4319.0
+  },
+  {
+    "paymentId": "PAY-HMDA-005",
+    "totalWorkValue": 0.0,
+    "currentBill": 0.0,
+    "deductions": {
+      "incomeTax": 0.0,
+      "labourCess": 0.0,
+      "gstTDS": 0.0,
+      "retention": 0.0
+    },
+    "projectName": "HMDA Project 5",
+    "contractorName": "Various Contractors",
+    "status": "paid",
+    "totalDeductions": 0.0,
+    "netPayable": 0.0
+  },
+  {
+    "paymentId": "PAY-HMDA-006",
+    "totalWorkValue": 0.0,
+    "currentBill": 0.0,
+    "deductions": {
+      "incomeTax": 0.0,
+      "labourCess": 0.0,
+      "gstTDS": 0.0,
+      "retention": 0.0
+    },
+    "projectName": "HMDA Project 6",
+    "contractorName": "Various Contractors",
+    "status": "pending",
+    "totalDeductions": 0.0,
+    "netPayable": 0.0
+  },
+  {
+    "paymentId": "PAY-HMDA-007",
+    "totalWorkValue": 0.0,
+    "currentBill": 0.0,
+    "deductions": {
+      "incomeTax": 0.0,
+      "labourCess": 0.0,
+      "gstTDS": 0.0,
+      "retention": 0.0
+    },
+    "projectName": "HMDA Project 7",
+    "contractorName": "Various Contractors",
+    "status": "paid",
+    "totalDeductions": 0.0,
+    "netPayable": 0.0
+  },
+  {
+    "paymentId": "PAY-HMDA-008",
+    "totalWorkValue": 0.0,
+    "currentBill": 215930.0,
+    "deductions": {
+      "incomeTax": 0.0,
+      "labourCess": 0.0,
+      "gstTDS": 0.0,
+      "retention": 0.0
+    },
+    "projectName": "HMDA Project 8",
+    "contractorName": "Various Contractors",
+    "status": "pending",
+    "totalDeductions": 0.0,
+    "netPayable": 215930.0
+  },
+  {
+    "paymentId": "PAY-HMDA-009",
+    "totalWorkValue": 0.0,
+    "currentBill": 38867.0,
+    "deductions": {
+      "incomeTax": 0.0,
+      "labourCess": 0.0,
+      "gstTDS": 0.0,
+      "retention": 0.0
+    },
+    "projectName": "HMDA Project 9",
+    "contractorName": "Various Contractors",
+    "status": "paid",
+    "totalDeductions": 0.0,
+    "netPayable": 38867.0
+  },
+  {
+    "paymentId": "PAY-HMDA-010",
+    "totalWorkValue": 10797.0,
+    "currentBill": 254797.0,
+    "deductions": {
+      "incomeTax": 215.94,
+      "labourCess": 107.97,
+      "gstTDS": 215.94,
+      "retention": 1079.7
+    },
+    "projectName": "HMDA Project 10",
+    "contractorName": "Various Contractors",
+    "status": "pending",
+    "totalDeductions": 1619.55,
+    "netPayable": 253177.45
+  },
+  {
+    "paymentId": "PAY-HMDA-012",
+    "totalWorkValue": 19435.0,
+    "currentBill": 235362.0,
+    "deductions": {
+      "incomeTax": 388.7,
+      "labourCess": 194.35,
+      "gstTDS": 388.7,
+      "retention": 1943.5
+    },
+    "projectName": "HMDA Project 12",
+    "contractorName": "Various Contractors",
+    "status": "pending",
+    "totalDeductions": 2915.25,
+    "netPayable": 232446.75
+  }
+]

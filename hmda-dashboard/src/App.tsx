@@ -26,12 +26,14 @@ import {
   Engineering,
   FilterList as FilterListIcon,
   Download as DownloadIcon,
-  Input as InputIcon
+  Input as InputIcon,
+  AccountBalance
 } from '@mui/icons-material';
 import { DashboardOverview } from './components/DashboardOverview';
 import { ProjectsTable } from './components/ProjectsTable';
 import Project360View from './components/Project360View/Project360View';
 import StageFormsView from './components/StageFormsView';
+import FinanceMIS from './components/FinanceMIS/FinanceMIS';
 import { HMDAProject, Circle } from './types/Project';
 import FilterSidebar from './components/filters/FilterSidebar';
 import GlobalSearchBar from './components/GlobalSearchBar';
@@ -455,6 +457,12 @@ function App() {
                 id="dashboard-tab-3"
                 aria-controls="dashboard-tabpanel-3"
               />
+              <Tab 
+                icon={<AccountBalance />} 
+                label="Finance & Accounts" 
+                id="dashboard-tab-4"
+                aria-controls="dashboard-tabpanel-4"
+              />
             </Tabs>
           </Container>
         </Box>
@@ -503,6 +511,13 @@ function App() {
 
           <TabPanel value={tabValue} index={3}>
             <StageFormsView />
+          </TabPanel>
+
+          <TabPanel value={tabValue} index={4}>
+            <FinanceMIS 
+              projects={filteredProjects}
+              selectedProject={selectedProject}
+            />
           </TabPanel>
 
         </Container>
