@@ -24,7 +24,9 @@ import {
   DialogActions,
   IconButton,
   Tooltip,
-  Divider
+  Divider,
+  ToggleButton,
+  ToggleButtonGroup
 } from '@mui/material';
 import {
   Send as SendIcon,
@@ -37,6 +39,7 @@ import {
 import { HMDAProject } from '../../types/Project';
 import { PaymentTransaction, DeductionRates } from '../../types/Finance';
 import { hmdaRealPayments } from '../../data/hmdaRealPayments';
+import ConsolidatedPaymentView from './ConsolidatedPaymentView';
 
 interface PaymentProcessingProps {
   projects: HMDAProject[];
@@ -60,6 +63,15 @@ const PaymentProcessing: React.FC<PaymentProcessingProps> = ({
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [selectedPaymentForView, setSelectedPaymentForView] = useState<PaymentTransaction | null>(null);
   const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState<boolean>(false);
+  const [paymentMode, setPaymentMode] = useState<'single' | 'consolidated'>('single');
+  
+  // Consolidated payment states for multiple work items
+  const [workItems, setWorkItems] = useState([
+    { id: 1, value: 8006, contractor: 'Current Bill' },
+    { id: 2, value: 23755, contractor: 'Previous Bill' },
+    { id: 3, value: 15749, contractor: 'Net Adjustment' }  // Difference/reconciliation column
+  ]);
+  const [previousPaymentTotal, setPreviousPaymentTotal] = useState(1187747);
   
   const deductionRates: DeductionRates = {
     incomeTax: 2,
@@ -118,6 +130,54 @@ const PaymentProcessing: React.FC<PaymentProcessingProps> = ({
       retention,
       totalDeductions,
       netPayable
+    };
+  };
+
+  // Calculate consolidated payment for multiple work items
+  const calculateConsolidatedPayment = () => {
+    const totalWorkValue = workItems.reduce((sum, item) => sum + item.value, 0);
+    const withHeld5Percent = 43137; // As per Excel
+    const deductTP = 41; // As per Excel
+    const subTotal1 = totalWorkValue;
+    
+    // Calculate deductions for each work item
+    const deductions = workItems.map(item => ({
+      it: Math.round(item.value * 0.02), // IT 2%
+      labourCess: Math.round(item.value * 0.01), // Labour Cess 1%
+      qc: Math.round(item.value * 0.005), // QC 0.5%
+      nacPercentage: Math.round(item.value * 0.001), // NAC 0.1%
+      seignorage: 0,
+      dmf: 0,
+      smet: 0
+    }));
+    
+    const totalDeductions = deductions.reduce((sum, d) => 
+      sum + d.it + d.labourCess + d.qc + d.nacPercentage, 0
+    );
+    
+    const subTotal2 = subTotal1 + 0; // Add seignorage etc (0 in this case)
+    const gstAmount = Math.round(subTotal2 * 0.18);
+    const subTotal3 = subTotal2 + gstAmount;
+    const deductPP = previousPaymentTotal;
+    const grossTotal = subTotal3 - deductPP;
+    const finalDeductions = totalDeductions + withHeld5Percent;
+    const netPayment = grossTotal - finalDeductions;
+    
+    return {
+      workItems,
+      totalWorkValue,
+      withHeld5Percent,
+      deductTP,
+      subTotal1,
+      deductions,
+      totalDeductions,
+      subTotal2,
+      gstAmount,
+      subTotal3,
+      deductPP,
+      grossTotal,
+      finalDeductions,
+      netPayment
     };
   };
 
@@ -216,9 +276,20 @@ const PaymentProcessing: React.FC<PaymentProcessingProps> = ({
     <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
       {/* Left Section - Payment Form */}
       <Paper sx={{ p: 3, flex: '1 1 500px', minWidth: 0 }}>
-        <Typography variant="h6" gutterBottom sx={{ color: 'primary.main', mb: 3 }}>
-          Payment Order Processing
-        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+          <Typography variant="h6" sx={{ color: 'primary.main' }}>
+            Payment Order Processing
+          </Typography>
+          <ToggleButtonGroup
+            value={paymentMode}
+            exclusive
+            onChange={(e, newMode) => newMode && setPaymentMode(newMode)}
+            size="small"
+          >
+            <ToggleButton value="single">Single Payment</ToggleButton>
+            <ToggleButton value="consolidated">Consolidated/RA Bill</ToggleButton>
+          </ToggleButtonGroup>
+        </Box>
         
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           {/* Category Filter */}
@@ -344,87 +415,141 @@ const PaymentProcessing: React.FC<PaymentProcessingProps> = ({
         </Box>
       </Paper>
       
-      {/* Right Section - Payment Calculation */}
-      <Box sx={{ flex: '1 1 400px', minWidth: 0 }}>
+      {/* Right Section - HMDA Excel Format Payment Calculation */}
+      <Box sx={{ flex: '1 1 600px', minWidth: 0 }}>
         <Paper sx={{ p: 3 }}>
-          <Typography variant="h6" gutterBottom sx={{ color: 'primary.main' }}>
-            Payment Calculation
-          </Typography>
-          
-          <TableContainer>
-            <Table size="small">
-              <TableBody>
-                <TableRow>
-                  <TableCell>Total Work Value</TableCell>
-                  <TableCell align="right">₹{workValue.toLocaleString('en-IN')}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Less: Previous Payments</TableCell>
-                  <TableCell align="right">₹{previousPayments.toLocaleString('en-IN')}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><strong>Current Bill</strong></TableCell>
-                  <TableCell align="right"><strong>₹{payment.currentBill.toLocaleString('en-IN')}</strong></TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Add: GST @ {gstRate}%</TableCell>
-                  <TableCell align="right">₹{payment.gstAmount.toLocaleString('en-IN')}</TableCell>
-                </TableRow>
-                <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-                  <TableCell><strong>Gross Amount</strong></TableCell>
-                  <TableCell align="right"><strong>₹{payment.grossAmount.toLocaleString('en-IN')}</strong></TableCell>
-                </TableRow>
-                
-                <TableRow>
-                  <TableCell colSpan={2}>
-                    <Typography variant="subtitle2" sx={{ mt: 1 }}>
-                      Deductions:
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-                
-                <TableRow>
-                  <TableCell sx={{ pl: 4 }}>Income Tax @ {deductionRates.incomeTax}%</TableCell>
-                  <TableCell align="right">₹{payment.incomeTax.toLocaleString('en-IN')}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell sx={{ pl: 4 }}>Labour Cess @ {deductionRates.labourCess}%</TableCell>
-                  <TableCell align="right">₹{payment.labourCess.toLocaleString('en-IN')}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell sx={{ pl: 4 }}>GST TDS @ {deductionRates.gstTDS}%</TableCell>
-                  <TableCell align="right">₹{payment.gstTDS.toLocaleString('en-IN')}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell sx={{ pl: 4 }}>Retention @ {retentionRate}%</TableCell>
-                  <TableCell align="right">₹{payment.retention.toLocaleString('en-IN')}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><strong>Total Deductions</strong></TableCell>
-                  <TableCell align="right"><strong>₹{payment.totalDeductions.toLocaleString('en-IN')}</strong></TableCell>
-                </TableRow>
-                
-                <TableRow sx={{ backgroundColor: '#e8f5e9' }}>
-                  <TableCell><Typography variant="h6">Net Payable</Typography></TableCell>
-                  <TableCell align="right">
-                    <Typography variant="h6" color="primary">
-                      ₹{payment.netPayable.toLocaleString('en-IN')}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-          
-          {payment.netPayable > 0 && (
-            <Box sx={{ mt: 2, p: 2, backgroundColor: '#f5f5f5', borderRadius: 1 }}>
-              <Typography variant="caption" color="text.secondary">
-                Amount in Words:
-              </Typography>
-              <Typography variant="body2">
-                {numberToWords(Math.floor(payment.netPayable))}
-              </Typography>
-            </Box>
+          {paymentMode === 'single' ? (
+            // Single Payment Format
+            <>
+              <Box sx={{ display: 'flex', gap: 3 }}>
+                {/* Left Column - Recoveries */}
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="h6" gutterBottom sx={{ color: 'primary.main', textAlign: 'center', borderBottom: '2px solid', pb: 1 }}>
+                    Recoveries
+                  </Typography>
+                  
+                  <TableContainer>
+                    <Table size="small">
+                      <TableBody>
+                        <TableRow>
+                          <TableCell sx={{ border: 'none', py: 0.5 }}>I.T. 2% :</TableCell>
+                          <TableCell align="right" sx={{ border: 'none', py: 0.5 }}>{payment.incomeTax.toFixed(0)}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell sx={{ border: 'none', py: 0.5 }}>Labour Cess 1% :</TableCell>
+                          <TableCell align="right" sx={{ border: 'none', py: 0.5 }}>{payment.labourCess.toFixed(0)}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell sx={{ border: 'none', py: 0.5 }}>NAC 0.1% :</TableCell>
+                          <TableCell align="right" sx={{ border: 'none', py: 0.5 }}>0</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell sx={{ border: 'none', py: 0.5 }}>Seignorage Charges :</TableCell>
+                          <TableCell align="right" sx={{ border: 'none', py: 0.5 }}>0</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell sx={{ border: 'none', py: 0.5, fontSize: '0.85rem' }}>DMF (30% on Seignorage) :</TableCell>
+                          <TableCell align="right" sx={{ border: 'none', py: 0.5 }}>0</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell sx={{ border: 'none', py: 0.5, fontSize: '0.85rem' }}>SMET (2% on Seignorage) :</TableCell>
+                          <TableCell align="right" sx={{ border: 'none', py: 0.5 }}>0</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell sx={{ border: 'none', py: 0.5 }}>FSD 5%</TableCell>
+                          <TableCell align="right" sx={{ border: 'none', py: 0.5 }}>{payment.retention.toFixed(0)}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell sx={{ border: 'none', py: 0.5 }}>GST TDS 2%</TableCell>
+                          <TableCell align="right" sx={{ border: 'none', py: 0.5 }}>{payment.gstTDS.toFixed(0)}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell colSpan={2} sx={{ border: 'none', py: 0.5 }}>&nbsp;</TableCell>
+                        </TableRow>
+                        <TableRow sx={{ borderTop: '2px solid', borderBottom: '2px solid' }}>
+                          <TableCell sx={{ border: 'none', py: 0.5, fontWeight: 'bold' }}>T O T A L : :</TableCell>
+                          <TableCell align="right" sx={{ border: 'none', py: 0.5, fontWeight: 'bold' }}>{payment.totalDeductions.toFixed(0)}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Box>
+
+                {/* Right Column - Memo of Payment */}
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="h6" gutterBottom sx={{ color: 'primary.main', textAlign: 'center', borderBottom: '2px solid', pb: 1 }}>
+                    Memo of Payment
+                  </Typography>
+                  
+                  <TableContainer>
+                    <Table size="small">
+                      <TableBody>
+                        <TableRow>
+                          <TableCell sx={{ border: 'none', py: 0.5 }}>Total Value of Work done :</TableCell>
+                          <TableCell align="right" sx={{ border: 'none', py: 0.5 }}>{payment.currentBill.toFixed(2)}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell sx={{ border: 'none', py: 0.5 }}>Deduct TP</TableCell>
+                          <TableCell align="right" sx={{ border: 'none', py: 0.5 }}>0.00</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell sx={{ border: 'none', py: 0.5, fontWeight: 'bold' }}>Sub Total</TableCell>
+                          <TableCell align="right" sx={{ border: 'none', py: 0.5, fontWeight: 'bold' }}>{payment.currentBill.toFixed(2)}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell sx={{ border: 'none', py: 0.5 }}>Add Seignorage</TableCell>
+                          <TableCell align="right" sx={{ border: 'none', py: 0.5 }}>0</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell sx={{ border: 'none', py: 0.5 }}>Add DMF & SMET</TableCell>
+                          <TableCell align="right" sx={{ border: 'none', py: 0.5 }}>0</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell sx={{ border: 'none', py: 0.5 }}>Add NAC 0.1% :</TableCell>
+                          <TableCell align="right" sx={{ border: 'none', py: 0.5 }}>0</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell sx={{ border: 'none', py: 0.5, fontWeight: 'bold' }}>Sub Total</TableCell>
+                          <TableCell align="right" sx={{ border: 'none', py: 0.5, fontWeight: 'bold' }}>{payment.currentBill.toFixed(2)}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell sx={{ border: 'none', py: 0.5 }}>Add GST 18%</TableCell>
+                          <TableCell align="right" sx={{ border: 'none', py: 0.5 }}>{payment.gstAmount.toFixed(0)}</TableCell>
+                        </TableRow>
+                        <TableRow sx={{ borderTop: '1px solid' }}>
+                          <TableCell sx={{ border: 'none', py: 0.5, fontWeight: 'bold' }}>Total:</TableCell>
+                          <TableCell align="right" sx={{ border: 'none', py: 0.5, fontWeight: 'bold' }}>{payment.grossAmount.toFixed(2)}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell colSpan={2} sx={{ border: 'none', py: 0.5 }}>&nbsp;</TableCell>
+                        </TableRow>
+                        <TableRow sx={{ borderTop: '2px solid', borderBottom: '2px solid', backgroundColor: '#e8f5e9' }}>
+                          <TableCell sx={{ border: 'none', py: 0.5, fontWeight: 'bold' }}>Net payment :</TableCell>
+                          <TableCell align="right" sx={{ border: 'none', py: 0.5, fontWeight: 'bold', color: 'primary.main' }}>{payment.netPayable.toFixed(2)}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Box>
+              </Box>
+              
+              {payment.netPayable > 0 && (
+                <Box sx={{ mt: 2, p: 2, backgroundColor: '#f5f5f5', borderRadius: 1 }}>
+                  <Typography variant="caption" color="text.secondary">
+                    Amount in Words:
+                  </Typography>
+                  <Typography variant="body2">
+                    {numberToWords(Math.floor(payment.netPayable))}
+                  </Typography>
+                </Box>
+              )}
+            </>
+          ) : (
+            // Consolidated Payment Format
+            <ConsolidatedPaymentView 
+              workItems={workItems}
+              previousPaymentTotal={previousPaymentTotal}
+            />
           )}
         </Paper>
         
